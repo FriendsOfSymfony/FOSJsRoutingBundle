@@ -46,7 +46,7 @@ Usage
 
 Just add these two lines in your layout:
 
-    <script type="text/javascript" src="{{ asset('bundles/bazingaexposerouting/routing.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/bazingaexposerouting/js/routing.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/routing.js') }}"></script>
 
 
