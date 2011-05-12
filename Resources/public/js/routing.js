@@ -18,7 +18,8 @@ var Routing = Routing || {};
       };
 
     return {
-      variablePrefix: ':',
+      variablePrefix: '{',
+      variableSuffix: '}',
       segmentSeparators: '[/\.$^]',
       prefix: '',
       /**
@@ -28,7 +29,7 @@ var Routing = Routing || {};
         var _route = _routes[route_id],
             _i,
             _prefix = '(' + Routing.segmentSeparators + ')' + Routing.variablePrefix,
-            _suffix = '(' + Routing.segmentSeparators + ')',
+            _suffix = Routing.variableSuffix +'(' + Routing.segmentSeparators + ')',
             _params = $.extend({}, params || {}),
             _queryString,
             _url;
