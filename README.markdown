@@ -50,15 +50,26 @@ Just add these two lines in your layout:
     <script type="text/javascript" src="{{ asset('js/routing.js') }}"></script>
 
 
-It's as simple as calling `Routing.generate('route_id', /* your params */)`.
+It's as simple as calling: `Routing.generate('route_id', /* your params */)`.
 
-    Routing.generate('route_id', {id: 10});
+Imagine a route definition like this one:
+
+    # app/config/routing.yml
+    my_route_to_expose:
+        pattern:  /foo/{id}/bar
+        defaults:  { _controller: HelloBundle:Hello:index }
+        options:
+            expose: true
+
+You can do:
+
+    Routing.generate('my_route_to_expose', {id: 10});
     // will result in /foo/10/bar
 
-    Routing.generate('route_id', {"id": 10, "foo":"bar"});
+    Routing.generate('my_route_to_expose', {"id": 10, "foo":"bar"});
     // will result in /foo/10/bar?foo-bar
 
-    $.get(Routing.generate('route_id', {"id": 10, "foo":"bar"}));
+    $.get(Routing.generate('my_route_to_expose', {"id": 10, "foo":"bar"}));
     // will call /foo/10/bar?foo-bar
 
 
