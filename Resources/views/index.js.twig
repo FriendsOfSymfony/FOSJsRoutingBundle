@@ -1,0 +1,3 @@
+{% for name, route in exposed_routes %}
+Routing.register('{{ name }}', '{{ route.pattern }}');
+{% endfor %}
