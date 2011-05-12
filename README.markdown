@@ -6,11 +6,11 @@ Port of the incredible plugin [chCmsExposeRoutingPlugin](https://github.com/them
 Installation
 ------------
 
-1. Add this bundle as a submodule:
+Add this bundle as a submodule:
 
 > git submodule add git://github.com/Bazinga/ExposeRoutingBundle.git vendor/bundles/Bazinga/ExposeRoutingBundle
 
-2. Register the namespace in `app/autoload.php`:
+Register the namespace in `app/autoload.php`:
 
     // app/autoload.php
     $loader->registerNamespaces(array(
@@ -18,7 +18,7 @@ Installation
         'Bazinga' => __DIR__.'/../vendor/bundles',
     ));
 
-3. Register the bundle in `app/AppKernel.php`:
+Register the bundle in `app/AppKernel.php`:
 
     // app/AppKernel.php
     public function registerBundles()
@@ -29,15 +29,16 @@ Installation
         );
     }
 
-4. Register the routing in `app/config/routing.yml`:
+Register the routing in `app/config/routing.yml`:
 
     # app/config/routing.yml
     bazinga_exposerouting:
         resource: "@BazingaExposeRoutingBundle/Resources/config/routing/routing.xml"
 
-5. Publish assets:
+Publish assets:
 
     $ php app/console assets:install --symlink web
+
 
 
 Usage
