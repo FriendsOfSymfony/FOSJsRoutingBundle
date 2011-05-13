@@ -43,6 +43,15 @@ class Controller
 
         foreach ($collection->all() as $name => $route) {
             if ($route->getOption('expose') && true === $route->getOption('expose')) {
+                // Maybe there is a better way to do that...
+                $defaults = $route->getDefaults();
+                foreach ($defaults as $k => $v) {
+                    if (0 === strpos($k, '_')) {
+                        unset($defaults[$k]);
+                    }
+                }
+                $route->setDefaults($defaults);
+
                 $exposed_routes[$name] = $route;
             }
         }

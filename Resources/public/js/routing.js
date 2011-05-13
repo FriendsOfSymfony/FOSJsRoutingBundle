@@ -8,6 +8,7 @@ var Routing = Routing || {};
   $.extend(Routing, (function() {
 
     var _routes = {},
+        _defaults = {},
         rquery = /\?/,
         rabsurl = /^\//,
         rescregexp = /[-[\]()*+?.,\\^$|#\s]/g,
@@ -57,6 +58,8 @@ var Routing = Routing || {};
           throw 'No matching route for ' + route_id;
         }
 
+        _params = $.extend({}, _defaults[route_id], _params);
+
         for (_i in _params) {
           var _r = new RegExp(_prefix + _i + _suffix, '');
 
@@ -81,10 +84,12 @@ var Routing = Routing || {};
        *
        * @param {String} id       the route id.
        * @param {String} pattern  the url pattern.
+       * @param {Objects} params  the  default parameters.
        * @return {Object} Routing.
        */
-      connect: function(id, pattern) {
-        _routes[id] = pattern;
+      connect: function(id, pattern, defaults) {
+        _routes[id]   = pattern;
+        _defaults[id] = $.extend({}, defaults || {});
         return Routing;
       },
       /**

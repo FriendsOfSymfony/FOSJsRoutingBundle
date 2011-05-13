@@ -1,4 +1,4 @@
 Routing.prefix = '{{ prefix }}';
 {% for name, route in exposed_routes %}
-Routing.connect('{{ name }}', '{{ route.pattern }}');
+Routing.connect({{ name|json_encode|raw }}, {{ route.pattern|json_encode|raw }}, {{ route.defaults|json_encode|raw }});
 {% endfor %}
