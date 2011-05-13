@@ -90,6 +90,24 @@ You can do:
     // will result in /blog/2?foo=bar
 
 
+Moreover, you can configure a list of routes to expose in `app/config/config.yml`:
+
+    # app/config/config.yml
+    bazinga_expose_routing:
+        routes_to_expose: [ route_1, route_2, ... ]
+
+These routes will be added to the exposed routes.
+
+You can prevent to expose a route by configuring it as below:
+
+    # app/config/routing.yml
+    my_very_secret_route:
+        pattern: /admin
+        defaults: { _controller: HelloBundle:Admin:index }
+        options:
+            expose: false
+
+
 Credits
 -------
 
