@@ -32,7 +32,7 @@ Register the bundle in `app/AppKernel.php`:
 Register the routing in `app/config/routing.yml`:
 
     # app/config/routing.yml
-    bazinga_exposerouting:
+    _bazinga_exposerouting:
         resource: "@BazingaExposeRoutingBundle/Resources/config/routing/routing.xml"
 
 Publish assets:
@@ -47,7 +47,7 @@ Usage
 Just add these two lines in your layout:
 
     <script type="text/javascript" src="{{ asset('bundles/bazingaexposerouting/js/routing.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/routing.js') }}"></script>
+    <script type="text/javascript" src="{{ path('bazinga_exposerouting_js') }}"></script>
 
 
 It's as simple as calling: `Routing.generate('route_id', /* your params */)`.
