@@ -26,7 +26,7 @@ test('route registration', function() {
 });
 
 test('route generation', function() {
-  expect(10);
+  expect(14);
 
   equal(Routing.connect('route_1', '/route1').generate('route_1'), '/route1',
                               'generating url without parameters returns url');
@@ -74,4 +74,23 @@ test('route generation', function() {
                               .generate('route_1', { id: 'bar' }),
                               '/baz/bar',
                               'prefix is surrounded by slashes');
+
+  // check for default parameters
+  Routing.prefix = '';
+  equal(Routing.connect('route_1', '/foo/{id}', { id: 120 })
+                              .generate('route_1'),
+                              '/foo/120',
+                              'default parameter is using if no parameter is specified');
+  equal(Routing.connect('route_1', '/foo/{id}', { id: 120 })
+                              .generate('route_1', { id: 210 }),
+                              '/foo/210',
+                              'default parameter is overrided if a valid parameter is specified');
+  equal(Routing.connect('route_1', '/foo/{id}', { id: 120 })
+                              .generate('route_1', { di: 210 }),
+                              '/foo/120?di=210',
+                              'default parameter is using if a wrong parameter is specified');
+  equal(Routing.connect('route_1', '/foo/{id}/val/{val}', { val: 10 })
+                              .generate('route_1', { id: 120, val: 210 }),
+                              '/foo/120/val/210',
+                              'Default parameters work with multiple variables');
 });
