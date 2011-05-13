@@ -6,6 +6,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Definition\Processor;
 
 /**
  * BazingaExposeRoutingExtension
@@ -20,7 +21,15 @@ class BazingaExposeRoutingExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $processor = new Processor();
+        $configuration = new Configuration($container->getParameter('kernel.debug'));
+        $config = $processor->processConfiguration($configuration, $configs);
+
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('controllers.xml');
+
+        $container
+            ->getDefinition('bazinga.exposerouting.controller')
+            ->replaceArgument(2, $config['routes_to_expose']);
     }
 }
