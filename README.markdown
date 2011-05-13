@@ -40,7 +40,6 @@ Publish assets:
     $ php app/console assets:install --symlink web
 
 
-
 Usage
 -----
 
@@ -52,7 +51,7 @@ Just add these two lines in your layout:
 
 It's as simple as calling: `Routing.generate('route_id', /* your params */)`.
 
-Imagine a route definition like this one:
+Imagine some route definitions:
 
     # app/config/routing.yml
     my_route_to_expose:
@@ -61,16 +60,34 @@ Imagine a route definition like this one:
         options:
             expose: true
 
+    my_route_to_expose_with_defaults:
+        pattern:  /blog/{page}
+        defaults: { _controller: AcmeBlogBundle:Blog:index, page: 1 }
+        options:
+            expose: true
+
 You can do:
 
-    Routing.generate('my_route_to_expose', {id: 10});
+    Routing.generate('my_route_to_expose', { id: 10 });
     // will result in /foo/10/bar
 
-    Routing.generate('my_route_to_expose', {"id": 10, "foo":"bar"});
-    // will result in /foo/10/bar?foo-bar
+    Routing.generate('my_route_to_expose', { "id": 10, "foo": "bar" });
+    // will result in /foo/10/bar?foo=bar
 
-    $.get(Routing.generate('my_route_to_expose', {"id": 10, "foo":"bar"}));
-    // will call /foo/10/bar?foo-bar
+    $.get(Routing.generate('my_route_to_expose', { "id": 10, "foo": "bar" }));
+    // will call /foo/10/bar?foo=bar
+
+    Routing.generate('my_route_to_expose_with_defaults');
+    // will result in /blog/1
+
+    Routing.generate('my_route_to_expose_with_defaults', { id: 2 });
+    // will result in /blog/2
+
+    Routing.generate('my_route_to_expose_with_defaults', { "foo": "bar" });
+    // will result in /blog/1?foo=bar
+
+    Routing.generate('my_route_to_expose_with_defaults', { id: 2, "foo": "bar" });
+    // will result in /blog/2?foo=bar
 
 
 Credits
