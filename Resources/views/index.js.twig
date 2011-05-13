@@ -1,3 +1,4 @@
+Routing.prefix = '{{ prefix }}';
 {% for name, route in exposed_routes %}
 Routing.connect('{{ name }}', '{{ route.pattern }}');
 {% endfor %}
