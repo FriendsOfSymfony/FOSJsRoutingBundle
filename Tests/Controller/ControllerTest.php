@@ -2,7 +2,8 @@
 
 namespace Bazinga\ExposeRoutingBundle\Tests\Controller;
 
-use Bazinga\ExposeRoutingBundle\Tests\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
 use Bazinga\ExposeRoutingBundle\Controller\Controller;
 
 /**
@@ -10,7 +11,7 @@ use Bazinga\ExposeRoutingBundle\Controller\Controller;
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class ControllerTest extends TestCase
+class ControllerTest extends WebTestCase
 {
     /**
      * @var \Bazinga\ExposeRoutingBundle\Controller\Controller
@@ -18,22 +19,15 @@ class ControllerTest extends TestCase
     private $controller;
 
     /**
-     * Initialize a clean controller.
-     */
-    public function setUp()
-    {
-        $router = $this->getMockRouter();
-        $engine = $this->getMockEngine();
-        $routesToExpose = array();
-
-        $this->controller = new Controller($router, $engine, $routesToExpose);
-    }
-
-    /**
-     * Test the indexAction method.
+     * Unit tests.
      */
     public function testIndexAction()
     {
+        $router = $this->getMockRouter();
+        $engine = $this->getMockEngine();
+
+        $this->controller = new Controller($router, $engine, array());
+
         $_format  = 'js';
         $response = $this->controller->indexAction($_format);
         $content  = $response->getContent();
@@ -59,6 +53,28 @@ class ControllerTest extends TestCase
         $this->assertArrayNotHasKey('_controller', $content['exposed_routes']['foobar']->getDefaults(), '_* defaults are removed');
         $this->assertArrayNotHasKey('_controller', $content['exposed_routes']['foobaz']->getDefaults(), '_* defaults are removed');
         $this->assertArrayHasKey('id', $content['exposed_routes']['foobaz']->getDefaults(), 'Valid defaults are kept');
+    }
+
+    /**
+     * Function tests.
+     */
+    public function testIndexActionResponse()
+    {
+        $client  = $this->createClient();
+        $crawler = $client->request('GET', '/js/routing.js');
+
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertTrue($client->getResponse()->headers->contains('content-type', 'application/javascript'));
+
+        $expected = <<<EOT
+Routing.prefix = '';
+Routing.variablePrefix = '{';
+Routing.variableSuffix = '}';
+
+EOT;
+
+        $this->assertEquals($expected, $client->getResponse()->getContent());
     }
 
     /**
