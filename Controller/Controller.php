@@ -62,8 +62,10 @@ class Controller
         }
 
         return new Response($this->engine->render('BazingaExposeRoutingBundle::index.' . $_format . '.twig', array(
-            'prefix'         => $this->router->getContext()->getBaseUrl(),
-            'exposed_routes' => $exposed_routes,
+            'var_prefix'        => '{',
+            'var_suffix'        => '}',
+            'prefix'            => $this->router->getContext()->getBaseUrl() ?: '',
+            'exposed_routes'    => $exposed_routes,
         )));
     }
 }

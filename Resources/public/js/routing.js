@@ -1,3 +1,9 @@
+/*!
+ * routing.js
+ * Copyright (c) 2011 Julien Muetton <julien_muetton@carpe-hora.com>
+ * MIT Licensed
+ */
+
 /**
  * define Routing class
  */
@@ -13,7 +19,7 @@ var Routing = Routing || {};
         _defaults = {},
         rquery = /\?/,
         rabsurl = /^\//,
-        rescregexp = /[-[\]()*+?.,\\^$|#\s]/g,
+        rescregexp = /[-[\]{}()*+?.,\\^$|#\s]/g,
         rdblslash = /\/\//g;
 
     /**
@@ -21,9 +27,13 @@ var Routing = Routing || {};
      * prepare a regexp part with several caracters/parts
      * having to be escaped.
      *
-     * @param {Array|string} separators   A list of separators.
-     * @param {String} unescaped          A meta character to use in regexp.
-     * return {String}                    The regexp part, ready to use.
+     *    regexify('a'); // returns 'a'
+     *    regexify(['a', '.']); // returns 'a|\.'
+     *    regexify(['a', '.'], '$'); // returns 'a|\.|$'
+     *
+     * @param {Array|string}  separators  a list of separators.
+     * @param {String}        unescaped   a meta character to use in regexp.
+     * @return {String}      the regexp part, ready to use.
      */
     function regexify(separators, unescaped) {
       var _i, _separators = [];
@@ -40,41 +50,76 @@ var Routing = Routing || {};
 
       // return in a or
       if (_separators.length > 1) {return _separators.join('|')}
-      return _separators[0];
+      else if(_separators.length) {return _separators[0];}
+      return '';
     };
+
+    /**
+     * replace params in given url.
+     * **WARNING:** used params are removed.
+     *
+     * @param {String} url the raw url.
+     * @param {Object} params the params to replace.
+     * @return {String} the treated url.
+     * @api private
+     */
+    function replace_params(url, params) {
+        var _i,
+            _url = url,
+            _separators = Routing.segmentSeparators,
+            _prefixes = regexify(Routing.variablePrefix),
+            _suffixes = regexify(Routing.variableSuffix),
+            _prefix = '(' + regexify(_separators, '^') + ')' + _prefixes,
+            _suffix = _suffixes + '(' + regexify(_separators, '$') + ')';
+        for (_i in params) {
+          var _r = new RegExp(_prefix + _i + _suffix, '');
+
+          if (_r.test(_url)) {
+            _url = _url.replace(_r, '$1' + params[_i] + '$2');
+            delete(params[_i]);
+          }
+        }
+
+        return _url;
+    }
 
     return {
       /**
-       * Route parameter prefix.
+       * default routing parameters for every routes.
+       *
+       * @api public
+       */
+      defaults: {},
+      /**
+       * route parameter suffix.
        *
        * @type {String}
        * @api public
        */
-      variablePrefix: '{',
+      variableSuffix: '',
       /**
-       * Route parameter suffix.
+       * route parameter prefix.
        *
        * @type {String}
        * @api public
        */
-      variableSuffix: '}',
+      variablePrefix: ':',
       /**
-       * Route url separtor list.
+       * route url separator list.
        *
-       * @type {String}
+       * @type {String|Array}
        * @api public
        */
       segmentSeparators: ['/', '.'],
       /**
-       * Route url prefix to use.
+       * route url prefix to use.
        *
        * @type {String}
        * @api public
        */
       prefix: '',
-
       /**
-       * Generate a route url from route id and params.
+       * generate a route url from route id and params.
        *
        * @param {String}  route_id  the id of route to generate url for.
        * @param {Objects} params    the parameters to append to the route.
@@ -83,12 +128,6 @@ var Routing = Routing || {};
        */
       generate: function(route_id, params) {
         var _route = Routing.get(route_id),
-            _i,
-            _separators = Routing.segmentSeparators,
-            _prefix = '(' + regexify(_separators, '^') +
-                        ')' + regexify(Routing.variablePrefix),
-            _suffix = regexify(Routing.variableSuffix) +
-                        '(' + regexify(_separators, '$') + ')',
             _params = $.extend({}, _defaults[route_id] || {}, params || {}),
             _queryString,
             _url = _route;
@@ -97,15 +136,13 @@ var Routing = Routing || {};
           throw 'No matching route for ' + route_id;
         }
 
-        for (_i in _params) {
-          var _r = new RegExp(_prefix + _i + _suffix, '');
+        // replace with params then defaults
+        _url = replace_params(_url, _params);
+        _url = replace_params(_url, $.extend({}, Routing.defaults || {}));
 
-          if (_r.test(_url)) {
-            _url = _url.replace(_r, '$1' + _params[_i] + '$2');
-            delete(_params[_i]);
-          }
-        }
+        // remaining params as query string
         _queryString = $.param(_params);
+
         if (_queryString.length) {
           _url += (rquery.test(_url) ? '&' : '?') + _queryString;
         }
@@ -121,13 +158,12 @@ var Routing = Routing || {};
        *
        * @param {String} id       the route id.
        * @param {String} pattern  the url pattern.
-       * @param {Objects} params  the  default parameters.
        * @return {Object} Routing.
        * @api public
        */
       connect: function(id, pattern, defaults) {
         _routes[id] = pattern;
-        _defaults[id] = $.extend({}, defaults || {});
+        _defaults[id] = defaults || {};
         return Routing;
       },
       /**
