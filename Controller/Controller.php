@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Controller class.
  *
+ * @package     ExposeRoutingBundle
+ * @subpackage  Controller
  * @author William DURAND <william.durand1@gmail.com>
  */
 class Controller

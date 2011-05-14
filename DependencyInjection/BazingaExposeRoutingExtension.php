@@ -12,6 +12,8 @@ use Symfony\Component\Config\Definition\Processor;
  * BazingaExposeRoutingExtension
  * Load configuration.
  *
+ * @package     ExposeRoutingBundle
+ * @subpackage  DependencyInjection
  * @author William DURAND <william.durand1@gmail.com>
  */
 class BazingaExposeRoutingExtension extends Extension

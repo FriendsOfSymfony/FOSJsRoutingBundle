@@ -1,0 +1,248 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>DocBlox Documentation</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><link rel="stylesheet" href="css/black-tie/jquery-ui-1.8.2.custom.css" type="text/css"></link><link rel="stylesheet" href="css/jquery.treeview.css" type="text/css"></link><link rel="stylesheet" href="css/theme.css" type="text/css"></link><script type="text/javascript" src="js/jquery-1.4.2.min.js"></script><script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script><script type="text/javascript" src="js/jquery.cookie.js"></script><script type="text/javascript" src="js/jquery.treeview.js"></script><script type="text/javascript">
+            $(document).ready(function() {
+                $(".filetree").treeview({
+                    collapsed: true,
+                    persist: "cookie"
+                });
+
+                $("#accordion").accordion({
+                    collapsible: true,
+                    autoHeight:  false,
+                    fillSpace:   true
+                });
+
+                $(".tabs").tabs();
+            });
+        </script></head><body><div xmlns="" id="content">
+<script>
+      $(document).ready(function() {
+        $('dl.function-info, dl.constant-info, dl.property-info').prev().css('cursor', 'pointer');
+        $('dl.function-info, dl.constant-info, dl.property-info').prev().click(function() {
+          if ($(this).next().is(':hidden'))
+          {
+            $(this).children('img')[0].src = 'images/arrow_down.gif';
+          } else
+          {
+            $(this).children('img')[0].src = 'images/arrow_right.gif';
+          }
+          $(this).next().slideToggle();
+        });
+      $('dl.function-info, dl.constant-info, dl.property-info').hide();
+      $('dl.function-info img, dl.constant-info img, dl.property-info img').show();
+      });
+    </script><a name="top"></a><h1 class="file">Tests/Controller/ControllerTest.php</h1>
+<div class="file_menu">
+<a href="#classes">Classes</a> </div>
+<dl class="file-info">
+<dt>Classes</dt>
+<dd><a class="class" href="#Bazinga%5CExposeRoutingBundle%5CTests%5CController%5CControllerTest">ControllerTest</a></dd>
+</dl>
+<a name="classes"></a><a id="Bazinga\ExposeRoutingBundle\Tests\Controller\ControllerTest"></a><h2 class="class">Bazinga\ExposeRoutingBundle\Tests\Controller\ControllerTest<div class="to-top"><a href="#top">jump to top</a></div>
+</h2>
+<div class="class">
+<dl class="class-info">
+<dt>Extends from</dt>
+<dd>Symfony\Bundle\FrameworkBundle\Test\WebTestCase</dd>
+<dt>author</dt>
+<dd>William DURAND &lt;william.durand1@gmail.com&gt;</dd>
+<dt>package</dt>
+<dd>ExposeRoutingBundle</dd>
+<dt>subpackage</dt>
+<dd>Controller</dd>
+<dt>Properties</dt>
+<dd><a class="property" href="#Bazinga%5CExposeRoutingBundle%5CTests%5CController%5CControllerTest::%24controller">$controller</a></dd>
+<dt>Methods</dt>
+<dd><a class="method" href="#Bazinga%5CExposeRoutingBundle%5CTests%5CController%5CControllerTest::testIndexAction()">testIndexAction</a></dd>
+<dd><a class="method" href="#Bazinga%5CExposeRoutingBundle%5CTests%5CController%5CControllerTest::testIndexActionResponse()">testIndexActionResponse</a></dd>
+<dd><a class="method" href="#Bazinga%5CExposeRoutingBundle%5CTests%5CController%5CControllerTest::getMockRouteCollection()">getMockRouteCollection</a></dd>
+<dd><a class="method" href="#Bazinga%5CExposeRoutingBundle%5CTests%5CController%5CControllerTest::getMockRouter()">getMockRouter</a></dd>
+<dd><a class="method" href="#Bazinga%5CExposeRoutingBundle%5CTests%5CController%5CControllerTest::getMockEngine()">getMockEngine</a></dd>
+</dl>
+<h3>Description</h3>
+<p class="short-description">ControllerTest class.</p>
+<div class="long-description">
+</div>
+<h3>Properties</h3>
+<div>
+<a id="Bazinga\ExposeRoutingBundle\Tests\Controller\ControllerTest::$controller"></a><h4 class="property">$controller<div class="to-top"><a href="#Bazinga%5CExposeRoutingBundle%5CTests%5CController%5CControllerTest">jump to class</a></div>
+</h4>
+<div class="property">
+<code>\Bazinga\ExposeRoutingBundle\Controller\Controller <span class="highlight">$controller</span> = ''</code><p class="short-description"></p>
+<div class="long-description">
+</div>
+<div class="api-section">
+<h4 class="info">
+<img src="images/arrow_right.gif"> Details</h4>
+<dl class="property-info">
+<dt>$controller</dt>
+<dd>\Bazinga\ExposeRoutingBundle\Controller\Controller<br><em></em>
+</dd>
+<dt>visibility</dt>
+<dd>private</dd>
+<dt>default</dt>
+<dd></dd>
+<dt>final</dt>
+<dd>false</dd>
+<dt>static</dt>
+<dd>false</dd>
+</dl>
+<div class="clear"></div>
+</div>
+</div>
+</div>
+<h3>Methods</h3>
+<div>
+<a id="Bazinga\ExposeRoutingBundle\Tests\Controller\ControllerTest::getMockEngine()"></a><h4 class="method">getMockEngine<div class="to-top"><a href="#ControllerTest">jump to class</a></div>
+</h4>
+<div class="method">
+<code><span class="highlight">getMockEngine</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+        \Symfony\Component\Templating\EngineInterface</code><p class="short-description">Get a mock object which represents an EngineInterface.</p>
+<div class="long-description">
+</div>
+<div class="api-section">
+<h5 class="output">Output</h5>
+<dl class="return-info">
+<dt>\Symfony\Component\Templating\EngineInterface</dt>
+<dd><em></em></dd>
+</dl>
+<div class="clear"></div>
+</div>
+<div class="api-section">
+<h5 class="info">
+<img src="images/arrow_right.gif"> Details</h5>
+<dl class="function-info">
+<dt>visibility</dt>
+<dd>private</dd>
+<dt>final</dt>
+<dd>false</dd>
+<dt>static</dt>
+<dd>false</dd>
+</dl>
+<div class="clear"></div>
+</div>
+</div>
+<a id="Bazinga\ExposeRoutingBundle\Tests\Controller\ControllerTest::getMockRouteCollection()"></a><h4 class="method">getMockRouteCollection<div class="to-top"><a href="#ControllerTest">jump to class</a></div>
+</h4>
+<div class="method">
+<code><span class="highlight">getMockRouteCollection</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+        \Symfony\Symfony\Component\Routing\RouteCollection</code><p class="short-description">Get a mock object which represents a RouteCollection.</p>
+<div class="long-description">
+</div>
+<div class="api-section">
+<h5 class="output">Output</h5>
+<dl class="return-info">
+<dt>\Symfony\Symfony\Component\Routing\RouteCollection</dt>
+<dd><em></em></dd>
+</dl>
+<div class="clear"></div>
+</div>
+<div class="api-section">
+<h5 class="info">
+<img src="images/arrow_right.gif"> Details</h5>
+<dl class="function-info">
+<dt>visibility</dt>
+<dd>private</dd>
+<dt>final</dt>
+<dd>false</dd>
+<dt>static</dt>
+<dd>false</dd>
+</dl>
+<div class="clear"></div>
+</div>
+</div>
+<a id="Bazinga\ExposeRoutingBundle\Tests\Controller\ControllerTest::getMockRouter()"></a><h4 class="method">getMockRouter<div class="to-top"><a href="#ControllerTest">jump to class</a></div>
+</h4>
+<div class="method">
+<code><span class="highlight">getMockRouter</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+        \Symfony\Component\Routing\Router</code><p class="short-description">Get a mock object which represents a Router.</p>
+<div class="long-description">
+</div>
+<div class="api-section">
+<h5 class="output">Output</h5>
+<dl class="return-info">
+<dt>\Symfony\Component\Routing\Router</dt>
+<dd><em></em></dd>
+</dl>
+<div class="clear"></div>
+</div>
+<div class="api-section">
+<h5 class="info">
+<img src="images/arrow_right.gif"> Details</h5>
+<dl class="function-info">
+<dt>visibility</dt>
+<dd>private</dd>
+<dt>final</dt>
+<dd>false</dd>
+<dt>static</dt>
+<dd>false</dd>
+</dl>
+<div class="clear"></div>
+</div>
+</div>
+<a id="Bazinga\ExposeRoutingBundle\Tests\Controller\ControllerTest::testIndexAction()"></a><h4 class="method">testIndexAction<div class="to-top"><a href="#ControllerTest">jump to class</a></div>
+</h4>
+<div class="method">
+<code><span class="highlight">testIndexAction</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+        </code><p class="short-description">Unit tests.</p>
+<div class="long-description">
+</div>
+<div class="api-section">
+<h5 class="info">
+<img src="images/arrow_right.gif"> Details</h5>
+<dl class="function-info">
+<dt>visibility</dt>
+<dd>public</dd>
+<dt>final</dt>
+<dd>false</dd>
+<dt>static</dt>
+<dd>false</dd>
+</dl>
+<div class="clear"></div>
+</div>
+</div>
+<a id="Bazinga\ExposeRoutingBundle\Tests\Controller\ControllerTest::testIndexActionResponse()"></a><h4 class="method">testIndexActionResponse<div class="to-top"><a href="#ControllerTest">jump to class</a></div>
+</h4>
+<div class="method">
+<code><span class="highlight">testIndexActionResponse</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+        </code><p class="short-description">Function tests.</p>
+<div class="long-description">
+</div>
+<div class="api-section">
+<h5 class="info">
+<img src="images/arrow_right.gif"> Details</h5>
+<dl class="function-info">
+<dt>visibility</dt>
+<dd>public</dd>
+<dt>final</dt>
+<dd>false</dd>
+<dt>static</dt>
+<dd>false</dd>
+</dl>
+<div class="clear"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<small xmlns="" class="footer">Documentation was generated by <a href="http://docblox-project.org">DocBlox 0.10.0</a>.
+    </small></body></html>

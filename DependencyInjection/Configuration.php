@@ -8,6 +8,8 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 /**
  * Configuration class.
  *
+ * @package     ExposeRoutingBundle
+ * @subpackage  DependencyInjection
  * @author William DURAND <william.durand1@gmail.com>
  */
 class Configuration implements ConfigurationInterface

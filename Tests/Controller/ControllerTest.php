@@ -9,6 +9,8 @@ use Bazinga\ExposeRoutingBundle\Controller\Controller;
 /**
  * ControllerTest class.
  *
+ * @package     ExposeRoutingBundle
+ * @subpackage  Controller
  * @author William DURAND <william.durand1@gmail.com>
  */
 class ControllerTest extends WebTestCase
