@@ -1,0 +1,361 @@
+<html>
+	<head>
+		<title>ExposeRoutingBundle</title>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+		<style>body {
+    margin: 0;
+    padding: 0;
+    font: 14px/1.5 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif;
+    color: #252519;
+}
+a {
+    color: #252519;
+}
+a:hover {
+    text-decoration: underline;
+    color: #19469D;
+}
+p {
+    margin: 12px 0;
+}
+h1, h2, h3 {
+    margin: 0;
+    padding: 0;
+}
+table#source {
+    width: 100%;
+    border-collapse: collapse;
+}
+table#source td:first-child {
+    padding: 30px 40px 30px 40px;
+    vertical-align: top;
+}
+table#source td:first-child,
+table#source td:first-child pre {
+    width: 450px;
+}
+table#source td:last-child {
+    padding: 30px 0 30px 40px;
+    border-left: 1px solid #E5E5EE;
+    background: #F5F5FF;
+}
+table#source tr {
+    border-bottom: 1px solid #E5E5EE;
+}
+table#source tr.filename {
+    padding-top: 40px;
+    border-top: 1px solid #E5E5EE;
+}
+table#source tr.filename td:first-child {
+    text-transform: capitalize;
+}
+table#source tr.filename td:last-child {
+    font-size: 12px;
+}
+table#source tr.filename h2 {
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}
+table#source tr.code h1,
+table#source tr.code h2,
+table#source tr.code h3 {
+    margin-top: 30px;
+    font-family: "Lucida Grande", "Helvetica Nueue", Arial, sans-serif;
+    font-size: 18px;
+}
+table#source tr.code h2 {
+    font-size: 16px;
+}
+table#source tr.code h3 {
+    font-size: 14px;
+}
+table#source tr.code ul {
+    margin: 15px 0 15px 35px;
+    padding: 0;
+}
+table#source tr.code ul li {
+    margin: 0;
+    padding: 1px 0;
+}
+table#source tr.code ul li p {
+    margin: 0;
+    padding: 0;
+}
+table#source tr.code td:first-child pre {
+    padding: 20px;
+}
+#ribbon {
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+code .string { color: #219161; }
+code .regexp { color: #219161; }
+code .keyword { color: #954121; }
+code .number { color: #19469D; }
+code .comment { color: #bbb; }
+code .this { color: #19469D; }</style>
+		<script>
+			$(function(){
+				$('tr.code').hide();
+				$('tr.filename').toggle(function(){
+					$(this).nextUntil('.filename').fadeIn();
+				}, function(){
+					$(this).nextUntil('.filename').fadeOut();
+				});
+			});
+		</script>
+	</head>
+	<body>
+<table id="source"><tbody><tr><td><h1>ExposeRoutingBundle</h1></td><td></td></tr><tr class="filename"><td><h2 id="Resources/public/js/routing.js"><a href="#">routing</a></h2></td><td>Resources/public/js/routing.js</td></tr><tr class="code">
+<td class="docs">
+<p>define Routing class
+ </p>
+</td>
+<td class="code">
+<pre><code><span class="keyword">var</span> <span class="class">Routing</span> = <span class="class">Routing</span> || {};
+
+(<span class="keyword">function</span>(<span class="class">Routing</span>, $, <span class="variable">undefined</span>) {
+
+  <span class="comment">// now register our routing methods</span>
+  $.<span class="variable">extend</span>(<span class="class">Routing</span>, (<span class="keyword">function</span>() {
+
+    <span class="keyword">var</span> <span class="variable">_routes</span> = {},
+        <span class="variable">_defaults</span> = {},
+        <span class="variable">rquery</span> = <span class="regexp">/\?/</span>,
+        <span class="variable">rabsurl</span> = <span class="regexp">/^\/</span>/,
+        <span class="variable">rescregexp</span> = <span class="regexp">/[-[\]{}()*+?.,\\^$|#\s]/g</span>,
+        <span class="variable">rdblslash</span> = <span class="regexp">/\/</span>\<span class="comment">//g;</span></code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<ul><li><strong>api</strong>: <em>private</em></li></ul>
+
+<p>prepare a regexp part with several caracters/parts
+having to be escaped.</p>
+
+<p>   regexify('a'); // returns 'a'
+   regexify(['a', '.']); // returns 'a|.'
+   regexify(['a', '.'], '$'); // returns 'a|.|$'</p>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>Array | string</em>   separators  a list of separators.</p></li><li><p><strong>param</strong>: <em>String</em>         unescaped   a meta character to use in regexp.</p></li><li><p><strong>return</strong>: <em>String</em>       the regexp part, ready to use.</p><p> </p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="keyword">function</span> <span class="variable">regexify</span>(<span class="variable">separators</span>, <span class="variable">unescaped</span>) {
+      <span class="keyword">var</span> <span class="variable">_i</span>, <span class="variable">_separators</span> = [];
+      <span class="comment">// make sure separator is an array</span>
+      <span class="keyword">if</span> (!$.<span class="variable">isArray</span>(<span class="variable">separators</span>)) {
+        <span class="variable">separators</span> = [<span class="variable">separators</span>];
+      }
+      <span class="comment">// escape every separator</span>
+      <span class="keyword">for</span> (<span class="variable">_i</span> <span class="keyword">in</span> <span class="variable">separators</span>) {
+        <span class="variable">_separators</span>[<span class="variable">_i</span>] = <span class="variable">separators</span>[<span class="variable">_i</span>].<span class="variable">replace</span>(<span class="variable">rescregexp</span>, <span class="string">'\\$&amp;'</span>);
+      }
+      <span class="comment">// add unescaped caracters</span>
+      <span class="keyword">if</span> (<span class="variable">unescaped</span>) { <span class="variable">_separators</span>.<span class="variable">push</span>(<span class="variable">unescaped</span>); }
+
+      <span class="comment">// return in a or</span>
+      <span class="keyword">if</span> (<span class="variable">_separators</span>.<span class="variable">length</span> &<span class="variable">gt</span>; <span class="number integer">1</span>) {<span class="keyword">return</span> <span class="variable">_separators</span>.<span class="variable">join</span>(<span class="string">'|'</span>)}
+      <span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">_separators</span>.<span class="variable">length</span>) {<span class="keyword">return</span> <span class="variable">_separators</span>[<span class="number integer">0</span>];}
+      <span class="keyword">return</span> <span class="string">''</span>;
+    };</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p>replace params in given url.
+<strong>WARNING:</strong> used params are removed.</p>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>String</em>  url the raw url.</p></li><li><p><strong>param</strong>: <em>Object</em>  params the params to replace.</p></li><li><p><strong>return</strong>: <em>String</em>  the treated url.</p></li><li><p><strong>api</strong>: <em>private</em></p><p> </p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="keyword">function</span> <span class="variable">replace_params</span>(<span class="variable">url</span>, <span class="variable">params</span>) {
+        <span class="keyword">var</span> <span class="variable">_i</span>,
+            <span class="variable">_url</span> = <span class="variable">url</span>,
+            <span class="variable">_separators</span> = <span class="class">Routing</span>.<span class="variable">segmentSeparators</span>,
+            <span class="variable">_prefixes</span> = <span class="variable">regexify</span>(<span class="class">Routing</span>.<span class="variable">variablePrefix</span>),
+            <span class="variable">_suffixes</span> = <span class="variable">regexify</span>(<span class="class">Routing</span>.<span class="variable">variableSuffix</span>),
+            <span class="variable">_prefix</span> = <span class="string">'('</span> + <span class="variable">regexify</span>(<span class="variable">_separators</span>, <span class="string">'^'</span>) + <span class="string">')'</span> + <span class="variable">_prefixes</span>,
+            <span class="variable">_suffix</span> = <span class="variable">_suffixes</span> + <span class="string">'('</span> + <span class="variable">regexify</span>(<span class="variable">_separators</span>, <span class="string">'$'</span>) + <span class="string">')'</span>;
+        <span class="keyword">for</span> (<span class="variable">_i</span> <span class="keyword">in</span> <span class="variable">params</span>) {
+          <span class="keyword">var</span> <span class="variable">_r</span> = <span class="keyword">new</span> <span class="class">RegExp</span>(<span class="variable">_prefix</span> + <span class="variable">_i</span> + <span class="variable">_suffix</span>, <span class="string">''</span>);
+
+          <span class="keyword">if</span> (<span class="variable">_r</span>.<span class="variable">test</span>(<span class="variable">_url</span>)) {
+            <span class="variable">_url</span> = <span class="variable">_url</span>.<span class="variable">replace</span>(<span class="variable">_r</span>, <span class="string">'$1'</span> + <span class="variable">params</span>[<span class="variable">_i</span>] + <span class="string">'$2'</span>);
+            <span class="keyword">delete</span>(<span class="variable">params</span>[<span class="variable">_i</span>]);
+          }
+        }
+
+        <span class="keyword">return</span> <span class="variable">_url</span>;
+    }
+
+    <span class="keyword">return</span> {</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p>default routing parameters for every routes.</p>
+
+<ul><li><p><strong>api</strong>: <em>public</em></p><p>   </p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">defaults</span>: {},</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p>route parameter suffix.</p>
+
+<h2></h2>
+
+<ul><li><p><strong>type</strong>: <em>String</em> </p></li><li><p><strong>api</strong>: <em>public</em></p><p>   </p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">variableSuffix</span>: <span class="string">''</span>,</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p>route parameter prefix.</p>
+
+<h2></h2>
+
+<ul><li><p><strong>type</strong>: <em>String</em> </p></li><li><p><strong>api</strong>: <em>public</em></p><p>   </p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">variablePrefix</span>: <span class="string">':'</span>,</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p>route url separator list.</p>
+
+<h2></h2>
+
+<ul><li><p><strong>type</strong>: <em>String | Array</em> </p></li><li><p><strong>api</strong>: <em>public</em></p><p>   </p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">segmentSeparators</span>: [<span class="string">'/'</span>, <span class="string">'.'</span>],</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p>route url prefix to use.</p>
+
+<h2></h2>
+
+<ul><li><p><strong>type</strong>: <em>String</em> </p></li><li><p><strong>api</strong>: <em>public</em></p><p>   </p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">prefix</span>: <span class="string">''</span>,</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p>generate a route url from route id and params.</p>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>String</em>   route_id  the id of route to generate url for.</p></li><li><p><strong>param</strong>: <em>Objects</em>  params    the parameters to append to the route.</p></li><li><p><strong>return</strong>: <em>String</em>  generated url.</p></li><li><p><strong>api</strong>: <em>public</em></p><p>   </p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">generate</span>: <span class="keyword">function</span>(<span class="variable">route_id</span>, <span class="variable">params</span>) {
+        <span class="keyword">var</span> <span class="variable">_route</span> = <span class="class">Routing</span>.<span class="variable">get</span>(<span class="variable">route_id</span>),
+            <span class="variable">_params</span> = $.<span class="variable">extend</span>({}, <span class="variable">_defaults</span>[<span class="variable">route_id</span>] || {}, <span class="variable">params</span> || {}),
+            <span class="variable">_queryString</span>,
+            <span class="variable">_url</span> = <span class="variable">_route</span>;
+
+        <span class="keyword">if</span> (!<span class="variable">_url</span>) {
+          <span class="keyword">throw</span> <span class="string">'No matching route for '</span> + <span class="variable">route_id</span>;
+        }
+
+        <span class="comment">// replace with params then defaults</span>
+        <span class="variable">_url</span> = <span class="variable">replace_params</span>(<span class="variable">_url</span>, <span class="variable">_params</span>);
+        <span class="variable">_url</span> = <span class="variable">replace_params</span>(<span class="variable">_url</span>, $.<span class="variable">extend</span>({}, <span class="class">Routing</span>.<span class="variable">defaults</span> || {}));
+
+        <span class="comment">// remaining params as query string</span>
+        <span class="variable">_queryString</span> = $.<span class="variable">param</span>(<span class="variable">_params</span>);
+
+        <span class="keyword">if</span> (<span class="variable">_queryString</span>.<span class="variable">length</span>) {
+          <span class="variable">_url</span> += (<span class="variable">rquery</span>.<span class="variable">test</span>(<span class="variable">_url</span>) ? <span class="string">'&amp;'</span> : <span class="string">'?'</span>) + <span class="variable">_queryString</span>;
+        }
+
+        <span class="variable">_url</span> = (<span class="variable">rabsurl</span>.<span class="variable">test</span>(<span class="variable">_url</span>) ? <span class="string">''</span> : <span class="string">'/'</span>) + <span class="variable">_url</span>;
+        <span class="variable">_url</span> = <span class="class">Routing</span>.<span class="variable">prefix</span> + <span class="variable">_url</span>;
+        <span class="variable">_url</span> = (<span class="variable">rabsurl</span>.<span class="variable">test</span>(<span class="variable">_url</span>) ? <span class="string">''</span> : <span class="string">'/'</span>) + <span class="variable">_url</span>;
+
+        <span class="keyword">return</span> <span class="variable">_url</span>.<span class="variable">replace</span>(<span class="variable">rdblslash</span>, <span class="string">'/'</span>);
+      },</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p>connect a route.</p>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>String</em>  id       the route id.</p></li><li><p><strong>param</strong>: <em>String</em>  pattern  the url pattern.</p></li><li><p><strong>return</strong>: <em>Object</em>  Routing.</p></li><li><p><strong>api</strong>: <em>public</em></p><p>   </p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">connect</span>: <span class="keyword">function</span>(<span class="variable">id</span>, <span class="variable">pattern</span>, <span class="variable">defaults</span>) {
+        <span class="variable">_routes</span>[<span class="variable">id</span>] = <span class="variable">pattern</span>;
+        <span class="variable">_defaults</span>[<span class="variable">id</span>] = <span class="variable">defaults</span> || {};
+        <span class="keyword">return</span> <span class="class">Routing</span>;
+      },</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p>retrieve a route by it's id.</p>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>String</em>  route_id the route id to retrieve.</p></li><li><p><strong>return</strong>: <em>String</em>  requested route.</p></li><li><p><strong>api</strong>: <em>public</em></p><p>   </p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">get</span>: <span class="keyword">function</span>(<span class="variable">route_id</span>) {
+        <span class="keyword">return</span> <span class="variable">_routes</span>[<span class="variable">route_id</span>] || <span class="variable">undefined</span>;
+      },</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p>determines wether a route is registered or not.</p>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>String</em>  route_id the route id to retrieve.</p></li><li><p><strong>return</strong>: <em>Boolean</em>  wether the route is registered or not.</p></li><li><p><strong>api</strong>: <em>public</em></p><p>   </p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">has</span>: <span class="keyword">function</span>(<span class="variable">route_id</span>) {
+        <span class="keyword">return</span> (<span class="variable">_routes</span>[<span class="variable">route_id</span>] ? <span class="variable">true</span> : <span class="variable">false</span>);
+      },</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p>clears all routes</p>
+
+<h2></h2>
+
+<ul><li><p><strong>return</strong>: <em>Object</em>  Routing.</p></li><li><p><strong>api</strong>: <em>public</em></p><p>   </p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">flush</span>: <span class="keyword">function</span>() {
+        <span class="variable">_routes</span> = {};
+        <span class="variable">_defaults</span> = {};
+        <span class="keyword">return</span> <span class="class">Routing</span>;
+      }
+    }; <span class="comment">// end of return</span>
+  })());
+})(<span class="class">Routing</span>, <span class="variable">jQuery</span>);
+</code></pre>
+</td>
+</tr>	</body>
+</html></tbody></table>
