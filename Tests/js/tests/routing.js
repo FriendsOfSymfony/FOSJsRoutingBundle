@@ -34,6 +34,11 @@ test('route registration', function() {
 test('route generation', function() {
   expect(14);
 
+  Routing.flush();
+  Routing.prefix = '';
+  Routing.variablePrefix = '{';
+  Routing.variableSuffix = '}';
+
   equal(Routing.connect('route_1', '/route1').generate('route_1'), '/route1',
       'generating url without parameters returns url');
 
