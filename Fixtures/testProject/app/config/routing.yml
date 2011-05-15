@@ -1,0 +1,3 @@
+# app/config/routing.yml
+_bazinga_exposerouting:
+    resource: "@BazingaExposeRoutingBundle/Resources/config/routing/routing.xml"
