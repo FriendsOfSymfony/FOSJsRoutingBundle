@@ -1,0 +1,6 @@
+[submodule "Fixtures/testProject/vendor/symfony"]
+	path = Fixtures/testProject/vendor/symfony
+	url = https://github.com/symfony/symfony.git
+[submodule "Fixtures/testProject/vendor/twig"]
+	path = Fixtures/testProject/vendor/twig
+	url = https://github.com/fabpot/Twig.git
