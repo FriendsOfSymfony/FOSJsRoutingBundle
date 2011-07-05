@@ -8,7 +8,7 @@ Installation
 
 Add this bundle as a submodule:
 
-> git submodule add git://github.com/Bazinga/ExposeRoutingBundle.git vendor/bundles/Bazinga/ExposeRoutingBundle
+> git submodule add git://github.com/Bazinga/BazingaExposeRoutingBundle.git vendor/bundles/Bazinga/ExposeRoutingBundle
 
 Register the namespace in `app/autoload.php`:
 
