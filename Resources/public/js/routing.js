@@ -74,6 +74,13 @@ var Routing = Routing || {};
         for (_i in params) {
           var _r = new RegExp(_prefix + _i + _suffix, '');
 
+          // special cases
+          if (null === params[_i] || false === params[_i]) {
+            params[_i] = '';
+          } else if (true === params[_i]) {
+            params[_i] = '1';
+          }
+
           if (_r.test(_url)) {
             _url = _url.replace(_r, '$1' + params[_i] + '$2');
             delete(params[_i]);
@@ -139,6 +146,11 @@ var Routing = Routing || {};
         // replace with params then defaults
         _url = replace_params(_url, _params);
         _url = replace_params(_url, $.extend({}, Routing.defaults || {}));
+
+        // remove '/' due to special cases replacement
+        if ('/' !== _route.charAt(_route.length - 1) && '/' === _url.charAt(_url.length - 1)) {
+          _url = _url.slice(0, -1);
+        }
 
         // remaining params as query string
         _queryString = $.param(_params);
