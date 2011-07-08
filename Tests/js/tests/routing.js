@@ -32,7 +32,7 @@ test('route registration', function() {
 });
 
 test('route generation', function() {
-  expect(14);
+  expect(20);
 
   Routing.flush();
   Routing.prefix = '';
@@ -105,4 +105,28 @@ test('route generation', function() {
                               .generate('route_1', { id: 120, val: 210 }),
       '/foo/120/val/210',
       'Default parameters work with multiple variables');
+  equal(Routing.connect('route_1', '/foo/{bar}', { bar: null })
+                              .generate('route_1'),
+      '/foo',
+      'Default parameter not added if it\'s "null"');
+  equal(Routing.connect('route_1', '/foo/{bar}', { bar: false })
+                              .generate('route_1'),
+      '/foo',
+      'Default parameter not added if it\'s "false"');
+  equal(Routing.connect('route_1', '/foo/{bar}', { bar: true })
+                              .generate('route_1'),
+      '/foo/1',
+      'Default parameter not added if it\'s "true"');
+  equal(Routing.connect('route_1', '/foo/{bar}/', { bar: null })
+                              .generate('route_1'),
+      '/foo/',
+      'Default parameter not added if it\'s "null"');
+  equal(Routing.connect('route_1', '/foo/{bar}/', { bar: false })
+                              .generate('route_1'),
+      '/foo/',
+      'Default parameter not added if it\'s "false"');
+  equal(Routing.connect('route_1', '/foo/{bar}/', { bar: true })
+                              .generate('route_1'),
+      '/foo/1/',
+      'Default parameter not added if it\'s "true"');
 });
