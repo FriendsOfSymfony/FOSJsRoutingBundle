@@ -28,8 +28,8 @@ class Controller
 
     /**
      * Default constructor.
-     * @param \Symfony\Component\Templating\EngineInterface   The template engine.
-     * @param array Some route names to expose.
+     * @param \Symfony\Component\Templating\EngineInterface                         The template engine.
+     * @param \Bazinga\ExposeRoutingBundle\Service\ExposedRoutesExtractorInterface  The extractor service.
      */
     public function __construct(EngineInterface $engine, ExposedRoutesExtractorInterface $exposedRoutesExtractor)
     {
