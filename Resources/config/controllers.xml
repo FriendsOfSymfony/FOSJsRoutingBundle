@@ -7,9 +7,8 @@
     </parameters>
     <services>
         <service id="bazinga.exposerouting.controller" class="%bazinga.exposerouting.controller.class%">
-            <argument type="service" id="router" />
             <argument type="service" id="templating" />
-            <argument></argument>
+            <argument type="service" id="bazinga.exposerouting.service.extractor" />
         </service>
     </services>
 </container>
