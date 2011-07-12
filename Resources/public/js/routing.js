@@ -20,7 +20,7 @@ var Routing = Routing || {};
         rquery = /\?/,
         rabsurl = /^\//,
         rescregexp = /[-[\]{}()*+?.,\\^$|#\s]/g,
-        rdblslash = /\/\//g;
+        rdblslash = /\/\/$/g;
 
     /**
      * @api private
@@ -147,11 +147,6 @@ var Routing = Routing || {};
         _url = replace_params(_url, _params);
         _url = replace_params(_url, $.extend({}, Routing.defaults || {}));
 
-        // remove '/' due to special cases replacement
-        if ('/' !== _route.charAt(_route.length - 1) && '/' === _url.charAt(_url.length - 1)) {
-          _url = _url.slice(0, -1);
-        }
-
         // remaining params as query string
         _queryString = $.param(_params);
 
@@ -160,10 +155,16 @@ var Routing = Routing || {};
         }
 
         _url = (rabsurl.test(_url) ? '' : '/') + _url;
-        _url = Routing.prefix + _url;
+        _url = Routing.prefix.replace(/\/$/, '') + _url;
         _url = (rabsurl.test(_url) ? '' : '/') + _url;
+        _url =  _url.replace(rdblslash, '/');
 
-        return _url.replace(rdblslash, '/');
+        // remove '/' due to special cases replacement
+        if ('/' !== _route.charAt(_route.length - 1) && '/' === _url.charAt(_url.length - 1)) {
+          _url = _url.slice(0, -1);
+        }
+
+        return _url;
       },
       /**
        * connect a route.
