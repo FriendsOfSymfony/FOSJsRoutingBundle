@@ -32,7 +32,7 @@ test('route registration', function() {
 });
 
 test('route generation', function() {
-  expect(20);
+  expect(23);
 
   Routing.flush();
   Routing.prefix = '';
@@ -129,4 +129,16 @@ test('route generation', function() {
                               .generate('route_1'),
       '/foo/1/',
       'Default parameter not added if it\'s "true"');
+  equal(Routing.connect('route_1', '/{foo}/{bar}/{baz}', { foo: "to", bar: null, baz: null })
+                              .generate('route_1'),
+      '/to',
+      'The two last parameters are "null"');
+  equal(Routing.connect('route_1', '/{foo}/{bar}/{baz}', { foo: "to", bar: "to", baz: null })
+                              .generate('route_1'),
+      '/to/to',
+      'The last parameter is "null"');
+  equal(Routing.connect('route_1', '/{foo}/{bar}/{baz}', { foo: "to", bar: null, baz: "to" })
+                              .generate('route_1'),
+      '/to//to',
+      'The second parameter is "null"');
 });
