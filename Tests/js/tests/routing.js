@@ -32,7 +32,7 @@ test('route registration', function() {
 });
 
 test('route generation', function() {
-  expect(23);
+  expect(29);
 
   Routing.flush();
   Routing.prefix = '';
@@ -141,4 +141,40 @@ test('route generation', function() {
                               .generate('route_1'),
       '/to//to',
       'The second parameter is "null"');
+
+  /** sf2 testRelativeUrlWithParameter */
+  equal(Routing.connect('test', '/testing/{foo}')
+      .generate('test', {foo: 'bar'}),
+      '/testing/bar',
+      'sf2 test Relative Url With Parameter');
+
+  /** sf2 testRelativeUrlWithNullParameter */
+  equal(Routing.connect('test', '/testing.{format}', {'format': null})
+      .generate('test'),
+      '/testing',
+      'sf2 test Relative Url With Null Parameter');
+
+  /** sf2 testRelativeUrlWithOptionalZeroParameter */
+  equal(Routing.connect('test', '/testing/{page}')
+      .generate('test', {page: 0}),
+      '/testing/0',
+      'sf2 test Relative Url With Optional Zero Parameter');
+
+  /** sf2 testRelativeUrlWithNullParameterButNotOptional */
+  equal(Routing.connect('test', '/testing/{foo}/bar', {'foo': null})
+      .generate('test', {}),
+      '/testing//bar',
+      'sf2 test Relative Url With Null Parameter But Not Optional');
+
+  /** sf2 testRelativeUrlWithExtraParameters */
+  equal(Routing.connect('test', '/testing')
+      .generate('test', {'foo': 'bar'}),
+      '/testing?foo=bar',
+      'sf2 test Relative Url With Extra Parameters');
+
+  /** sf2 testNoTrailingSlashForMultipleOptionalParameters */
+  equal(Routing.connect('test', '/category/{slug1}/{slug2}/{slug3}', {'slug2': null, 'slug3': null})
+      .generate('test', {'slug1': 'foo'}),
+      '/category/foo',
+      'sf2 test No Trailing Slash For Multiple Optional Parameters');
 });
