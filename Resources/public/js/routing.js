@@ -163,6 +163,10 @@ var Routing = Routing || {};
         if ('/' !== _route.charAt(_route.length - 1) && '/' === _url.charAt(_url.length - 1)) {
           _url = _url.slice(0, -1);
         }
+        // remove '.' if not necessary
+        if ('.' !== _route.charAt(_route.length - 1) && '.' === _url.charAt(_url.length - 1)) {
+          _url = _url.slice(0, -1);
+        }
 
         return _url;
       },
