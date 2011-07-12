@@ -1,6 +1,8 @@
 /*!
  * routing.js
- * Copyright (c) 2011 Julien Muetton <julien_muetton@carpe-hora.com>
+ * Copyright (c) 2011
+ * Original author: Julien Muetton <julien_muetton@carpe-hora.com>
+ * Modified by: William DURAND <william.durand1@gmail.com>
  * MIT Licensed
  */
 
