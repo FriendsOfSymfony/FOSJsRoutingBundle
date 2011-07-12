@@ -96,7 +96,8 @@ Moreover, you can configure a list of routes to expose in `app/config/config.yml
     bazinga_expose_routing:
         routes_to_expose: [ route_1, route_2, ... ]
 
-These routes will be added to the exposed routes.
+These routes will be added to the exposed routes. You can use regular expression patterns
+if you don't want to list all your routes name by name.
 
 You can prevent to expose a route by configuring it as below:
 
@@ -106,6 +107,14 @@ You can prevent to expose a route by configuring it as below:
         defaults: { _controller: HelloBundle:Admin:index }
         options:
             expose: false
+
+
+Command
+-------
+
+A command is provided to list all exposed routes: `router:debug-exposed`:
+
+    $ php app/console router:debug-exposed [name]
 
 
 Credits
