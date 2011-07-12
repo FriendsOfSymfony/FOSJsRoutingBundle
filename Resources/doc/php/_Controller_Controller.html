@@ -1,4 +1,4 @@
-<html xmlns="http://www.w3.org/1999/xhtml"><head><title>DocBlox Documentation</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><link rel="stylesheet" href="css/black-tie/jquery-ui-1.8.2.custom.css" type="text/css"></link><link rel="stylesheet" href="css/jquery.treeview.css" type="text/css"></link><link rel="stylesheet" href="css/theme.css" type="text/css"></link><script type="text/javascript" src="js/jquery-1.4.2.min.js"></script><script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script><script type="text/javascript" src="js/jquery.cookie.js"></script><script type="text/javascript" src="js/jquery.treeview.js"></script><script type="text/javascript">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>BazingaExposeRoutingBundle</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><link rel="stylesheet" href="css/black-tie/jquery-ui-1.8.2.custom.css" type="text/css"></link><link rel="stylesheet" href="css/jquery.treeview.css" type="text/css"></link><link rel="stylesheet" href="css/theme.css" type="text/css"></link><script type="text/javascript" src="js/jquery-1.4.2.min.js"></script><script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script><script type="text/javascript" src="js/jquery.cookie.js"></script><script type="text/javascript" src="js/jquery.treeview.js"></script><script type="text/javascript">
             $(document).ready(function() {
                 $(".filetree").treeview({
                     collapsed: true,
@@ -35,9 +35,9 @@
 <a href="#classes">Classes</a> </div>
 <dl class="file-info">
 <dt>Classes</dt>
-<dd><a class="class" href="#Bazinga%5CExposeRoutingBundle%5CController%5CController">Controller</a></dd>
+<dd><a class="class" href="#%5CBazinga%5CExposeRoutingBundle%5CController%5CController">Controller</a></dd>
 </dl>
-<a name="classes"></a><a id="Bazinga\ExposeRoutingBundle\Controller\Controller"></a><h2 class="class">Bazinga\ExposeRoutingBundle\Controller\Controller<div class="to-top"><a href="#top">jump to top</a></div>
+<a name="classes"></a><a id="\Bazinga\ExposeRoutingBundle\Controller\Controller"></a><h2 class="class">\Bazinga\ExposeRoutingBundle\Controller\Controller<div class="to-top"><a href="#top">jump to top</a></div>
 </h2>
 <div class="class">
 <dl class="class-info">
@@ -48,12 +48,11 @@
 <dt>subpackage</dt>
 <dd>Controller</dd>
 <dt>Properties</dt>
-<dd><a class="property" href="#Bazinga%5CExposeRoutingBundle%5CController%5CController::%24router">$router</a></dd>
-<dd><a class="property" href="#Bazinga%5CExposeRoutingBundle%5CController%5CController::%24engine">$engine</a></dd>
-<dd><a class="property" href="#Bazinga%5CExposeRoutingBundle%5CController%5CController::%24routesToExpose">$routesToExpose</a></dd>
+<dd><a class="property protected" href="#%5CBazinga%5CExposeRoutingBundle%5CController%5CController::%24engine">$engine</a></dd>
+<dd><a class="property protected" href="#%5CBazinga%5CExposeRoutingBundle%5CController%5CController::%24exposedRoutesExtractor">$exposedRoutesExtractor</a></dd>
 <dt>Methods</dt>
-<dd><a class="method" href="#Bazinga%5CExposeRoutingBundle%5CController%5CController::__construct()">__construct</a></dd>
-<dd><a class="method" href="#Bazinga%5CExposeRoutingBundle%5CController%5CController::indexAction()">indexAction</a></dd>
+<dd><a class="method public" href="#%5CBazinga%5CExposeRoutingBundle%5CController%5CController::__construct()">__construct</a></dd>
+<dd><a class="method public" href="#%5CBazinga%5CExposeRoutingBundle%5CController%5CController::indexAction()">indexAction</a></dd>
 </dl>
 <h3>Description</h3>
 <p class="short-description">Controller class.</p>
@@ -61,7 +60,7 @@
 </div>
 <h3>Properties</h3>
 <div>
-<a id="Bazinga\ExposeRoutingBundle\Controller\Controller::$engine"></a><h4 class="property">$engine<div class="to-top"><a href="#Bazinga%5CExposeRoutingBundle%5CController%5CController">jump to class</a></div>
+<a id="\Bazinga\ExposeRoutingBundle\Controller\Controller::$engine"></a><h4 class="property protected">$engine<div class="to-top"><a href="#%5CBazinga%5CExposeRoutingBundle%5CController%5CController">jump to class</a></div>
 </h4>
 <div class="property">
 <code>\Symfony\Component\Templating\EngineInterface <span class="highlight">$engine</span> = ''</code><p class="short-description"></p>
@@ -71,7 +70,7 @@
 <h4 class="info">
 <img src="images/arrow_right.gif"> Details</h4>
 <dl class="property-info">
-<dt>$engine</dt>
+<dt></dt>
 <dd>\Symfony\Component\Templating\EngineInterface<br><em></em>
 </dd>
 <dt>visibility</dt>
@@ -86,43 +85,19 @@
 <div class="clear"></div>
 </div>
 </div>
-<a id="Bazinga\ExposeRoutingBundle\Controller\Controller::$router"></a><h4 class="property">$router<div class="to-top"><a href="#Bazinga%5CExposeRoutingBundle%5CController%5CController">jump to class</a></div>
+<a id="\Bazinga\ExposeRoutingBundle\Controller\Controller::$exposedRoutesExtractor"></a><h4 class="property protected">$exposedRoutesExtractor<div class="to-top"><a href="#%5CBazinga%5CExposeRoutingBundle%5CController%5CController">jump to class</a></div>
 </h4>
 <div class="property">
-<code>\Symfony\Component\Routing\RouterInterface <span class="highlight">$router</span> = ''</code><p class="short-description"></p>
+<code><a href="_Service_ExposedRoutesExtractorInterface.html#%5CBazinga%5CExposeRoutingBundle%5CService%5CExposedRoutesExtractorInterface">\Bazinga\ExposeRoutingBundle\Service\ExposedRoutesExtractorInterface</a> <span class="highlight">$exposedRoutesExtractor</span> = ''</code><p class="short-description"></p>
 <div class="long-description">
 </div>
 <div class="api-section">
 <h4 class="info">
 <img src="images/arrow_right.gif"> Details</h4>
 <dl class="property-info">
-<dt>$router</dt>
-<dd>\Symfony\Component\Routing\RouterInterface<br><em></em>
-</dd>
-<dt>visibility</dt>
-<dd>protected</dd>
-<dt>default</dt>
-<dd></dd>
-<dt>final</dt>
-<dd>false</dd>
-<dt>static</dt>
-<dd>false</dd>
-</dl>
-<div class="clear"></div>
-</div>
-</div>
-<a id="Bazinga\ExposeRoutingBundle\Controller\Controller::$routesToExpose"></a><h4 class="property">$routesToExpose<div class="to-top"><a href="#Bazinga%5CExposeRoutingBundle%5CController%5CController">jump to class</a></div>
-</h4>
-<div class="property">
-<code>array <span class="highlight">$routesToExpose</span> = ''</code><p class="short-description"></p>
-<div class="long-description">
-</div>
-<div class="api-section">
-<h4 class="info">
-<img src="images/arrow_right.gif"> Details</h4>
-<dl class="property-info">
-<dt>$routesToExpose</dt>
-<dd>array<br><em></em>
+<dt></dt>
+<dd>
+<a href="_Service_ExposedRoutesExtractorInterface.html#%5CBazinga%5CExposeRoutingBundle%5CService%5CExposedRoutesExtractorInterface">\Bazinga\ExposeRoutingBundle\Service\ExposedRoutesExtractorInterface</a><br><em></em>
 </dd>
 <dt>visibility</dt>
 <dd>protected</dd>
@@ -139,11 +114,11 @@
 </div>
 <h3>Methods</h3>
 <div>
-<a id="Bazinga\ExposeRoutingBundle\Controller\Controller::__construct()"></a><h4 class="method">__construct<div class="to-top"><a href="#Controller">jump to class</a></div>
+<a id="\Bazinga\ExposeRoutingBundle\Controller\Controller::__construct()"></a><h4 class="method public">__construct<div class="to-top"><a href="#Controller">jump to class</a></div>
 </h4>
 <div class="method">
 <code><span class="highlight">__construct</span><span class="nb-faded-text">(
-          \Symfony\Component\Routing\RouterInterface $router, \Symfony\Component\Templating\EngineInterface $engine, array $routesToExpose
+          \Symfony\Component\Templating\EngineInterface $engine, <a href="_Service_ExposedRoutesExtractorInterface.html#%5CBazinga%5CExposeRoutingBundle%5CService%5CExposedRoutesExtractorInterface">\Bazinga\ExposeRoutingBundle\Service\ExposedRoutesExtractorInterface</a> $exposedRoutesExtractor
           )
         </span>
         :
@@ -153,14 +128,11 @@
 <div class="api-section">
 <h5 class="arguments">Arguments</h5>
 <dl class="argument-info">
-<dt>$router</dt>
-<dd>\Symfony\Component\Routing\RouterInterface<br><em>The router.</em>
-</dd>
 <dt>$engine</dt>
 <dd>\Symfony\Component\Templating\EngineInterface<br><em>The template engine.</em>
 </dd>
-<dt>$routesToExpose</dt>
-<dd>array<br><em>Some route names to expose.</em>
+<dt>$exposedRoutesExtractor</dt>
+<dd>\Bazinga\ExposeRoutingBundle\Service\ExposedRoutesExtractorInterface<br><em>The extractor service.</em>
 </dd>
 </dl>
 <div class="clear"></div>
@@ -179,7 +151,7 @@
 <div class="clear"></div>
 </div>
 </div>
-<a id="Bazinga\ExposeRoutingBundle\Controller\Controller::indexAction()"></a><h4 class="method">indexAction<div class="to-top"><a href="#Controller">jump to class</a></div>
+<a id="\Bazinga\ExposeRoutingBundle\Controller\Controller::indexAction()"></a><h4 class="method public">indexAction<div class="to-top"><a href="#Controller">jump to class</a></div>
 </h4>
 <div class="method">
 <code><span class="highlight">indexAction</span><span class="nb-faded-text">(
@@ -215,5 +187,5 @@
 </div>
 </div>
 </div>
-<small xmlns="" class="footer">Documentation was generated by <a href="http://docblox-project.org">DocBlox 0.10.0</a>.
+<small xmlns="" class="footer">Documentation was generated by <a href="http://docblox-project.org">DocBlox 0.11.2</a>.
     </small></body></html>

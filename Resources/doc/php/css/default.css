@@ -4,7 +4,7 @@ html, body, #page
   width:  100%;
 }
 
-#header, #menubar
+#db-header, #menubar
 {
   height: 1px;
 }
@@ -27,12 +27,12 @@ html, body, #page
   clear: both;
 }
 
-#accordion table
+#accordion table, #marker-accordion table
 {
     font-size: 0.95em;
 }
 
-#accordion h3 a small
+#marker-accordion h3 a small
 {
     display:        block;
     float:          right;
@@ -90,4 +90,21 @@ ul.filetree li a:hover small
 {
   display: inline;
   color:   gray;
+}
+
+#sidebar-content
+{
+    width: 100%;
+    height: 100%;
+}
+
+.ui-resizable-helper
+{
+    border-right: 40px solid silver;
+    margin-right: -40px;
+
+    /* 20% opacity; zoom is required for IE */
+    zoom: 1;
+    filter: alpha(opacity = 20);
+    opacity: 0.2;
 }

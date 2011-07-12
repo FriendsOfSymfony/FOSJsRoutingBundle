@@ -1,4 +1,4 @@
-<html xmlns="http://www.w3.org/1999/xhtml"><head><title>DocBlox Documentation</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><link rel="stylesheet" href="css/black-tie/jquery-ui-1.8.2.custom.css" type="text/css"></link><link rel="stylesheet" href="css/jquery.treeview.css" type="text/css"></link><link rel="stylesheet" href="css/theme.css" type="text/css"></link><script type="text/javascript" src="js/jquery-1.4.2.min.js"></script><script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script><script type="text/javascript" src="js/jquery.cookie.js"></script><script type="text/javascript" src="js/jquery.treeview.js"></script><script type="text/javascript">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>BazingaExposeRoutingBundle</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><link rel="stylesheet" href="css/black-tie/jquery-ui-1.8.2.custom.css" type="text/css"></link><link rel="stylesheet" href="css/jquery.treeview.css" type="text/css"></link><link rel="stylesheet" href="css/theme.css" type="text/css"></link><script type="text/javascript" src="js/jquery-1.4.2.min.js"></script><script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script><script type="text/javascript" src="js/jquery.cookie.js"></script><script type="text/javascript" src="js/jquery.treeview.js"></script><script type="text/javascript">
             $(document).ready(function() {
                 $(".filetree").treeview({
                     collapsed: true,
@@ -19,21 +19,32 @@
 <span class="folder">Bazinga</span><ul><li class="closed">
 <span class="folder">ExposeRoutingBundle</span><ul>
 <li class="closed">
-<span class="folder">Controller</span><ul><li><span class="class"><a href="_Controller_Controller.html#Bazinga%5CExposeRoutingBundle%5CController%5CController" target="content">Controller<br><small>Controller class.</small></a></span></li></ul>
+<span class="folder">Command</span><ul><li><span class="class"><a href="_Command_RouterDebugExposedCommand.html#%5CBazinga%5CExposeRoutingBundle%5CCommand%5CRouterDebugExposedCommand" target="content">RouterDebugExposedCommand<br><small>A console command for retrieving information about exposed routes.</small></a></span></li></ul>
+</li>
+<li class="closed">
+<span class="folder">Controller</span><ul><li><span class="class"><a href="_Controller_Controller.html#%5CBazinga%5CExposeRoutingBundle%5CController%5CController" target="content">Controller<br><small>Controller class.</small></a></span></li></ul>
 </li>
 <li class="closed">
 <span class="folder">DependencyInjection</span><ul>
-<li><span class="class"><a href="_DependencyInjection_BazingaExposeRoutingExtension.html#Bazinga%5CExposeRoutingBundle%5CDependencyInjection%5CBazingaExposeRoutingExtension" target="content">BazingaExposeRoutingExtension<br><small>BazingaExposeRoutingExtension
+<li><span class="class"><a href="_DependencyInjection_BazingaExposeRoutingExtension.html#%5CBazinga%5CExposeRoutingBundle%5CDependencyInjection%5CBazingaExposeRoutingExtension" target="content">BazingaExposeRoutingExtension<br><small>BazingaExposeRoutingExtension
 Load configuration.</small></a></span></li>
-<li><span class="class"><a href="_DependencyInjection_Configuration.html#Bazinga%5CExposeRoutingBundle%5CDependencyInjection%5CConfiguration" target="content">Configuration<br><small>Configuration class.</small></a></span></li>
+<li><span class="class"><a href="_DependencyInjection_Configuration.html#%5CBazinga%5CExposeRoutingBundle%5CDependencyInjection%5CConfiguration" target="content">Configuration<br><small>Configuration class.</small></a></span></li>
+</ul>
+</li>
+<li class="closed">
+<span class="folder">Service</span><ul>
+<li><span class="class"><a href="_Service_ExposedRoutesExtractor.html#%5CBazinga%5CExposeRoutingBundle%5CService%5CExposedRoutesExtractor" target="content">ExposedRoutesExtractor<br><small></small></a></span></li>
+<li><span class="interface"><a href="_Service_ExposedRoutesExtractorInterface.html#%5CBazinga%5CExposeRoutingBundle%5CService%5CExposedRoutesExtractorInterface" target="content">ExposedRoutesExtractorInterface<br><small>ExposedRoutesExtractorInterface interface.</small></a></span></li>
 </ul>
 </li>
 <li class="closed">
 <span class="folder">Tests</span><ul><li class="closed">
-<span class="folder">Controller</span><ul><li><span class="class"><a href="_Tests_Controller_ControllerTest.html#Bazinga%5CExposeRoutingBundle%5CTests%5CController%5CControllerTest" target="content">ControllerTest<br><small>ControllerTest class.</small></a></span></li></ul>
+<span class="folder">Controller</span><ul>
+<li><span class="class"><a href="_Tests_Controller_ControllerTest.html#%5CBazinga%5CExposeRoutingBundle%5CTests%5CController%5CControllerTest" target="content">ControllerTest<br><small>ControllerTest class.</small></a></span></li>
+<li><span class="class"><a href="_Tests_Service_ExposedRoutesExtractorTest.html#%5CBazinga%5CExposeRoutingBundle%5CTests%5CController%5CExposedRoutesExtractorTest" target="content">ExposedRoutesExtractorTest<br><small>ExposedRoutesExtractorTest class.</small></a></span></li>
+</ul>
 </li></ul>
 </li>
-<li><span class="class"><a href="_BazingaExposeRoutingBundle.html#Bazinga%5CExposeRoutingBundle%5CBazingaExposeRoutingBundle" target="content">BazingaExposeRoutingBundle<br><small>BazingaExposeRoutingBundle class.</small></a></span></li>
 </ul>
 </li></ul>
 </li></ul></div>
@@ -45,45 +56,60 @@ Load configuration.</small></a></span></li>
 <li class="closed">
 <span class="folder">ExposeRoutingBundle</span><ul id="packages_ExposeRoutingBundle" class="filetree">
 <li class="closed">
+<span class="folder">Command</span><ul id="packages_ExposeRoutingBundle_Command" class="filetree"><li><span class="class"><a href="_Command_RouterDebugExposedCommand.html#%5CBazinga%5CExposeRoutingBundle%5CCommand%5CRouterDebugExposedCommand" target="content">RouterDebugExposedCommand<br><small>A console command for retrieving information about exposed routes.</small></a></span></li></ul>
+</li>
+<li class="closed">
 <span class="folder">Controller</span><ul id="packages_ExposeRoutingBundle_Controller" class="filetree">
-<li><span class="class"><a href="_Controller_Controller.html#Bazinga%5CExposeRoutingBundle%5CController%5CController" target="content">Controller<br><small>Controller class.</small></a></span></li>
-<li><span class="class"><a href="_Tests_Controller_ControllerTest.html#Bazinga%5CExposeRoutingBundle%5CTests%5CController%5CControllerTest" target="content">ControllerTest<br><small>ControllerTest class.</small></a></span></li>
+<li><span class="class"><a href="_Controller_Controller.html#%5CBazinga%5CExposeRoutingBundle%5CController%5CController" target="content">Controller<br><small>Controller class.</small></a></span></li>
+<li><span class="class"><a href="_Tests_Controller_ControllerTest.html#%5CBazinga%5CExposeRoutingBundle%5CTests%5CController%5CControllerTest" target="content">ControllerTest<br><small>ControllerTest class.</small></a></span></li>
 </ul>
 </li>
 <li class="closed">
 <span class="folder">DependencyInjection</span><ul id="packages_ExposeRoutingBundle_DependencyInjection" class="filetree">
-<li><span class="class"><a href="_DependencyInjection_BazingaExposeRoutingExtension.html#Bazinga%5CExposeRoutingBundle%5CDependencyInjection%5CBazingaExposeRoutingExtension" target="content">BazingaExposeRoutingExtension<br><small>BazingaExposeRoutingExtension
+<li><span class="class"><a href="_DependencyInjection_BazingaExposeRoutingExtension.html#%5CBazinga%5CExposeRoutingBundle%5CDependencyInjection%5CBazingaExposeRoutingExtension" target="content">BazingaExposeRoutingExtension<br><small>BazingaExposeRoutingExtension
 Load configuration.</small></a></span></li>
-<li><span class="class"><a href="_DependencyInjection_Configuration.html#Bazinga%5CExposeRoutingBundle%5CDependencyInjection%5CConfiguration" target="content">Configuration<br><small>Configuration class.</small></a></span></li>
+<li><span class="class"><a href="_DependencyInjection_Configuration.html#%5CBazinga%5CExposeRoutingBundle%5CDependencyInjection%5CConfiguration" target="content">Configuration<br><small>Configuration class.</small></a></span></li>
 </ul>
 </li>
-<li class="closed"><span class="class"><a href="_BazingaExposeRoutingBundle.html#Bazinga%5CExposeRoutingBundle%5CBazingaExposeRoutingBundle" target="content">BazingaExposeRoutingBundle<br><small>BazingaExposeRoutingBundle class.</small></a></span></li>
+<li class="closed">
+<span class="folder">Service</span><ul id="packages_ExposeRoutingBundle_Service" class="filetree">
+<li><span class="class"><a href="_Service_ExposedRoutesExtractor.html#%5CBazinga%5CExposeRoutingBundle%5CService%5CExposedRoutesExtractor" target="content">ExposedRoutesExtractor<br><small></small></a></span></li>
+<li><span class="interface"><a href="_Service_ExposedRoutesExtractorInterface.html#%5CBazinga%5CExposeRoutingBundle%5CService%5CExposedRoutesExtractorInterface" target="content">ExposedRoutesExtractorInterface<br><small>ExposedRoutesExtractorInterface interface.</small></a></span></li>
+<li><span class="class"><a href="_Tests_Service_ExposedRoutesExtractorTest.html#%5CBazinga%5CExposeRoutingBundle%5CTests%5CController%5CExposedRoutesExtractorTest" target="content">ExposedRoutesExtractorTest<br><small>ExposedRoutesExtractorTest class.</small></a></span></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul></div>
 <h1><a href="#">Files</a></h1>
-<div><ul id="files-" class="filetree">
+<div style="padding: 0px;"><ul id="files-" class="filetree">
 <li class="closed">
-<span class="file"><a href="_BazingaExposeRoutingBundle.html" target="content">BazingaExposeRoutingBundle.php</a></span><ul id="files_194b04f2f28440e3df6afcc08052d8b6" class="filetree"><li><span class="class"><a href="_BazingaExposeRoutingBundle.html#Bazinga%5CExposeRoutingBundle%5CBazingaExposeRoutingBundle" target="content">BazingaExposeRoutingBundle<br><small>BazingaExposeRoutingBundle class.</small></a></span></li></ul>
+<span class="file"><a href="_Command_RouterDebugExposedCommand.html" target="content">Command/RouterDebugExposedCommand.php</a></span><ul id="files_40ddbb07e3e8d166baf879a1fb09b393" class="filetree"><li><span class="class"><a href="_Command_RouterDebugExposedCommand.html#%5CBazinga%5CExposeRoutingBundle%5CCommand%5CRouterDebugExposedCommand" target="content">RouterDebugExposedCommand<br><small>A console command for retrieving information about exposed routes.</small></a></span></li></ul>
 </li>
 <li class="closed">
-<span class="file"><a href="_Controller_Controller.html" target="content">Controller/Controller.php</a></span><ul id="files_cba27ea6dadd66de3d3c5bbf1bf1c017" class="filetree"><li><span class="class"><a href="_Controller_Controller.html#Bazinga%5CExposeRoutingBundle%5CController%5CController" target="content">Controller<br><small>Controller class.</small></a></span></li></ul>
+<span class="file"><a href="_Controller_Controller.html" target="content">Controller/Controller.php</a></span><ul id="files_c998b1161caec87bfe9167bb966233ee" class="filetree"><li><span class="class"><a href="_Controller_Controller.html#%5CBazinga%5CExposeRoutingBundle%5CController%5CController" target="content">Controller<br><small>Controller class.</small></a></span></li></ul>
 </li>
 <li class="closed">
-<span class="file"><a href="_DependencyInjection_BazingaExposeRoutingExtension.html" target="content">DependencyInjection/BazingaExposeRoutingExtension.php</a></span><ul id="files_e2392bf0dd1c3bdd7b17b73fc9ba13b6" class="filetree"><li><span class="class"><a href="_DependencyInjection_BazingaExposeRoutingExtension.html#Bazinga%5CExposeRoutingBundle%5CDependencyInjection%5CBazingaExposeRoutingExtension" target="content">BazingaExposeRoutingExtension<br><small>BazingaExposeRoutingExtension
+<span class="file"><a href="_DependencyInjection_BazingaExposeRoutingExtension.html" target="content">DependencyInjection/BazingaExposeRoutingExtension.php</a></span><ul id="files_f822591eb83e829a3337bbb147ebc0d5" class="filetree"><li><span class="class"><a href="_DependencyInjection_BazingaExposeRoutingExtension.html#%5CBazinga%5CExposeRoutingBundle%5CDependencyInjection%5CBazingaExposeRoutingExtension" target="content">BazingaExposeRoutingExtension<br><small>BazingaExposeRoutingExtension
 Load configuration.</small></a></span></li></ul>
 </li>
 <li class="closed">
-<span class="file"><a href="_DependencyInjection_Configuration.html" target="content">DependencyInjection/Configuration.php</a></span><ul id="files_f3c7216fecffa608933fe643eacd5a90" class="filetree"><li><span class="class"><a href="_DependencyInjection_Configuration.html#Bazinga%5CExposeRoutingBundle%5CDependencyInjection%5CConfiguration" target="content">Configuration<br><small>Configuration class.</small></a></span></li></ul>
+<span class="file"><a href="_DependencyInjection_Configuration.html" target="content">DependencyInjection/Configuration.php</a></span><ul id="files_f3c7216fecffa608933fe643eacd5a90" class="filetree"><li><span class="class"><a href="_DependencyInjection_Configuration.html#%5CBazinga%5CExposeRoutingBundle%5CDependencyInjection%5CConfiguration" target="content">Configuration<br><small>Configuration class.</small></a></span></li></ul>
 </li>
 <li class="closed">
-<span class="file"><a href="_Resources_doc_php_ajax_search.html" target="content">Resources/doc/php/ajax_search.php</a></span><ul id="files_b90b710361713f279b5ed683ea9f4443" class="filetree"></ul>
+<span class="file"><a href="_Service_ExposedRoutesExtractor.html" target="content">Service/ExposedRoutesExtractor.php</a></span><ul id="files_005b81e5acbeb51cb5ce6070a5059495" class="filetree"><li><span class="class"><a href="_Service_ExposedRoutesExtractor.html#%5CBazinga%5CExposeRoutingBundle%5CService%5CExposedRoutesExtractor" target="content">ExposedRoutesExtractor<br><small></small></a></span></li></ul>
 </li>
 <li class="closed">
-<span class="file"><a href="_Tests_Controller_ControllerTest.html" target="content">Tests/Controller/ControllerTest.php</a></span><ul id="files_3fdd062f1a4a34a16d2bf0842d36b0e7" class="filetree"><li><span class="class"><a href="_Tests_Controller_ControllerTest.html#Bazinga%5CExposeRoutingBundle%5CTests%5CController%5CControllerTest" target="content">ControllerTest<br><small>ControllerTest class.</small></a></span></li></ul>
+<span class="file"><a href="_Service_ExposedRoutesExtractorInterface.html" target="content">Service/ExposedRoutesExtractorInterface.php</a></span><ul id="files_143fa3e6b520c38133e822554f3b1a76" class="filetree"><li><span class="interface"><a href="_Service_ExposedRoutesExtractorInterface.html#%5CBazinga%5CExposeRoutingBundle%5CService%5CExposedRoutesExtractorInterface" target="content">ExposedRoutesExtractorInterface<br><small>ExposedRoutesExtractorInterface interface.</small></a></span></li></ul>
 </li>
 <li class="closed">
-<span class="file"><a href="_Tests_bootstrap.html" target="content">Tests/bootstrap.php</a></span><ul id="files_7129d7217030fa777a9f7baf437f2a8c" class="filetree"></ul>
+<span class="file"><a href="_Tests_Controller_ControllerTest.html" target="content">Tests/Controller/ControllerTest.php</a></span><ul id="files_f163de7e39d36860102cf5758093fcf7" class="filetree"><li><span class="class"><a href="_Tests_Controller_ControllerTest.html#%5CBazinga%5CExposeRoutingBundle%5CTests%5CController%5CControllerTest" target="content">ControllerTest<br><small>ControllerTest class.</small></a></span></li></ul>
+</li>
+<li class="closed">
+<span class="file"><a href="_Tests_Service_ExposedRoutesExtractorTest.html" target="content">Tests/Service/ExposedRoutesExtractorTest.php</a></span><ul id="files_a6df2d1e792310b09cbf1dad9b2ef232" class="filetree"><li><span class="class"><a href="_Tests_Service_ExposedRoutesExtractorTest.html#%5CBazinga%5CExposeRoutingBundle%5CTests%5CController%5CExposedRoutesExtractorTest" target="content">ExposedRoutesExtractorTest<br><small>ExposedRoutesExtractorTest class.</small></a></span></li></ul>
+</li>
+<li class="closed">
+<span class="file"><a href="_Tests_bootstrap.html" target="content">Tests/bootstrap.php</a></span><ul id="files_78b9710f61598e6db0359d4e0faaec34" class="filetree"></ul>
 </li>
 </ul></div>
 </div></body></html>

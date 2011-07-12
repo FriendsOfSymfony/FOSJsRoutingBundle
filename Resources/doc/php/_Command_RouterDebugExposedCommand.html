@@ -30,50 +30,78 @@
       $('dl.function-info, dl.constant-info, dl.property-info').hide();
       $('dl.function-info img, dl.constant-info img, dl.property-info img').show();
       });
-    </script><a name="top"></a><h1 class="file">DependencyInjection/Configuration.php</h1>
+    </script><a name="top"></a><h1 class="file">Command/RouterDebugExposedCommand.php</h1>
 <div class="file_menu">
 <a href="#classes">Classes</a> </div>
 <dl class="file-info">
 <dt>Classes</dt>
-<dd><a class="class" href="#%5CBazinga%5CExposeRoutingBundle%5CDependencyInjection%5CConfiguration">Configuration</a></dd>
+<dd><a class="class" href="#%5CBazinga%5CExposeRoutingBundle%5CCommand%5CRouterDebugExposedCommand">RouterDebugExposedCommand</a></dd>
 </dl>
-<a name="classes"></a><a id="\Bazinga\ExposeRoutingBundle\DependencyInjection\Configuration"></a><h2 class="class">\Bazinga\ExposeRoutingBundle\DependencyInjection\Configuration<div class="to-top"><a href="#top">jump to top</a></div>
+<a name="classes"></a><a id="\Bazinga\ExposeRoutingBundle\Command\RouterDebugExposedCommand"></a><h2 class="class">\Bazinga\ExposeRoutingBundle\Command\RouterDebugExposedCommand<div class="to-top"><a href="#top">jump to top</a></div>
 </h2>
 <div class="class">
 <dl class="class-info">
-<dt>Implements</dt>
-<dd></dd>
+<dt>Extends from</dt>
+<dd>\Symfony\Bundle\FrameworkBundle\Command\RouterDebugCommand</dd>
 <dt>author</dt>
 <dd>William DURAND &lt;william.durand1@gmail.com&gt;</dd>
 <dt>package</dt>
 <dd>ExposeRoutingBundle</dd>
 <dt>subpackage</dt>
-<dd>DependencyInjection</dd>
+<dd>Command</dd>
 <dt>Methods</dt>
-<dd><a class="method public" href="#%5CBazinga%5CExposeRoutingBundle%5CDependencyInjection%5CConfiguration::getConfigTreeBuilder()">getConfigTreeBuilder</a></dd>
+<dd><a class="method protected" href="#%5CBazinga%5CExposeRoutingBundle%5CCommand%5CRouterDebugExposedCommand::configure()">configure</a></dd>
+<dd><a class="method protected" href="#%5CBazinga%5CExposeRoutingBundle%5CCommand%5CRouterDebugExposedCommand::execute()">execute</a></dd>
 </dl>
 <h3>Description</h3>
-<p class="short-description">Configuration class.</p>
+<p class="short-description">A console command for retrieving information about exposed routes.</p>
 <div class="long-description">
 </div>
 <h3>Methods</h3>
 <div>
-<a id="\Bazinga\ExposeRoutingBundle\DependencyInjection\Configuration::getConfigTreeBuilder()"></a><h4 class="method public">getConfigTreeBuilder<div class="to-top"><a href="#Configuration">jump to class</a></div>
+<a id="\Bazinga\ExposeRoutingBundle\Command\RouterDebugExposedCommand::configure()"></a><h4 class="method protected">configure<div class="to-top"><a href="#RouterDebugExposedCommand">jump to class</a></div>
 </h4>
 <div class="method">
-<code><span class="highlight">getConfigTreeBuilder</span><span class="nb-faded-text">(
+<code><span class="highlight">configure</span><span class="nb-faded-text">(
           
           )
         </span>
         :
-        \Symfony\Component\Config\Definition\Builder\TreeBuilder</code><p class="short-description">Generates the configuration tree builder.</p>
+        </code><p class="short-description">{@inheritdoc}</p>
 <div class="long-description">
 </div>
 <div class="api-section">
-<h5 class="output">Output</h5>
-<dl class="return-info">
-<dt>\Symfony\Component\Config\Definition\Builder\TreeBuilder</dt>
-<dd><em>The tree builder</em></dd>
+<h5 class="info">
+<img src="images/arrow_right.gif"> Details</h5>
+<dl class="function-info">
+<dt>visibility</dt>
+<dd>protected</dd>
+<dt>final</dt>
+<dd>false</dd>
+<dt>static</dt>
+<dd>false</dd>
+</dl>
+<div class="clear"></div>
+</div>
+</div>
+<a id="\Bazinga\ExposeRoutingBundle\Command\RouterDebugExposedCommand::execute()"></a><h4 class="method protected">execute<div class="to-top"><a href="#RouterDebugExposedCommand">jump to class</a></div>
+</h4>
+<div class="method">
+<code><span class="highlight">execute</span><span class="nb-faded-text">(
+           $input,  $output
+          )
+        </span>
+        :
+        </code><p class="short-description"></p>
+<div class="long-description">
+</div>
+<div class="api-section">
+<h5 class="arguments">Arguments</h5>
+<dl class="argument-info">
+<dt>$input</dt>
+<dd><em></em></dd>
+<dt>$output</dt>
+<dd><em></em></dd>
 </dl>
 <div class="clear"></div>
 </div>
@@ -82,11 +110,13 @@
 <img src="images/arrow_right.gif"> Details</h5>
 <dl class="function-info">
 <dt>visibility</dt>
-<dd>public</dd>
+<dd>protected</dd>
 <dt>final</dt>
 <dd>false</dd>
 <dt>static</dt>
 <dd>false</dd>
+<dt>see</dt>
+<dd>Command</dd>
 </dl>
 <div class="clear"></div>
 </div>

@@ -30,50 +30,81 @@
       $('dl.function-info, dl.constant-info, dl.property-info').hide();
       $('dl.function-info img, dl.constant-info img, dl.property-info img').show();
       });
-    </script><a name="top"></a><h1 class="file">DependencyInjection/Configuration.php</h1>
-<div class="file_menu">
-<a href="#classes">Classes</a> </div>
+    </script><a name="top"></a><h1 class="file">Service/ExposedRoutesExtractorInterface.php</h1>
+<div class="file_menu"><a href="#interfaces">Interfaces</a></div>
 <dl class="file-info">
-<dt>Classes</dt>
-<dd><a class="class" href="#%5CBazinga%5CExposeRoutingBundle%5CDependencyInjection%5CConfiguration">Configuration</a></dd>
+<dt>Interfaces</dt>
+<dd><a class="interface" href="#%5CBazinga%5CExposeRoutingBundle%5CService%5CExposedRoutesExtractorInterface">ExposedRoutesExtractorInterface</a></dd>
 </dl>
-<a name="classes"></a><a id="\Bazinga\ExposeRoutingBundle\DependencyInjection\Configuration"></a><h2 class="class">\Bazinga\ExposeRoutingBundle\DependencyInjection\Configuration<div class="to-top"><a href="#top">jump to top</a></div>
+<a name="interfaces"></a><a id="\Bazinga\ExposeRoutingBundle\Service\ExposedRoutesExtractorInterface"></a><h2 class="interface">\Bazinga\ExposeRoutingBundle\Service\ExposedRoutesExtractorInterface<div class="to-top"><a href="#top">jump to top</a></div>
 </h2>
 <div class="class">
 <dl class="class-info">
-<dt>Implements</dt>
-<dd></dd>
 <dt>author</dt>
 <dd>William DURAND &lt;william.durand1@gmail.com&gt;</dd>
 <dt>package</dt>
 <dd>ExposeRoutingBundle</dd>
 <dt>subpackage</dt>
-<dd>DependencyInjection</dd>
+<dd>Service</dd>
 <dt>Methods</dt>
-<dd><a class="method public" href="#%5CBazinga%5CExposeRoutingBundle%5CDependencyInjection%5CConfiguration::getConfigTreeBuilder()">getConfigTreeBuilder</a></dd>
+<dd><a class="method public" href="#%5CBazinga%5CExposeRoutingBundle%5CService%5CExposedRoutesExtractorInterface::getBaseUrl()">getBaseUrl</a></dd>
+<dd><a class="method public" href="#%5CBazinga%5CExposeRoutingBundle%5CService%5CExposedRoutesExtractorInterface::getRoutes()">getRoutes</a></dd>
 </dl>
 <h3>Description</h3>
-<p class="short-description">Configuration class.</p>
+<p class="short-description">ExposedRoutesExtractorInterface interface.</p>
 <div class="long-description">
 </div>
 <h3>Methods</h3>
 <div>
-<a id="\Bazinga\ExposeRoutingBundle\DependencyInjection\Configuration::getConfigTreeBuilder()"></a><h4 class="method public">getConfigTreeBuilder<div class="to-top"><a href="#Configuration">jump to class</a></div>
+<a id="\Bazinga\ExposeRoutingBundle\Service\ExposedRoutesExtractorInterface::getBaseUrl()"></a><h4 class="method public">getBaseUrl<div class="to-top"><a href="#ExposedRoutesExtractorInterface">jump to class</a></div>
 </h4>
 <div class="method">
-<code><span class="highlight">getConfigTreeBuilder</span><span class="nb-faded-text">(
+<code><span class="highlight">getBaseUrl</span><span class="nb-faded-text">(
           
           )
         </span>
         :
-        \Symfony\Component\Config\Definition\Builder\TreeBuilder</code><p class="short-description">Generates the configuration tree builder.</p>
+        string</code><p class="short-description">Returns the Base URL.</p>
 <div class="long-description">
 </div>
 <div class="api-section">
 <h5 class="output">Output</h5>
 <dl class="return-info">
-<dt>\Symfony\Component\Config\Definition\Builder\TreeBuilder</dt>
-<dd><em>The tree builder</em></dd>
+<dt>string</dt>
+<dd><em></em></dd>
+</dl>
+<div class="clear"></div>
+</div>
+<div class="api-section">
+<h5 class="info">
+<img src="images/arrow_right.gif"> Details</h5>
+<dl class="function-info">
+<dt>visibility</dt>
+<dd>public</dd>
+<dt>final</dt>
+<dd>false</dd>
+<dt>static</dt>
+<dd>false</dd>
+</dl>
+<div class="clear"></div>
+</div>
+</div>
+<a id="\Bazinga\ExposeRoutingBundle\Service\ExposedRoutesExtractorInterface::getRoutes()"></a><h4 class="method public">getRoutes<div class="to-top"><a href="#ExposedRoutesExtractorInterface">jump to class</a></div>
+</h4>
+<div class="method">
+<code><span class="highlight">getRoutes</span><span class="nb-faded-text">(
+          
+          )
+        </span>
+        :
+        array</code><p class="short-description">Returns an array of exposed routes where keys are the route names.</p>
+<div class="long-description">
+</div>
+<div class="api-section">
+<h5 class="output">Output</h5>
+<dl class="return-info">
+<dt>array</dt>
+<dd><em></em></dd>
 </dl>
 <div class="clear"></div>
 </div>
