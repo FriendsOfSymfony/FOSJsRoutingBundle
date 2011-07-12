@@ -25,7 +25,7 @@ class ControllerTest extends WebTestCase
      */
     public function testIndexAction()
     {
-        $router = $this->getMockRouter();
+        $router = $this->getMockRouter($this->getMockRouteCollection());
         $engine = $this->getMockEngine();
 
         $this->controller = new Controller($router, $engine, array());
@@ -57,6 +57,64 @@ class ControllerTest extends WebTestCase
         $this->assertArrayHasKey('id', $content['exposed_routes']['foobaz']->getDefaults(), 'Valid defaults are kept');
     }
 
+    public function testIndexActionWithPatterns()
+    {
+        $router = $this->getMockRouter($this->getMockRouteCollectionNotExposed());
+        $engine = $this->getMockEngine();
+
+        $_format = 'js';
+
+        $this->controller = new Controller($router, $engine, array('hello_.*'));
+        $response = $this->controller->indexAction($_format);
+        $content  = $response->getContent();
+
+        $this->assertNotEmpty($content);
+        $this->assertEquals(3, count($content['exposed_routes']), '3 routes match the pattern: "hello_.*"');
+
+        $this->controller = new Controller($router, $engine, array('hello_[0-9]{3}'));
+        $response = $this->controller->indexAction($_format);
+        $content  = $response->getContent();
+
+        $this->assertNotEmpty($content);
+        $this->assertEquals(1, count($content['exposed_routes']), '1 routes match the pattern: "hello_[0-9]{3}"');
+
+        $this->controller = new Controller($router, $engine, array('hello_[0-9]{4}'));
+        $response = $this->controller->indexAction($_format);
+        $content  = $response->getContent();
+
+        $this->assertNotEmpty($content);
+        $this->assertEquals(0, count($content['exposed_routes']), '1 routes match the pattern: "hello_[0-9]{4}"');
+
+        $this->controller = new Controller($router, $engine, array('hello_.+o.+'));
+        $response = $this->controller->indexAction($_format);
+        $content  = $response->getContent();
+
+        $this->assertNotEmpty($content);
+        $this->assertEquals(2, count($content['exposed_routes']), '2 routes match the pattern: "hello_.+o.+"');
+
+        $this->controller = new Controller($router, $engine, array('hello_.+o.+', 'hello_123'));
+        $response = $this->controller->indexAction($_format);
+        $content  = $response->getContent();
+
+        $this->assertNotEmpty($content);
+        $this->assertEquals(3, count($content['exposed_routes']), '3 routes match patterns: "hello_.+o.+" and "hello_123"');
+
+        $this->controller = new Controller($router, $engine, array('hello_.+o.+', 'hello_$'));
+        $response = $this->controller->indexAction($_format);
+        $content  = $response->getContent();
+
+        $this->assertNotEmpty($content);
+        $this->assertEquals(2, count($content['exposed_routes']), '2 routes match patterns: "hello_.+o.+" and "hello_"');
+
+        $this->controller = new Controller($router, $engine, array());
+        $response = $this->controller->indexAction($_format);
+        $content  = $response->getContent();
+
+        $this->assertNotEmpty($content);
+        $this->assertEquals(0, count($content['exposed_routes']), 'No patterns so no matched routes');
+    }
+
+
     /**
      * Function tests.
      */
@@ -77,6 +135,28 @@ Routing.variableSuffix = '}';
 EOT;
 
         $this->assertEquals($expected, $client->getResponse()->getContent());
+    }
+
+    /**
+     * Get a mock object which represents a RouteCollection.
+     * @return \Symfony\Symfony\Component\Routing\RouteCollection
+     */
+    private function getMockRouteCollectionNotExposed()
+    {
+        $array = array(
+            // Not exposed
+            'hello_you'     => new \Symfony\Component\Routing\Route('/foo', array('_controller' => '')),
+            'hello_123'     => new \Symfony\Component\Routing\Route('/foo', array('_controller' => '')),
+            'hello_world'   => new \Symfony\Component\Routing\Route('/foo', array('_controller' => '')),
+        );
+
+        $routeCollection = $this->getMock('\Symfony\Component\Routing\RouteCollection', array(), array(), '', false);
+        $routeCollection
+            ->expects($this->atLeastOnce())
+            ->method('all')
+            ->will($this->returnValue($array));
+
+        return $routeCollection;
     }
 
     /**
@@ -105,7 +185,7 @@ EOT;
 
         $routeCollection = $this->getMock('\Symfony\Component\Routing\RouteCollection', array(), array(), '', false);
         $routeCollection
-            ->expects($this->once())
+            ->expects($this->atLeastOnce())
             ->method('all')
             ->will($this->returnValue($array));
 
@@ -116,15 +196,15 @@ EOT;
      * Get a mock object which represents a Router.
      * @return \Symfony\Component\Routing\Router
      */
-    private function getMockRouter()
+    private function getMockRouter($routeCollection)
     {
         $router = $this->getMock('\Symfony\Component\Routing\Router', array(), array(), '', false);
         $router
-            ->expects($this->once())
+            ->expects($this->atLeastOnce())
             ->method('getRouteCollection')
-            ->will($this->returnValue($this->getMockRouteCollection()));
+            ->will($this->returnValue($routeCollection));
         $router
-            ->expects($this->once())
+            ->expects($this->atLeastOnce())
             ->method('getContext')
             ->will($this->returnValue($this->getMock('\Symfony\Component\Routing\RequestContext')));
 
@@ -138,7 +218,7 @@ EOT;
     private function getMockEngine()
     {
         $engine = $this->getMock('\Symfony\Component\Templating\EngineInterface');
-        $engine->expects($this->any())
+        $engine->expects($this->atLeastOnce())
             ->method('render')
             ->will($this->returnArgument(1));
 

@@ -47,11 +47,16 @@ class Controller
     public function indexAction($_format)
     {
         $exposed_routes = array();
-        $collection     = $this->router->getRouteCollection();
+        $collection = $this->router->getRouteCollection();
+        $pattern    = $this->buildPattern();
 
         foreach ($collection->all() as $name => $route) {
+            if (false === $route->getOption('expose')) {
+                continue;
+            }
+
             if (($route->getOption('expose') && true === $route->getOption('expose'))
-                || (in_array($name, $this->routesToExpose) && false !== $route->getOption('expose'))) {
+                || ('' !== $pattern && preg_match('#' . $pattern . '#', $name))) {
                 // Maybe there is a better way to do that...
                 $compiledRoute = $route->compile();
                 $route->setDefaults(array_intersect_key(
@@ -69,5 +74,18 @@ class Controller
             'prefix'            => $this->router->getContext()->getBaseUrl() ?: '',
             'exposed_routes'    => $exposed_routes,
         )));
+    }
+
+    /**
+     * Convert the routesToExpose array in a regular expression pattern.
+     * @return string
+     */
+    protected function buildPattern()
+    {
+        $patterns = array();
+        foreach ($this->routesToExpose as $toExpose) {
+            $patterns[] = '(' . $toExpose . ')';
+        }
+        return implode($patterns, '|');
     }
 }
