@@ -11,6 +11,7 @@
          bootstrap="./Tests/bootstrap.php">
   <php>
     <!-- <server name="SYMFONY" value="/path/to/symfony" /> -->
+    <server name="KERNEL_DIR" value="./Fixtures/testProject/app" />
   </php>
   <testsuites>
     <testsuite name="ExposeRoutingBundle Test Suite">

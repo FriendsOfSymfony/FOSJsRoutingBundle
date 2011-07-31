@@ -32,9 +32,8 @@ class ControllerTest extends WebTestCase
         $extractor = new ExposedRoutesExtractor($router, array());
         $this->controller = new Controller($engine, $extractor);
 
-        $_format  = 'js';
-        $response = $this->controller->indexAction($_format);
-        $content  = $response->getContent();
+        $_format = 'js';
+        $content = $this->controller->indexAction($_format);
 
         $this->assertNotEmpty($content);
         $this->assertArrayHasKey('var_prefix', $content, 'A variable prefix is required');
@@ -139,9 +138,9 @@ EOT;
      */
     private function getMockEngine()
     {
-        $engine = $this->getMock('\Symfony\Component\Templating\EngineInterface');
+        $engine = $this->getMock('\Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
         $engine->expects($this->atLeastOnce())
-            ->method('render')
+            ->method('renderResponse')
             ->will($this->returnArgument(1));
 
         return $engine;

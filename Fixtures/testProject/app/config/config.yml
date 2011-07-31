@@ -1,22 +1,10 @@
 framework:
     charset:       UTF-8
-    secret: xxxxxxxxxx
-    csrf_protection:
-        enabled: true
+    secret:        MySecr3t
     router:        { resource: "%kernel.root_dir%/config/routing.yml" }
-    validation:    { enabled: true, annotations: true }
-    templating:    { engines: ['twig'] } #assets_version: SomeVersionScheme
-    session:
-        default_locale: en
-        lifetime:       3600
-        auto_start:     false
-        name:           symfony
+    templating:    { engines: ['twig'] }
 
 # Twig Configuration
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
-
-
-
-
