@@ -2,7 +2,7 @@
 
 namespace Bazinga\ExposeRoutingBundle\Controller;
 
-use Symfony\Component\Templating\EngineInterface;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 use Bazinga\ExposeRoutingBundle\Service\ExposedRoutesExtractorInterface;
@@ -18,7 +18,7 @@ use Bazinga\ExposeRoutingBundle\Service\ExposedRoutesExtractorInterface;
 class Controller
 {
     /**
-     * @var \Symfony\Component\Templating\EngineInterface
+     * @var \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface
      */
     protected $engine;
     /**
@@ -28,7 +28,7 @@ class Controller
 
     /**
      * Default constructor.
-     * @param \Symfony\Component\Templating\EngineInterface                         The template engine.
+     * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface            The template engine.
      * @param \Bazinga\ExposeRoutingBundle\Service\ExposedRoutesExtractorInterface  The extractor service.
      */
     public function __construct(EngineInterface $engine, ExposedRoutesExtractorInterface $exposedRoutesExtractor)
@@ -42,11 +42,11 @@ class Controller
      */
     public function indexAction($_format)
     {
-        return new Response($this->engine->render('BazingaExposeRoutingBundle::index.' . $_format . '.twig', array(
+        return $this->engine->renderResponse('BazingaExposeRoutingBundle::index.' . $_format . '.twig', array(
             'var_prefix'        => '{',
             'var_suffix'        => '}',
             'prefix'            => $this->exposedRoutesExtractor->getBaseUrl(),
             'exposed_routes'    => $this->exposedRoutesExtractor->getRoutes(),
-        )));
+        ));
     }
 }
