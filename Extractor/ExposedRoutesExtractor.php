@@ -42,6 +42,9 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
                 continue;
             }
 
+            // Prevent side effect
+            $route = clone $route;
+
             if (($route->getOption('expose') && true === $route->getOption('expose'))
                 || ('' !== $pattern && preg_match('#' . $pattern . '#', $name))) {
                 // Maybe there is a better way to do that...
