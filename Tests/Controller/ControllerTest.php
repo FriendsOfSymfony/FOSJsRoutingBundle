@@ -5,7 +5,7 @@ namespace Bazinga\ExposeRoutingBundle\Tests\Controller;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 use Bazinga\ExposeRoutingBundle\Controller\Controller;
-use Bazinga\ExposeRoutingBundle\Service\ExposedRoutesExtractor;
+use Bazinga\ExposeRoutingBundle\Extractor\ExposedRoutesExtractor;
 
 /**
  * ControllerTest class.
