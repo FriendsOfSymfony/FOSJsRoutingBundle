@@ -47,15 +47,18 @@ class ControllerTest extends WebTestCase
         $this->assertEquals('}', $content['var_suffix'], 'The Symfony2 suffix is {');
         $this->assertNotNull($content['prefix'], 'The prefix cannot be null');
 
-        $this->assertEquals(4, count($content['exposed_routes']), '4 exposed routes are registered');
+        $this->assertEquals(5, count($content['exposed_routes']), '5 exposed routes are registered');
         $this->assertArrayHasKey('bar', $content['exposed_routes'], 'bar is an exposed route');
         $this->assertArrayHasKey('baz', $content['exposed_routes'], 'baz is an exposed route');
         $this->assertArrayHasKey('foobar', $content['exposed_routes'], 'foobar is an exposed route');
         $this->assertArrayHasKey('foobaz', $content['exposed_routes'], 'foobaz is an exposed route');
+        $this->assertArrayHasKey('babar', $content['exposed_routes'], 'babar is an exposed route');
 
         $this->assertArrayNotHasKey('_controller', $content['exposed_routes']['foobar']->getDefaults(), '_* defaults are removed');
         $this->assertArrayNotHasKey('_controller', $content['exposed_routes']['foobaz']->getDefaults(), '_* defaults are removed');
         $this->assertArrayHasKey('id', $content['exposed_routes']['foobaz']->getDefaults(), 'Valid defaults are kept');
+
+        $this->assertArrayHasKey('_locale', $content['exposed_routes']['babar']->getDefaults(), '_locale present');
     }
 
     /**
@@ -100,6 +103,11 @@ EOT;
             ),
             'foobaz' => new \Symfony\Component\Routing\Route(
                 '/foobaz/{id}', array('_controller' => 'foobar', 'id' => 1),
+                array(), array('expose' => true)
+            ),
+            // Exposed with _locale
+            'babar'  => new \Symfony\Component\Routing\Route(
+                '/{_locale}/babar', array('_locale' => 'en'),
                 array(), array('expose' => true)
             ),
         );
