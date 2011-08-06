@@ -2,13 +2,13 @@
 
 namespace Bazinga\ExposeRoutingBundle\Tests\Controller;
 
-use Bazinga\ExposeRoutingBundle\Service\ExposedRoutesExtractor;
+use Bazinga\ExposeRoutingBundle\Extractor\ExposedRoutesExtractor;
 
 /**
  * ExposedRoutesExtractorTest class.
  *
  * @package     ExposeRoutingBundle
- * @subpackage  Service
+ * @subpackage  Extractor
  * @author William DURAND <william.durand1@gmail.com>
  */
 class ExposedRoutesExtractorTest extends \PHPUnit_Framework_TestCase

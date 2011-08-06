@@ -39,7 +39,7 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $extractor = $this->getContainer()->get('bazinga.exposerouting.service.extractor');
+        $extractor = $this->getContainer()->get('bazinga.exposerouting.extractor');
 
         $routes = array();
         foreach ($extractor->getRoutes() as $name => $route) {

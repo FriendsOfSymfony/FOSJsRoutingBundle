@@ -1,12 +1,12 @@
 <?php
 
-namespace Bazinga\ExposeRoutingBundle\Service;
+namespace Bazinga\ExposeRoutingBundle\Extractor;
 
 /**
  * ExposedRoutesExtractorInterface interface.
  *
  * @package     ExposeRoutingBundle
- * @subpackage  Service
+ * @subpackage  Extractor
  * @author William DURAND <william.durand1@gmail.com>
  */
 interface ExposedRoutesExtractorInterface

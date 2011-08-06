@@ -32,7 +32,7 @@ class BazingaExposeRoutingExtension extends Extension
         $loader->load('controllers.xml');
 
         $container
-            ->getDefinition('bazinga.exposerouting.service.extractor')
+            ->getDefinition('bazinga.exposerouting.extractor')
             ->replaceArgument(1, $config['routes_to_expose']);
     }
 }

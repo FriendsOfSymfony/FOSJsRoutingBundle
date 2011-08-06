@@ -5,7 +5,7 @@ namespace Bazinga\ExposeRoutingBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-use Bazinga\ExposeRoutingBundle\Service\ExposedRoutesExtractorInterface;
+use Bazinga\ExposeRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
 
 
 /**
@@ -22,14 +22,14 @@ class Controller
      */
     protected $engine;
     /**
-     * @var \Bazinga\ExposeRoutingBundle\Service\ExposedRoutesExtractorInterface
+     * @var \Bazinga\ExposeRoutingBundle\Extractor\ExposedRoutesExtractorInterface
      */
     protected $exposedRoutesExtractor;
 
     /**
      * Default constructor.
-     * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface            The template engine.
-     * @param \Bazinga\ExposeRoutingBundle\Service\ExposedRoutesExtractorInterface  The extractor service.
+     * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface                The template engine.
+     * @param \Bazinga\ExposeRoutingBundle\Extractor\ExposedRoutesExtractorInterface    The extractor service.
      */
     public function __construct(EngineInterface $engine, ExposedRoutesExtractorInterface $exposedRoutesExtractor)
     {
