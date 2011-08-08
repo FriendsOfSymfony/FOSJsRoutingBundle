@@ -1,5 +1,5 @@
-ExposeRoutingBundle
-===================
+FOSJsRoutingBundle
+==================
 
 Port of the incredible plugin [chCmsExposeRoutingPlugin](https://github.com/themouette/chCmsExposeRoutingPlugin).
 
@@ -8,14 +8,14 @@ Installation
 
 Add this bundle as a submodule:
 
-> git submodule add git://github.com/Bazinga/BazingaExposeRoutingBundle.git vendor/bundles/Bazinga/ExposeRoutingBundle
+    git submodule add git://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git vendor/bundles/FOS/JsRoutingBundle
 
 Register the namespace in `app/autoload.php`:
 
     // app/autoload.php
     $loader->registerNamespaces(array(
         // ...
-        'Bazinga' => __DIR__.'/../vendor/bundles',
+        'FOS' => __DIR__.'/../vendor/bundles',
     ));
 
 Register the bundle in `app/AppKernel.php`:
@@ -25,15 +25,15 @@ Register the bundle in `app/AppKernel.php`:
     {
         return array(
             // ...
-            new Bazinga\ExposeRoutingBundle\BazingaExposeRoutingBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
         );
     }
 
 Register the routing in `app/config/routing.yml`:
 
     # app/config/routing.yml
-    _bazinga_exposerouting:
-        resource: "@BazingaExposeRoutingBundle/Resources/config/routing/routing.xml"
+    fos_js_routing:
+        resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 
 Publish assets:
 
@@ -45,8 +45,8 @@ Usage
 
 Just add these two lines in your layout:
 
-    <script type="text/javascript" src="{{ asset('bundles/bazingaexposerouting/js/routing.js') }}"></script>
-    <script type="text/javascript" src="{{ path('bazinga_exposerouting_js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/routing.js') }}"></script>
+    <script type="text/javascript" src="{{ path('fos_js_routing_js') }}"></script>
 
 
 It's as simple as calling: `Routing.generate('route_id', /* your params */)`.
@@ -93,7 +93,7 @@ You can do:
 Moreover, you can configure a list of routes to expose in `app/config/config.yml`:
 
     # app/config/config.yml
-    bazinga_expose_routing:
+    fos_js_routing:
         routes_to_expose: [ route_1, route_2, ... ]
 
 These routes will be added to the exposed routes. You can use regular expression patterns
@@ -120,5 +120,5 @@ A command is provided to list all exposed routes: `router:debug-exposed`:
 Credits
 -------
 
-* William DURAND (Bazinga) as main author.
+* William DURAND as main author.
 * Julien MUETTON (Carpe Hora) for the inspiration.

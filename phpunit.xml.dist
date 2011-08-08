@@ -14,7 +14,7 @@
     <server name="KERNEL_DIR" value="./Fixtures/testProject/app" />
   </php>
   <testsuites>
-    <testsuite name="ExposeRoutingBundle Test Suite">
+    <testsuite name="FOSJsRoutingBundle Test Suite">
       <directory suffix="Test.php">./Tests</directory>
     </testsuite>
   </testsuites>
