@@ -1,14 +1,21 @@
 <?php
 
-namespace Bazinga\ExposeRoutingBundle\Tests\Controller;
+/*
+ * This file is part of the FOSJsRoutingBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-use Bazinga\ExposeRoutingBundle\Extractor\ExposedRoutesExtractor;
+namespace FOS\JsRoutingBundle\Tests\Controller;
+
+use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor;
 
 /**
  * ExposedRoutesExtractorTest class.
  *
- * @package     ExposeRoutingBundle
- * @subpackage  Extractor
  * @author William DURAND <william.durand1@gmail.com>
  */
 class ExposedRoutesExtractorTest extends \PHPUnit_Framework_TestCase

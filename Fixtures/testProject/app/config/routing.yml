@@ -1,3 +1,8 @@
 # app/config/routing.yml
-_bazinga_exposerouting:
-    resource: "@BazingaExposeRoutingBundle/Resources/config/routing/routing.xml"
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+sample_route:
+    pattern:  "/exposed"
+    options:
+        expose: true
