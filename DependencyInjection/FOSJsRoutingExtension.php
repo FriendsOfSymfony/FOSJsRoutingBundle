@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the FOSJsRoutingBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FOS\JsRoutingBundle\DependencyInjection;
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -12,8 +21,6 @@ use Symfony\Component\Config\Definition\Processor;
  * FOSJsRoutingExtension
  * Load configuration.
  *
- * @package     FOSJsRoutingBundle
- * @subpackage  DependencyInjection
  * @author      William DURAND <william.durand1@gmail.com>
  */
 class FOSJsRoutingExtension extends Extension
@@ -32,7 +39,7 @@ class FOSJsRoutingExtension extends Extension
         $loader->load('controllers.xml');
 
         $container
-            ->getDefinition('fos.js_routing.extractor')
+            ->getDefinition('fos_js_routing.extractor')
             ->replaceArgument(1, $config['routes_to_expose']);
     }
 }

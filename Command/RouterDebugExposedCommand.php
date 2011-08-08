@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the FOSJsRoutingBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FOS\JsRoutingBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\RouterDebugCommand;
@@ -9,8 +18,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * A console command for retrieving information about exposed routes.
  *
- * @package     FOSJsRoutingBundle
- * @subpackage  Command
  * @author      William DURAND <william.durand1@gmail.com>
  */
 class RouterDebugExposedCommand extends RouterDebugCommand
@@ -39,7 +46,7 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $extractor = $this->getContainer()->get('fos.js_routing.extractor');
+        $extractor = $this->getContainer()->get('fos_js_routing.extractor');
 
         $routes = array();
         foreach ($extractor->getRoutes() as $name => $route) {

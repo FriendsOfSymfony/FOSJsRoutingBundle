@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the FOSJsRoutingBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FOS\JsRoutingBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -10,8 +19,6 @@ use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor;
 /**
  * ControllerTest class.
  *
- * @package     FOSJsRoutingBundle
- * @subpackage  Controller
  * @author William DURAND <william.durand1@gmail.com>
  */
 class ControllerTest extends WebTestCase
