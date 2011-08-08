@@ -1,13 +1,13 @@
 <?php
 
-namespace Bazinga\ExposeRoutingBundle\Tests\Controller;
+namespace FOS\JsRoutingBundle\Tests\Controller;
 
-use Bazinga\ExposeRoutingBundle\Extractor\ExposedRoutesExtractor;
+use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor;
 
 /**
  * ExposedRoutesExtractorTest class.
  *
- * @package     ExposeRoutingBundle
+ * @package     FOSJsRoutingBundle
  * @subpackage  Extractor
  * @author William DURAND <william.durand1@gmail.com>
  */

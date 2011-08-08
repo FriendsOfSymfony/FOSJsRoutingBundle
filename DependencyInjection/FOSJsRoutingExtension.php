@@ -1,6 +1,6 @@
 <?php
 
-namespace Bazinga\ExposeRoutingBundle\DependencyInjection;
+namespace FOS\JsRoutingBundle\DependencyInjection;
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -9,14 +9,14 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Definition\Processor;
 
 /**
- * BazingaExposeRoutingExtension
+ * FOSJsRoutingExtension
  * Load configuration.
  *
- * @package     ExposeRoutingBundle
+ * @package     FOSJsRoutingBundle
  * @subpackage  DependencyInjection
- * @author William DURAND <william.durand1@gmail.com>
+ * @author      William DURAND <william.durand1@gmail.com>
  */
-class BazingaExposeRoutingExtension extends Extension
+class FOSJsRoutingExtension extends Extension
 {
     /**
      * Load configuration.
@@ -24,7 +24,7 @@ class BazingaExposeRoutingExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $processor = new Processor();
-        $configuration = new Configuration($container->getParameter('kernel.debug'));
+        $configuration = new Configuration();
         $config = $processor->processConfiguration($configuration, $configs);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
@@ -32,7 +32,7 @@ class BazingaExposeRoutingExtension extends Extension
         $loader->load('controllers.xml');
 
         $container
-            ->getDefinition('bazinga.exposerouting.extractor')
+            ->getDefinition('fos.js_routing.extractor')
             ->replaceArgument(1, $config['routes_to_expose']);
     }
 }

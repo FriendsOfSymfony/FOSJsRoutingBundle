@@ -1,13 +1,13 @@
 <?php
 
-namespace Bazinga\ExposeRoutingBundle\Extractor;
+namespace FOS\JsRoutingBundle\Extractor;
 
 use Symfony\Component\Routing\RouterInterface;
 
 /**
- * @package     ExposeRoutingBundle
+ * @package     FOSJsRoutingBundle
  * @subpackage  Extractor
- * @author William DURAND <william.durand1@gmail.com>
+ * @author      William DURAND <william.durand1@gmail.com>
  */
 class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
 {

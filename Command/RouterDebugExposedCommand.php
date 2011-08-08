@@ -1,6 +1,6 @@
 <?php
 
-namespace Bazinga\ExposeRoutingBundle\Command;
+namespace FOS\JsRoutingBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\RouterDebugCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -9,9 +9,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * A console command for retrieving information about exposed routes.
  *
- * @package     ExposeRoutingBundle
+ * @package     FOSJsRoutingBundle
  * @subpackage  Command
- * @author William DURAND <william.durand1@gmail.com>
+ * @author      William DURAND <william.durand1@gmail.com>
  */
 class RouterDebugExposedCommand extends RouterDebugCommand
 {
@@ -39,7 +39,7 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $extractor = $this->getContainer()->get('bazinga.exposerouting.extractor');
+        $extractor = $this->getContainer()->get('fos.js_routing.extractor');
 
         $routes = array();
         foreach ($extractor->getRoutes() as $name => $route) {

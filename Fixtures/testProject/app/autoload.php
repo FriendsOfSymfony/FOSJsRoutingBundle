@@ -15,7 +15,7 @@ $loader->registerPrefixes(array(
 $loader->register();
 
 spl_autoload_register(function($class) {
-    if (0 === strpos($class, 'Bazinga\ExposeRoutingBundle\\')) {
+    if (0 === strpos($class, 'FOS\JsRoutingBundle\\')) {
         $path = implode('/', array_slice(explode('\\', $class), 2)).'.php';
         require_once __DIR__.'/../../../'.$path;
         return true;

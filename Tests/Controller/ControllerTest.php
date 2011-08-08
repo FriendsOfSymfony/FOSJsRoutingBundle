@@ -1,23 +1,23 @@
 <?php
 
-namespace Bazinga\ExposeRoutingBundle\Tests\Controller;
+namespace FOS\JsRoutingBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-use Bazinga\ExposeRoutingBundle\Controller\Controller;
-use Bazinga\ExposeRoutingBundle\Extractor\ExposedRoutesExtractor;
+use FOS\JsRoutingBundle\Controller\Controller;
+use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor;
 
 /**
  * ControllerTest class.
  *
- * @package     ExposeRoutingBundle
+ * @package     FOSJsRoutingBundle
  * @subpackage  Controller
  * @author William DURAND <william.durand1@gmail.com>
  */
 class ControllerTest extends WebTestCase
 {
     /**
-     * @var \Bazinga\ExposeRoutingBundle\Controller\Controller
+     * @var \FOS\JsRoutingBundle\Controller\Controller
      */
     private $controller;
 
@@ -77,6 +77,7 @@ class ControllerTest extends WebTestCase
 Routing.prefix = '';
 Routing.variablePrefix = '{';
 Routing.variableSuffix = '}';
+Routing.connect("sample_route", "\/exposed", []);
 
 EOT;
 

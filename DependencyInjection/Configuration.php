@@ -1,6 +1,6 @@
 <?php
 
-namespace Bazinga\ExposeRoutingBundle\DependencyInjection;
+namespace FOS\JsRoutingBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -8,9 +8,9 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 /**
  * Configuration class.
  *
- * @package     ExposeRoutingBundle
+ * @package     FOSJsRoutingBundle
  * @subpackage  DependencyInjection
- * @author William DURAND <william.durand1@gmail.com>
+ * @author i    William DURAND <william.durand1@gmail.com>
  */
 class Configuration implements ConfigurationInterface
 {
@@ -23,7 +23,7 @@ class Configuration implements ConfigurationInterface
     {
         $builder = new TreeBuilder();
 
-        $builder->root('bazinga_expose_routing')
+        $builder->root('fos_js_routing')
             ->children()
                 ->arrayNode('routes_to_expose')
                     ->beforeNormalization()
