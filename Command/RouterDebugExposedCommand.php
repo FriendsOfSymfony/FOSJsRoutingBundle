@@ -30,12 +30,17 @@ class RouterDebugExposedCommand extends RouterDebugCommand
         parent::configure();
 
         $this
-            ->setName('router:debug-exposed')
-            ->setDescription('Displays current exposed routes for an application')
+            ->setName('fos:js-routing:debug')
+            ->setDescription('Displays currently exposed routes for an application')
             ->setHelp(<<<EOF
-The <info>router:debug</info> displays the exposed routes:
+The <info>fos:js-routing:debug</info> command displays an application's routes which will be available via JavaScript.
 
-<info>router:debug</info>
+  <info>php app/console fos:js-routing:debug</info>
+
+You can alternatively specify a route name as an argument to get more info about that specific route:
+
+  <info>php app/console fos:js-routing:debug my_route</info>
+
 EOF
             )
         ;

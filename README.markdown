@@ -112,9 +112,9 @@ You can prevent to expose a route by configuring it as below:
 Command
 -------
 
-A command is provided to list all exposed routes: `router:debug-exposed`:
+A command is provided to list all exposed routes: `fos:js-routing:debug`:
 
-    $ php app/console router:debug-exposed [name]
+    $ php app/console fos:js-routing:debug [name]
 
 
 Credits
