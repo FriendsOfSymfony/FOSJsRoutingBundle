@@ -49,7 +49,7 @@ Just add these two lines in your layout:
     <script type="text/javascript" src="{{ path('fos_js_routing_js') }}"></script>
 
 
-It's as simple as calling: `Routing.generate('route_id', /* your params */)`.
+It's as simple as calling: `Routing.path('route_id', /* your params */)`.
 
 Imagine some route definitions:
 
@@ -68,26 +68,31 @@ Imagine some route definitions:
 
 You can do:
 
-    Routing.generate('my_route_to_expose', { id: 10 });
+    Routing.path('my_route_to_expose', { id: 10 });
     // will result in /foo/10/bar
 
-    Routing.generate('my_route_to_expose', { "id": 10, "foo": "bar" });
+    Routing.path('my_route_to_expose', { "id": 10, "foo": "bar" });
     // will result in /foo/10/bar?foo=bar
 
-    $.get(Routing.generate('my_route_to_expose', { "id": 10, "foo": "bar" }));
+    $.get(Routing.path('my_route_to_expose', { "id": 10, "foo": "bar" }));
     // will call /foo/10/bar?foo=bar
 
-    Routing.generate('my_route_to_expose_with_defaults');
+    Routing.path('my_route_to_expose_with_defaults');
     // will result in /blog/1
 
-    Routing.generate('my_route_to_expose_with_defaults', { id: 2 });
+    Routing.path('my_route_to_expose_with_defaults', { id: 2 });
     // will result in /blog/2
 
-    Routing.generate('my_route_to_expose_with_defaults', { "foo": "bar" });
+    Routing.path('my_route_to_expose_with_defaults', { "foo": "bar" });
     // will result in /blog/1?foo=bar
 
-    Routing.generate('my_route_to_expose_with_defaults', { id: 2, "foo": "bar" });
+    Routing.path('my_route_to_expose_with_defaults', { id: 2, "foo": "bar" });
     // will result in /blog/2?foo=bar
+
+You can also use `Routing.asset('asset_url')`.
+
+    Routing.asset('bundles/fosjsrouting/js/routing.js');
+    // will result in /bundles/fosjsrouting/js/routing.js
 
 
 Moreover, you can configure a list of routes to expose in `app/config/config.yml`:

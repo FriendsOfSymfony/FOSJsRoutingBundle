@@ -11,8 +11,14 @@
  */
 
 var Routing = Routing || {};
+Routing.__FILE__ = document.getElementsByTagName('script')[
+    document.getElementsByTagName('script').length - 1
+].src;
 
 (function(Routing, $, undefined) {
+  var dirname = function (path) {
+    return path.replace(/\\/g, '/').replace(/\/[^\/]*\/?$/, '');
+  };
 
   // now register our routing methods
   $.extend(Routing, (function() {
@@ -135,7 +141,7 @@ var Routing = Routing || {};
        * @return {String} generated url.
        * @api public
        */
-      generate: function(route_id, params) {
+      path: function(route_id, params) {
         var _route = Routing.get(route_id),
             _params = $.extend({}, _defaults[route_id] || {}, params || {}),
             _queryString,
@@ -171,6 +177,9 @@ var Routing = Routing || {};
         }
 
         return _url;
+      },
+      asset: function(url) {
+        return dirname(dirname(dirname(dirname(Routing.__FILE__)))) + '/' + url;
       },
       /**
        * connect a route.
