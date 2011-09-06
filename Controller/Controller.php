@@ -11,9 +11,11 @@
 
 namespace FOS\JsRoutingBundle\Controller;
 
+use FOS\JsRoutingBundle\Response\RoutesResponse;
+
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
-
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
 
 
@@ -24,10 +26,8 @@ use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
  */
 class Controller
 {
-    /**
-     * @var \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface
-     */
-    protected $engine;
+    protected $serializer;
+
     /**
      * @var \FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface
      */
@@ -35,25 +35,31 @@ class Controller
 
     /**
      * Default constructor.
-     * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface        The template engine.
+     * @param mixed $serializer any object with a serialize($data, $format) method
      * @param \FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface    The extractor service.
      */
-    public function __construct(EngineInterface $engine, ExposedRoutesExtractorInterface $exposedRoutesExtractor)
+    public function __construct($serializer, ExposedRoutesExtractorInterface $exposedRoutesExtractor)
     {
-        $this->engine = $engine;
+        $this->serializer = $serializer;
         $this->exposedRoutesExtractor = $exposedRoutesExtractor;
     }
 
     /**
      * indexAction action.
      */
-    public function indexAction($_format)
+    public function indexAction(Request $request, $_format)
     {
-        return $this->engine->renderResponse('FOSJsRoutingBundle::index.' . $_format . '.twig', array(
-            'var_prefix'        => '{',
-            'var_suffix'        => '}',
-            'prefix'            => $this->exposedRoutesExtractor->getBaseUrl(),
-            'exposed_routes'    => $this->exposedRoutesExtractor->getRoutes(),
-        ));
+        return new Response(
+            $this->serializer->serialize(new RoutesResponse(
+                    $this->exposedRoutesExtractor->getBaseUrl(),
+                    $this->exposedRoutesExtractor->getRoutes()
+                ),
+                $_format
+            ),
+            200,
+            array(
+                'Content-Type' => $request->getMimeType($_format),
+            )
+        );
     }
 }

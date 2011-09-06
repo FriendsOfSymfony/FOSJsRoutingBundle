@@ -18,13 +18,4 @@
       <directory suffix="Test.php">./Tests</directory>
     </testsuite>
   </testsuites>
-  <filter>
-    <whitelist>
-      <directory>./</directory>
-      <exclude>
-        <directory>./Resources</directory>
-        <directory>./Tests</directory>
-      </exclude>
-    </whitelist>
-  </filter>
 </phpunit>
