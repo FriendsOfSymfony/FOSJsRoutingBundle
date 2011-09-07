@@ -4,8 +4,8 @@ namespace FOS\JsRoutingBundle\Response;
 
 class RoutesResponse
 {
-    public $baseUrl;
-    public $routes;
+    private $baseUrl;
+    private $routes;
 
     public function __construct($baseUrl, array $routes)
     {
