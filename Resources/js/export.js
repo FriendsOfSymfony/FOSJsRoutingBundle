@@ -9,6 +9,11 @@
 goog.require('fos.Router');
 
 goog.exportSymbol('fos.Router', fos.Router);
+goog.exportSymbol('fos.Router.setData', function(data) {
+    var router = fos.Router.getInstance();
+    router.setBaseUrl(/** @type {string} */ (data['base_url']));
+    router.setRoutes(/** @type {Object.<string, fos.Router.Route>} */ (data['routes']));
+});
 goog.exportProperty(fos.Router, 'getInstance', fos.Router.getInstance);
 goog.exportProperty(fos.Router.prototype, 'setRoutes', fos.Router.prototype.setRoutes);
 goog.exportProperty(fos.Router.prototype, 'setBaseUrl', fos.Router.prototype.setBaseUrl);

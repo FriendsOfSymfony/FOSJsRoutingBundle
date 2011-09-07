@@ -7,7 +7,7 @@
     "externs": "@FOSJsRoutingBundle/Resources/js/externs.js",
 
     "define": {
-  	  "goog.DEBUG": false
+        "goog.DEBUG": false
     },
 
     "type-prefixes-to-strip": ["goog.debug", "goog.asserts", "goog.assert", "console"],

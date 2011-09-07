@@ -49,17 +49,18 @@ class Controller
      */
     public function indexAction(Request $request, $_format)
     {
-        return new Response(
-            $this->serializer->serialize(new RoutesResponse(
-                    $this->exposedRoutesExtractor->getBaseUrl(),
-                    $this->exposedRoutesExtractor->getRoutes()
-                ),
-                $_format
+        $content = $this->serializer->serialize(
+            new RoutesResponse(
+                $this->exposedRoutesExtractor->getBaseUrl(),
+                $this->exposedRoutesExtractor->getRoutes()
             ),
-            200,
-            array(
-                'Content-Type' => $request->getMimeType($_format),
-            )
+            $_format
         );
+
+        if ($callback = $request->query->get('callback')) {
+            $content = $callback.'('.$content.')';
+        }
+
+        return new Response($content, 200, array('Content-Type' => $request->getMimeType($_format)));
     }
 }

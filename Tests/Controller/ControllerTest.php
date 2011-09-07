@@ -27,6 +27,14 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[]},"blog":{"tokens":[["variable","\/","[^\/]+?","slug"],["text","\/blog-post"]],"defaults":[]}}}', $response->getContent());
     }
 
+    public function testGenerateWithCallback()
+    {
+        $controller = new Controller($this->getSerializer(), $this->getExtractor());
+
+        $response = $controller->indexAction(Request::create('/', 'GET', array('callback' => 'foo')), 'json');
+        $this->assertEquals('foo({"base_url":"","routes":[]})', $response->getContent());
+    }
+
     public function testIndexActionWithoutRoutes()
     {
         $controller = new Controller($this->getSerializer(), $this->getExtractor());

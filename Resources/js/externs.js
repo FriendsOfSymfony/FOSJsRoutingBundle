@@ -3,6 +3,6 @@
  * want the compiler to rename.
  */
 var externs = {
-	tokens: '',
-	defaults: ''
+    tokens: '',
+    defaults: ''
 };
