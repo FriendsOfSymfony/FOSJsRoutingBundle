@@ -11,6 +11,8 @@
 
 namespace FOS\JsRoutingBundle\DependencyInjection;
 
+use Symfony\Component\DependencyInjection\Alias;
+
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -37,6 +39,12 @@ class FOSJsRoutingExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
         $loader->load('controllers.xml');
+
+        if (isset($config['serializer'])) {
+            $container->setAlias('fos_js_routing.serializer', new Alias($config['serializer'], false));
+        } else {
+            $loader->load('serializer.xml');
+        }
 
         $container
             ->getDefinition('fos_js_routing.extractor')
