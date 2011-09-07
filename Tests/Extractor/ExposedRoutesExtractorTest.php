@@ -9,8 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace FOS\JsRoutingBundle\Tests\Controller;
+namespace FOS\JsRoutingBundle\Tests\Extractor;
 
+use FOS\JsRoutingBundle\Extractor\ExtractedRoute;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\Router;
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor;
 
 /**
@@ -20,9 +23,30 @@ use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor;
  */
 class ExposedRoutesExtractorTest extends \PHPUnit_Framework_TestCase
 {
+    public function testGetRoutes()
+    {
+        $router = $this->getRouter(array(
+            'literal' => new Route('/literal'),
+            'blog_post' => new Route('/blog-post/{slug}'),
+            'list' => new Route('/list/{page}', array('page' => 1), array('page' => '\d+')),
+        ));
+
+        $extractor = new ExposedRoutesExtractor($router, array('.*'));
+        $this->assertEquals(array(
+            'literal' => new ExtractedRoute(array(array('text', '/literal')), array()),
+            'blog_post' => new ExtractedRoute(array(array('variable', '/', '[^/]+?', 'slug'), array('text', '/blog-post')), array()),
+            'list' => new ExtractedRoute(array(array('variable', '/', '\d+', 'page'), array('text', '/list')), array('page' => 1)),
+        ), $extractor->getRoutes());
+    }
+
     public function testGetRoutesWithPatterns()
     {
-        $router = $this->getMockRouter();
+        $router = $this->getRouter(array(
+            // Not exposed
+            'hello_you'     => new Route('/foo', array('_controller' => '')),
+            'hello_123'     => new Route('/foo', array('_controller' => '')),
+            'hello_world'   => new Route('/foo', array('_controller' => '')),
+        ));
 
         $extractor = new ExposedRoutesExtractor($router, array('hello_.*'));
         $this->assertEquals(3, count($extractor->getRoutes()), '3 routes match the pattern: "hello_.*"');
@@ -47,38 +71,22 @@ class ExposedRoutesExtractorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Get a mock object which represents a RouteCollection.
-     * @return \Symfony\Symfony\Component\Routing\RouteCollection
+     * Get a mock object which represents a Router.
+     * @return \Symfony\Component\Routing\Router
      */
-    private function getMockRouteCollectionNotExposed()
+    private function getRouter(array $routes)
     {
-        $array = array(
-            // Not exposed
-            'hello_you'     => new \Symfony\Component\Routing\Route('/foo', array('_controller' => '')),
-            'hello_123'     => new \Symfony\Component\Routing\Route('/foo', array('_controller' => '')),
-            'hello_world'   => new \Symfony\Component\Routing\Route('/foo', array('_controller' => '')),
-        );
-
         $routeCollection = $this->getMock('\Symfony\Component\Routing\RouteCollection', array(), array(), '', false);
         $routeCollection
             ->expects($this->atLeastOnce())
             ->method('all')
-            ->will($this->returnValue($array));
+            ->will($this->returnValue($routes));
 
-        return $routeCollection;
-    }
-
-    /**
-     * Get a mock object which represents a Router.
-     * @return \Symfony\Component\Routing\Router
-     */
-    private function getMockRouter()
-    {
         $router = $this->getMock('\Symfony\Component\Routing\Router', array(), array(), '', false);
         $router
             ->expects($this->atLeastOnce())
             ->method('getRouteCollection')
-            ->will($this->returnValue($this->getMockRouteCollectionNotExposed()));
+            ->will($this->returnValue($routeCollection));
 
         return $router;
     }
