@@ -3,6 +3,7 @@ goog.provide('fos.Router');
 goog.require('goog.structs.Map');
 goog.require('goog.array');
 goog.require('goog.object');
+goog.require('goog.uri.utils');
 
 /** 
  * @constructor
@@ -58,6 +59,7 @@ fos.Router.prototype.generate = function(name, opt_params) {
 	
 	var route = /** @type {fos.Router.Route} */ (this.routes_.get(name));
 	var params = opt_params || {};
+	var unusedParams = goog.object.clone(params);
 	var url = this.context_.base_url;
 	
 	goog.array.forEachRight(route.tokens, function(token) {
@@ -72,6 +74,7 @@ fos.Router.prototype.generate = function(name, opt_params) {
 			
 			if (goog.object.containsKey(params, token[3])) {
 				url += params[token[3]];
+				goog.object.remove(unusedParams, token[3]);
 			} else if (goog.object.containsKey(route.defaults, token[3])) {
 				url += route.defaults[token[3]];
 			} else {
@@ -83,6 +86,10 @@ fos.Router.prototype.generate = function(name, opt_params) {
 		
 		throw new Error('The token type "' + token[0] + '" is not supported.');
 	});
+	
+	if (goog.object.getCount(unusedParams) > 0) {
+		return goog.uri.utils.appendParamsFromMap(url, unusedParams);
+	}
 	
 	return url;
 };

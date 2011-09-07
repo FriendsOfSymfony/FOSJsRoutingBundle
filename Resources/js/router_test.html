@@ -32,6 +32,20 @@
         	assertEquals('/blog-post/foo', router.generate('blog_post', {slug: 'foo'}));
         }
         
+        function testGenerateWithExtraParams() {
+        	var router = new fos.Router(undefined, {
+        		foo: {
+        			tokens: [['variable', '/', '', 'bar']],
+        			defaults: {}
+        		}
+        	});
+        	
+        	assertEquals('/baz?foo=bar', router.generate('foo', {
+        		bar: 'baz',
+        		foo: 'bar'
+        	}));
+        }
+        
         function testGenerateThrowsErrorWhenRequiredParameterWasNotGiven() {
         	var router = new fos.Router({base_url: ''}, {
         		foo: {
