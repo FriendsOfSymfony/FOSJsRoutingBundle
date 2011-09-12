@@ -45,8 +45,8 @@ Usage
 
 Just add these two lines in your layout:
 
-    <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/routing.js') }}"></script>
-    <script type="text/javascript" src="{{ path('fos_js_routing_js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 
 
 It's as simple as calling: `Routing.generate('route_id', /* your params */)`.

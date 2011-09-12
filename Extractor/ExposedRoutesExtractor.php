@@ -40,7 +40,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
      */
     public function getRoutes()
     {
-        $exposed_routes = array();
+        $exposedRoutes = array();
         $collection     = $this->router->getRouteCollection();
         $pattern        = $this->buildPattern();
 
@@ -49,23 +49,23 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
                 continue;
             }
 
-            // Prevent side effect
-            $route = clone $route;
-
             if (($route->getOption('expose') && true === $route->getOption('expose'))
                 || ('' !== $pattern && preg_match('#' . $pattern . '#', $name))) {
                 // Maybe there is a better way to do that...
                 $compiledRoute = $route->compile();
-                $route->setDefaults(array_intersect_key(
+                $defaults = array_intersect_key(
                     $route->getDefaults(),
                     array_fill_keys($compiledRoute->getVariables(), null)
-                ));
+                );
 
-                $exposed_routes[$name] = $route;
+                $exposedRoutes[$name] = new ExtractedRoute(
+                    $compiledRoute->getTokens(),
+                    $defaults
+                );
             }
         }
 
-        return $exposed_routes;
+        return $exposedRoutes;
     }
 
     /**

@@ -1,16 +1,18 @@
 <?php
 
-require_once __DIR__.'/../vendor/symfony/src/Symfony/Component/ClassLoader/UniversalClassLoader.php';
+$subPath = 'vendor/symfony/src/Symfony/Component/ClassLoader/UniversalClassLoader.php';
+$dir = $lastDir = __DIR__;
+while (($lastDir !== $dir = dirname($dir))
+       && !file_exists($dir.'/'.$subPath)
+       && $lastDir = $dir);
+
+require_once $dir.'/'.$subPath;
 
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 
 $loader = new UniversalClassLoader();
 $loader->registerNamespaces(array(
-    'Symfony'     => __DIR__.'/../vendor/symfony/src',
-));
-$loader->registerPrefixes(array(
-    'Twig_Extensions_'   => __DIR__.'/../vendor/twig-extensions/lib',
-    'Twig_'              => __DIR__.'/../vendor/twig/lib',
+    'Symfony'     => $dir.'/vendor/symfony/src',
 ));
 $loader->register();
 

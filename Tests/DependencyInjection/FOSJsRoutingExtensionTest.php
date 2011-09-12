@@ -1,0 +1,27 @@
+<?php
+
+namespace FOS\JsRoutingBundle\Tests\DependencyInjection;
+
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use FOS\JsRoutingBundle\DependencyInjection\FOSJsRoutingExtension;
+
+class FOSJsRoutingExtensionTest extends \PHPUnit_Framework_TestCase
+{
+    public function testLoadSetupsSerializerIfNotGiven()
+    {
+        $container = $this->load(array(array()));
+
+        $serializer = $container->get('fos_js_routing.serializer');
+        $this->assertEquals('{"foo":"bar"}', $serializer->serialize(array('foo' => 'bar'), 'json'));
+    }
+
+    private function load(array $configs)
+    {
+        $container = new ContainerBuilder();
+
+        $extension = new FOSJsRoutingExtension();
+        $extension->load($configs, $container);
+
+        return $container;
+    }
+}
