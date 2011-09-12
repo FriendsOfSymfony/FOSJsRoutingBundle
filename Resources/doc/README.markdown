@@ -45,8 +45,8 @@ Usage
 
 Just add these two lines in your layout:
 
-    <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/routing.js') }}"></script>
-    <script type="text/javascript" src="{{ path('fos_js_routing_js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 
 
 It's as simple as calling: `Routing.generate('route_id', /* your params */)`.
@@ -116,18 +116,6 @@ A command is provided to list all exposed routes: `fos:js-routing:debug`:
 
     $ php app/console fos:js-routing:debug [name]
 
-
-Compiling the Javascript files
-------------------------------
-Note: We already provide a compiled version of the Javascript; this section is only
-relevant if you want to make changes to this script.
-
-In order to re-compile the Javascript source files that we ship with this bundle, you
-need the Google Closure Tools. While you can install these dependencies manually, we
-recommend that you instead install the JMSGoogleClosureBundle. If you install this bundle,
-you can re-compile the Javascript with the following command:
-
-    $ php app/console plovr:build @FOSJsRoutingBundle/compile.js
 
 Credits
 -------
