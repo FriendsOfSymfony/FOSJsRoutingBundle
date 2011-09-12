@@ -117,6 +117,15 @@ A command is provided to list all exposed routes: `fos:js-routing:debug`:
     $ php app/console fos:js-routing:debug [name]
 
 
+Compiling the Javascript files
+------------------------------
+In order to re-compile the Javascript source files that we ship with this bundle, you
+need the Google Closure Tools. While you can install these dependencies manually, we
+recommend that you instead install the JMSGoogleClosureBundle. If you install this bundle,
+you can re-compile the Javascript with the following command:
+
+    $ php app/console plovr:build @FOSJsRoutingBundle/compile.js
+
 Credits
 -------
 
