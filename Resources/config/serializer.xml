@@ -10,6 +10,7 @@
             </argument>
             <argument type="collection">
                 <argument key="json" type="service" id="fos_js_routing.encoder" />
+                <argument key="js" type="service" id="fos_js_routing.encoder" />
             </argument>
         </service>
         
