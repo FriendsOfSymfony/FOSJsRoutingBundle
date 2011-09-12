@@ -119,6 +119,9 @@ A command is provided to list all exposed routes: `fos:js-routing:debug`:
 
 Compiling the Javascript files
 ------------------------------
+Note: We already provide a compiled version of the Javascript; this section is only
+relevant if you want to make changes to this script.
+
 In order to re-compile the Javascript source files that we ship with this bundle, you
 need the Google Closure Tools. While you can install these dependencies manually, we
 recommend that you instead install the JMSGoogleClosureBundle. If you install this bundle,
