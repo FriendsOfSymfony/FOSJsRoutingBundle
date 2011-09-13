@@ -32,6 +32,7 @@ class Configuration implements ConfigurationInterface
 
         $builder->root('fos_js_routing')
             ->children()
+                ->scalarNode('serializer')->cannotBeEmpty()->end()
                 ->arrayNode('routes_to_expose')
                     ->beforeNormalization()
                         ->ifTrue(function($v) { return !is_array($v); })
