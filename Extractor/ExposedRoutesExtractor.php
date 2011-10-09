@@ -25,8 +25,9 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
 
     /**
      * Default constructor.
-     * @param \Symfony\Component\Routing\RouterInterface  The router.
-     * @param array Some route names to expose.
+     *
+     * @param \Symfony\Component\Routing\RouterInterface $router  The router.
+     * @param array $routesToExpose Some route names to expose.
      */
     public function __construct(RouterInterface $router, array $routesToExpose = array())
     {
@@ -36,6 +37,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
 
     /**
      * Returns an array of exposed routes where keys are the route names.
+     *
      * @return array
      */
     public function getRoutes()
@@ -70,6 +72,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
 
     /**
      * Returns the Base URL.
+     *
      * @return string
      */
     public function getBaseUrl()
@@ -78,7 +81,18 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     }
 
     /**
+     * Returns an array of routing resources.
+     *
+     * @return array
+     */
+    public function getResources()
+    {
+        return $this->router->getRouteCollection()->getResources();
+    }
+
+    /**
      * Convert the routesToExpose array in a regular expression pattern.
+     *
      * @return string
      */
     protected function buildPattern()
