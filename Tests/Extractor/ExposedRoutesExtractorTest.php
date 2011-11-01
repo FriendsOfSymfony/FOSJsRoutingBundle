@@ -11,10 +11,10 @@
 
 namespace FOS\JsRoutingBundle\Tests\Extractor;
 
+use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor;
 use FOS\JsRoutingBundle\Extractor\ExtractedRoute;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\Router;
-use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor;
 
 /**
  * ExposedRoutesExtractorTest class.

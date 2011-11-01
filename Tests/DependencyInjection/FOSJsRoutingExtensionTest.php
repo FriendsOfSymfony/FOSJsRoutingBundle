@@ -2,8 +2,8 @@
 
 namespace FOS\JsRoutingBundle\Tests\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use FOS\JsRoutingBundle\DependencyInjection\FOSJsRoutingExtension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class FOSJsRoutingExtensionTest extends \PHPUnit_Framework_TestCase
 {

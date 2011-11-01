@@ -2,14 +2,12 @@
 
 namespace FOS\JsRoutingBundle\Tests\Controller;
 
+use FOS\JsRoutingBundle\Controller\Controller;
 use FOS\JsRoutingBundle\Extractor\ExtractedRoute;
-
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use FOS\JsRoutingBundle\Controller\Controller;
 
 class ControllerTest extends \PHPUnit_Framework_TestCase
 {

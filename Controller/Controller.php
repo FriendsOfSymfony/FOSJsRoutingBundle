@@ -11,13 +11,12 @@
 
 namespace FOS\JsRoutingBundle\Controller;
 
-use FOS\JsRoutingBundle\Response\RoutesResponse;
-
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\HttpFoundation\Response;
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
+use FOS\JsRoutingBundle\Response\RoutesResponse;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Config\ConfigCache;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Controller class.
