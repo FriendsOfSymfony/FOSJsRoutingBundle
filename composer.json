@@ -1,0 +1,26 @@
+{
+    "name": "friendsofsymfony/jsrouting-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony FOSJsRoutingBundle",
+    "keywords": ["Js Routing"],
+    "homepage": "http://friendsofsymfony.github.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "William Durand",
+            "email": "william.durand1@gmail.com"
+        },
+        {
+            "name": "FriendsOfSymfony Community",
+            "homepage": "https://github.com/friendsofsymfony/FOSJsRoutingBundle/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/framework-bundle": "2.*"
+    },
+    "autoload": {
+        "psr-0": { "FOS\\JsRoutingBundle": "" }
+    },
+    "target-dir": "FOS/JsRoutingBundle"
+}
