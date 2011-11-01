@@ -20,12 +20,22 @@ interface ExposedRoutesExtractorInterface
 {
     /**
      * Returns an array of exposed routes where keys are the route names.
+     *
      * @return array
      */
     function getRoutes();
+
     /**
      * Returns the Base URL.
+     *
      * @return string
      */
     function getBaseUrl();
+
+    /**
+     * Returns an array of routing resources.
+     *
+     * @return array
+     */
+    function getResources();
 }
