@@ -38,4 +38,11 @@ interface ExposedRoutesExtractorInterface
      * @return array
      */
     function getResources();
+
+    /**
+     * Returns an array of all exposed Route objects.
+     *
+     * @return array
+     */
+    function getExposedRoutes();
 }
