@@ -10,6 +10,8 @@ This is a port of the _symfony 1.x_ plugin: [chCmsExposeRoutingPlugin](https://g
 
 Please, find the README file in `Resources/doc/` to get more information about this bundle.
 
+[Read the documentation](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc/README.markdown)
+
 
 #### License
 
