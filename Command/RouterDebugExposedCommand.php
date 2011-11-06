@@ -54,7 +54,7 @@ EOF
         $extractor = $this->getContainer()->get('fos_js_routing.extractor');
 
         $routes = array();
-        foreach ($extractor->getRoutes() as $name => $route) {
+        foreach ($extractor->getExposedRoutes() as $name => $route) {
             $routes[$name] = $route->compile();
         }
 

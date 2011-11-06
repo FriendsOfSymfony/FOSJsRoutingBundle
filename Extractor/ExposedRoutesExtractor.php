@@ -43,8 +43,33 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     public function getRoutes()
     {
         $exposedRoutes = array();
-        $collection     = $this->router->getRouteCollection();
-        $pattern        = $this->buildPattern();
+        foreach ($this->getExposedRoutes() as $name => $route) {
+            // Maybe there is a better way to do that...
+            $compiledRoute = $route->compile();
+            $defaults = array_intersect_key(
+                $route->getDefaults(),
+                array_fill_keys($compiledRoute->getVariables(), null)
+            );
+
+            $exposedRoutes[$name] = new ExtractedRoute(
+                $compiledRoute->getTokens(),
+                $defaults
+            );
+        }
+
+        return $exposedRoutes;
+    }
+
+    /**
+     * Returns an array of all exposed Route objects.
+     *
+     * @return array
+     */
+    public function getExposedRoutes()
+    {
+        $routes     = array();
+        $collection = $this->router->getRouteCollection();
+        $pattern    = $this->buildPattern();
 
         foreach ($collection->all() as $name => $route) {
             if (false === $route->getOption('expose')) {
@@ -53,21 +78,11 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
 
             if (($route->getOption('expose') && (true === $route->getOption('expose') || 'true' === $route->getOption('expose')))
                 || ('' !== $pattern && preg_match('#' . $pattern . '#', $name))) {
-                // Maybe there is a better way to do that...
-                $compiledRoute = $route->compile();
-                $defaults = array_intersect_key(
-                    $route->getDefaults(),
-                    array_fill_keys($compiledRoute->getVariables(), null)
-                );
-
-                $exposedRoutes[$name] = new ExtractedRoute(
-                    $compiledRoute->getTokens(),
-                    $defaults
-                );
+                $routes[$name] = $route;
             }
         }
 
-        return $exposedRoutes;
+        return $routes;
     }
 
     /**
