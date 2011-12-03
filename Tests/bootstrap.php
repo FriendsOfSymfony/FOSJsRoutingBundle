@@ -1,9 +1,16 @@
 <?php
 
-require_once __DIR__.'/../Fixtures/testProject/app/autoload.php';
+/*
+ * This file is part of the FOSJsRoutingBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-$filesystem = new \Symfony\Component\HttpKernel\Util\Filesystem();
-$filesystem->remove(__DIR__.'/../Fixtures/testProject/app/cache');
-$filesystem->remove(__DIR__.'/../Fixtures/testProject/app/logs');
-$filesystem->mkdir(__DIR__.'/../Fixtures/testProject/app/cache');
-$filesystem->mkdir(__DIR__.'/../Fixtures/testProject/app/logs');
+if (file_exists($file = __DIR__.'/autoload.php')) {
+    require_once $file;
+} elseif (file_exists($file = __DIR__.'/autoload.php.dist')) {
+    require_once $file;
+}

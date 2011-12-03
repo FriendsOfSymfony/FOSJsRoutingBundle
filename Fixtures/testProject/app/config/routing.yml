@@ -1,8 +1,0 @@
-# app/config/routing.yml
-fos_js_routing:
-    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
-
-sample_route:
-    pattern:  "/exposed"
-    options:
-        expose: true
