@@ -5,7 +5,7 @@
 
     <route id="fos_js_routing_js" pattern="/js/routing.{_format}">
         <default key="_controller">fos_js_routing.controller:indexAction</default>
-        <default key="_format">js</default>
-        <requirement key="_format">js</requirement>
+        <default key="_format">json</default>
+        <requirement key="_format">json</requirement>
     </route>
 </routes>
