@@ -57,14 +57,14 @@ class Controller
      */
     public function indexAction(Request $request, $_format)
     {
-        $cache = new ConfigCache($this->cacheDir.'/fosJsRouting.'.$_format, $this->debug);
+        $cache = new ConfigCache($this->cacheDir.'/fosJsRouting.json', $this->debug);
         if (!$cache->isFresh()) {
             $content = $this->serializer->serialize(
                 new RoutesResponse(
                     $this->exposedRoutesExtractor->getBaseUrl(),
                     $this->exposedRoutesExtractor->getRoutes()
                 ),
-                $_format
+                'json'
             );
             $cache->write($content, $this->exposedRoutesExtractor->getResources());
         }

@@ -10,10 +10,9 @@
             </argument>
             <argument type="collection">
                 <argument key="json" type="service" id="fos_js_routing.encoder" />
-                <argument key="js" type="service" id="fos_js_routing.encoder" />
             </argument>
         </service>
-        
+
         <service id="fos_js_routing.normalizer" class="Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer" public="false" />
         <service id="fos_js_routing.encoder" class="Symfony\Component\Serializer\Encoder\JsonEncoder" public="false" />
     </services>
