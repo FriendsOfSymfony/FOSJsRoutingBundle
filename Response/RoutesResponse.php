@@ -22,7 +22,7 @@ class RoutesResponse
         $this->routes = $routes;
     }
 
-    public function getBase_Url()
+    public function getBase_url()
     {
         return $this->baseUrl;
     }
