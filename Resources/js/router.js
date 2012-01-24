@@ -96,7 +96,7 @@ fos.Router.prototype.generate = function(name, opt_params) {
                 var empty = true === value || false === value || '' === value;
 
                 if (!empty || !optional) {
-                    url = token[1] + encodeURIComponent(value) + url;
+                    url = token[1] + encodeURIComponent(value).replace(/%2F/g, '/') + url;
                 }
 
                 optional = false;
