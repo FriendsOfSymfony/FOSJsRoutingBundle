@@ -54,6 +54,16 @@
             assertEquals('/posts', router.generate('posts'));
             assertEquals('/posts.json', router.generate('posts', {'_format': 'json'}));
         }
+        function testAllowSlashes() {
+            var router = new fos.Router({base_url: ''}, {
+                posts: {
+                    tokens: [['variable', '/', '.+', 'id'], ['text', '/blog-post']],
+                    defaults: {}
+                }
+            });
+            assertEquals('/blog-post/foo/bar', router.generate('posts', {id: 'foo/bar'}));
+
+        }
 
         function testGenerateWithExtraParams() {
             var router = new fos.Router(undefined, {
