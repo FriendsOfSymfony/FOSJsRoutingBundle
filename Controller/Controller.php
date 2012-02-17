@@ -71,7 +71,7 @@ class Controller
 
         $content = file_get_contents((string) $cache);
 
-        if ($callback = $request->query->get('callback')) {
+        if ($callback = $request->get('callback')) {
             $content = $callback.'('.$content.')';
         }
 
