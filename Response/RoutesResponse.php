@@ -14,17 +14,24 @@ namespace FOS\JsRoutingBundle\Response;
 class RoutesResponse
 {
     private $baseUrl;
+    private $locale;
     private $routes;
 
-    public function __construct($baseUrl, array $routes)
+    public function __construct($baseUrl, $locale, array $routes)
     {
         $this->baseUrl = $baseUrl;
+        $this->locale = $locale;
         $this->routes = $routes;
     }
 
     public function getBase_url()
     {
         return $this->baseUrl;
+    }
+    
+    public function getLocale()
+    {
+        return $this->locale;
     }
 
     public function getRoutes()
