@@ -62,6 +62,7 @@ class Controller
             $content = $this->serializer->serialize(
                 new RoutesResponse(
                     $this->exposedRoutesExtractor->getBaseUrl(),
+                    $request->getLocale(),
                     $this->exposedRoutesExtractor->getRoutes()
                 ),
                 'json'
