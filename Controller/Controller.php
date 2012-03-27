@@ -57,6 +57,11 @@ class Controller
      */
     public function indexAction(Request $request, $_format)
     {
+        if (null !== $session = $request->getSession()) {
+            // keep current flashes for one more request
+            $session->setFlashes($session->getFlashes());
+        }
+        
         $cache = new ConfigCache($this->cacheDir.'/fosJsRouting.json', $this->debug);
         if (!$cache->isFresh()) {
             $content = $this->serializer->serialize(
