@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Controller class.
@@ -57,11 +58,20 @@ class Controller
      */
     public function indexAction(Request $request, $_format)
     {
-        if (null !== $session = $request->getSession()) {
-            // keep current flashes for one more request
-            $session->setFlashes($session->getFlashes());
+        if (version_compare(Kernel::VERSION, '2.1.0-dev', '<')) {
+            if (null !== $session = $request->getSession()) {
+                // keep current flashes for one more request
+                $session->setFlashes($session->getFlashes());
+            }
+        } else {
+            $session = $request->getSession();
+            
+            if (null !== $session && $session->getFlashBag() instanceof \Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag) {
+                // keep current flashes for one more request if using AutoExpireFlashBag
+                $session->getFlashBag()->setAll($session->getFlashBag()->peekAll());
+            }
         }
-        
+
         $cache = new ConfigCache($this->cacheDir.'/fosJsRouting.json', $this->debug);
         if (!$cache->isFresh()) {
             $content = $this->serializer->serialize(
