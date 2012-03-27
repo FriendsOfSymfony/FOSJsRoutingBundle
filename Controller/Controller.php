@@ -18,6 +18,7 @@ use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag;
 
 /**
  * Controller class.
@@ -66,7 +67,7 @@ class Controller
         } else {
             $session = $request->getSession();
             
-            if (null !== $session && $session->getFlashBag() instanceof \Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag) {
+            if (null !== $session && $session->getFlashBag() instanceof AutoExpireFlashBag) {
                 // keep current flashes for one more request if using AutoExpireFlashBag
                 $session->getFlashBag()->setAll($session->getFlashBag()->peekAll());
             }
