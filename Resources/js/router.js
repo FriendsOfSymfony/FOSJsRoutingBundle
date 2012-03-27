@@ -100,6 +100,8 @@ fos.Router.prototype.generate = function(name, opt_params) {
                 }
 
                 optional = false;
+            }else if (goog.object.containsKey(route.defaults, token[3])){
+                goog.object.remove(unusedParams, token[3]);
             }
 
             return;
