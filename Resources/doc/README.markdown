@@ -9,6 +9,14 @@ Installation
 Add this bundle as a submodule:
 
     git submodule add git://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git vendor/bundles/FOS/JsRoutingBundle
+    
+Or add the following lines in your `deps` file:
+
+``` ini
+[FOSJsRoutingBundle]
+	git=git://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git
+	target=/bundles/FOS/JsRoutingBundle
+```
 
 Register the namespace in `app/autoload.php`:
 
