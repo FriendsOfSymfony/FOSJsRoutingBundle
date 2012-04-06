@@ -15,7 +15,7 @@ Or add the following lines in your `deps` file:
 ``` ini
 [FOSJsRoutingBundle]
 	git=git://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git
-    target=/bundles/FOS/JsRoutingBundle
+	target=/bundles/FOS/JsRoutingBundle
 ```
 
 Register the namespace in `app/autoload.php`:
