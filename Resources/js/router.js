@@ -79,13 +79,14 @@ fos.Router.prototype.generate = function(name, opt_params) {
         }
 
         if ('variable' === token[0]) {
-            if (false === optional || !goog.object.containsKey(route.defaults, token[3])
+            var hasDefault = goog.object.containsKey(route.defaults, token[3]);
+            if (false === optional || !hasDefault
                     || (goog.object.containsKey(params, token[3]) && params[token[3]] != route.defaults[token[3]])) {
                 var value;
                 if (goog.object.containsKey(params, token[3])) {
                     value = params[token[3]];
                     goog.object.remove(unusedParams, token[3]);
-                } else if (goog.object.containsKey(route.defaults, token[3])) {
+                } else if (hasDefault) {
                     value = route.defaults[token[3]];
                 } else if (optional) {
                     return;
@@ -100,7 +101,7 @@ fos.Router.prototype.generate = function(name, opt_params) {
                 }
 
                 optional = false;
-            }else if (goog.object.containsKey(route.defaults, token[3])){
+            } else if (hasDefault) {
                 goog.object.remove(unusedParams, token[3]);
             }
 
