@@ -43,7 +43,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $controller = new Controller($this->getSerializer(), $this->getExtractor(), $this->cacheDir);
 
         $response = $controller->indexAction(Request::create('/', 'GET', array('callback' => 'foo')), 'json');
-        $this->assertEquals('foo({"base_url":"","routes":[]})', $response->getContent());
+        $this->assertEquals('foo({"base_url":"","routes":[]});', $response->getContent());
     }
 
     public function testIndexActionWithoutRoutes()
