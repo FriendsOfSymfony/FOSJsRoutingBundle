@@ -88,7 +88,7 @@ class Controller
         $content = file_get_contents((string) $cache);
 
         if ($callback = $request->query->get('callback')) {
-            $content = $callback.'('.$content.')';
+            $content = $callback.'('.$content.');';
         }
 
         return new Response($content, 200, array('Content-Type' => $request->getMimeType($_format)));
