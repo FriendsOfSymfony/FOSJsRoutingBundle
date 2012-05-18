@@ -13,7 +13,6 @@ namespace FOS\JsRoutingBundle\Command;
 
 use FOS\JsRoutingBundle\Response\RoutesResponse;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,15 +25,25 @@ use Symfony\Component\Console\Output\OutputInterface;
 class DumpCommand extends ContainerAwareCommand
 {
     private $targetPath;
-    private $callback;
 
     protected function configure()
     {
         $this
             ->setName('fos:js-routing:dump')
             ->setDescription('Dumps exposed routes to the filesystem')
-            ->addOption('callback', null, InputOption::VALUE_OPTIONAL, 'Callback function to pass the routes as an argument.')
-            ->addOption('target', null, InputOption::VALUE_OPTIONAL, 'Override the target directory to dump routes in.')
+            ->addOption(
+                'callback',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Callback function to pass the routes as an argument.',
+                'fos.Router.setData'
+            )
+            ->addOption(
+                'target',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Override the target directory to dump routes in.'
+            )
         ;
     }
 
@@ -42,18 +51,17 @@ class DumpCommand extends ContainerAwareCommand
     {
         parent::initialize($input, $output);
 
-        $this->callback = $input->getOption('callback') ?: 'fos.Router.setData';
         $this->targetPath = $input->getOption('target') ?:
-                sprintf('%s/../web/js', $this->getContainer()->getParameter('kernel.root_dir'));
-
+            sprintf('%s/../web/js/fos_js_routes.js', $this->getContainer()->getParameter('kernel.root_dir'));
     }
+
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Dumping exposed routes.');
         $output->writeln('');
 
-        $this->doDump($output);
+        $this->doDump($input, $output);
     }
 
     /**
@@ -75,19 +83,19 @@ class DumpCommand extends ContainerAwareCommand
     /**
      * Performs the routes dump.
      *
+     * @param InputInterface  $input  The command input
      * @param OutputInterface $output The command output
      */
-    private function doDump(OutputInterface $output)
+    private function doDump(InputInterface $input, OutputInterface $output)
     {
-        $target = rtrim($this->targetPath, '/') . '/fos_js_routes.js';
-        if (!is_dir($dir = dirname($target))) {
-            $output->writeln('<info>[dir+]</info>  '.$dir);
+        if (!is_dir($dir = dirname($this->targetPath))) {
+            $output->writeln('<info>[dir+]</info>  ' . $dir);
             if (false === @mkdir($dir, 0777, true)) {
-                throw new \RuntimeException('Unable to create directory '.$dir);
+                throw new \RuntimeException('Unable to create directory ' . $dir);
             }
         }
 
-        $output->writeln('<info>[file+]</info> '.$target);
+        $output->writeln('<info>[file+]</info> ' . $this->targetPath);
 
         $content = $this->getSerializer()->serialize(
             new RoutesResponse(
@@ -97,10 +105,14 @@ class DumpCommand extends ContainerAwareCommand
             'json'
         );
 
-        $content = sprintf("%s(%s);", $this->callback, $content);
+        if (!$input->getOption('callback')) {
+            throw new \RuntimeException('Callback option value cannot be empty.');
 
-        if (false === @file_put_contents($target, $content)) {
-            throw new \RuntimeException('Unable to write file '.$target);
+        }
+        $content = sprintf("%s(%s);", $input->getOption('callback'), $content);
+
+        if (false === @file_put_contents($this->targetPath, $content)) {
+            throw new \RuntimeException('Unable to write file ' . $this->targetPath);
         }
     }
 }
