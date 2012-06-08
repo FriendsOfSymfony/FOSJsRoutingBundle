@@ -78,7 +78,7 @@ Or with annotations:
    
     # src/Acme/DemoBundle/Controller/DefaultController.php
     /**
-     * @Route ("/foo/{id}/bar", name="my_route_to_expose", options={"expose"=true}))
+     * @Route ("/foo/{id}/bar", name="my_route_to_expose", options={"expose"=true})
      */
     public function exposedAction($foo)
 
