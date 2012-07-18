@@ -8,7 +8,9 @@ env:
   - SYMFONY_VERSION=v2.0.6
   - SYMFONY_VERSION=origin/master
 
-before_script: php vendor/vendors.php
+before_script:
+  - curl -s http://getcomposer.org/installer | php
+  - php composer.phar install --dev
 
 notifications:
   email:
