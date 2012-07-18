@@ -7,6 +7,13 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class FOSJsRoutingExtensionTest extends \PHPUnit_Framework_TestCase
 {
+    public function setUp()
+    {
+        if (!class_exists('Symfony\Component\DependencyInjection\ContainerBuilder')) {
+            $this->markTestSkipped('The DependencyInjection component is not available.');
+        }
+    }
+
     public function testLoadSetupsSerializerIfNotGiven()
     {
         $container = $this->load(array(array()));

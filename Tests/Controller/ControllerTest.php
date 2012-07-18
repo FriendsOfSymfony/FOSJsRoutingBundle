@@ -75,6 +75,10 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
 
     private function getSerializer()
     {
+        if (!class_exists('Symfony\Component\Serializer\Serializer')) {
+            $this->markTestSkipped('The Serializer component is not available.');
+        }
+
         return new Serializer(array(new GetSetMethodNormalizer()), array('json' => new JsonEncoder()));
     }
 }

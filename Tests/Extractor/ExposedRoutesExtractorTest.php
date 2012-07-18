@@ -22,6 +22,13 @@ use Symfony\Component\Routing\Route;
  */
 class ExposedRoutesExtractorTest extends \PHPUnit_Framework_TestCase
 {
+    public function setUp()
+    {
+        if (!class_exists('Symfony\Component\Routing\Route')) {
+            $this->markTestSkipped('The Routing component is not available.');
+        }
+    }
+
     public function testGetRoutes()
     {
         $router = $this->getRouter(array(
