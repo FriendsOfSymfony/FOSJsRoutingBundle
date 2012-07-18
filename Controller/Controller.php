@@ -66,8 +66,8 @@ class Controller
             }
         } else {
             $session = $request->getSession();
-            
-            if (null !== $session && $session->getFlashBag() instanceof AutoExpireFlashBag) {
+
+            if ($request->hasPreviousSession() && $session->getFlashBag() instanceof AutoExpireFlashBag) {
                 // keep current flashes for one more request if using AutoExpireFlashBag
                 $session->getFlashBag()->setAll($session->getFlashBag()->peekAll());
             }
