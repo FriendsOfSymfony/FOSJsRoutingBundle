@@ -59,7 +59,7 @@ class Controller
      */
     public function indexAction(Request $request, $_format)
     {
-        if (version_compare(Kernel::VERSION, '2.1.0-dev', '<')) {
+        if (version_compare(strtolower(Kernel::VERSION), '2.1.0-dev', '<')) {
             if (null !== $session = $request->getSession()) {
                 // keep current flashes for one more request
                 $session->setFlashes($session->getFlashes());
