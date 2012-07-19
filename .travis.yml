@@ -6,11 +6,11 @@ php:
 
 env:
   - SYMFONY_VERSION=v2.0.6
-  - SYMFONY_VERSION=origin/master
+  - SYMFONY_VERSION=dev-master
 
 before_script:
   - curl -s http://getcomposer.org/installer | php
-  - php composer.phar install --dev
+  - php composer.phar require --dev symfony/framework-bundle:${SYMFONY_VERSION} symfony/serializer:${SYMFONY_VERSION}
 
 notifications:
   email:
