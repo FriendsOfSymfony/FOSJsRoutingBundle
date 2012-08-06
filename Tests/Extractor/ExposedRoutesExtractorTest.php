@@ -40,7 +40,7 @@ class ExposedRoutesExtractorTest extends \PHPUnit_Framework_TestCase
         $extractor = new ExposedRoutesExtractor($router, array('.*'));
         $this->assertEquals(array(
             'literal' => new ExtractedRoute(array(array('text', '/literal')), array()),
-            'blog_post' => new ExtractedRoute(array(array('variable', '/', '[^/]+?', 'slug'), array('text', '/blog-post')), array()),
+            'blog_post' => new ExtractedRoute(array(array('variable', '/', '[^/]+', 'slug'), array('text', '/blog-post')), array()),
             'list' => new ExtractedRoute(array(array('variable', '/', '\d+', 'page'), array('text', '/list')), array('page' => 1)),
         ), $extractor->getRoutes());
     }
