@@ -24,5 +24,10 @@
     "autoload": {
         "psr-0": { "FOS\\JsRoutingBundle": "" }
     },
-    "target-dir": "FOS/JsRoutingBundle"
+    "target-dir": "FOS/JsRoutingBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
 }
