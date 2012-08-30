@@ -51,17 +51,11 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $extractor = $this->getContainer()->get('fos_js_routing.extractor');
-
-        $routes = array();
-        foreach ($extractor->getExposedRoutes() as $name => $route) {
-            $routes[$name] = $route->compile();
-        }
-
         if ($input->getArgument('name')) {
-            $this->outputRoute($output, $routes, $input->getArgument('name'));
+            $this->outputRoute($output, $input->getArgument('name'));
         } else {
-            $this->outputRoutes($output, $routes);
+            $extractor = $this->getContainer()->get('fos_js_routing.extractor');
+            $this->outputRoutes($output, $extractor->getExposedRoutes());
         }
     }
 }
