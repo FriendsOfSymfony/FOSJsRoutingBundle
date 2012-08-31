@@ -57,8 +57,8 @@ EOF
             if (!$route) {
                 throw new \InvalidArgumentException(sprintf('The route "%s" does not exist.', $input->getArgument('name')));
             }
-            $exposedRouteNames = array_keys($extractor->getExposedRoutes());
-            if (in_array($input->getArgument('name'), $exposedRouteNames)) {
+            $exposedRoutes = $extractor->getExposedRoutes();
+            if (isset($exposedRoutes[$input->getArgument('name')]) {
                 $this->outputRoute($output, $input->getArgument('name'));
             } else {
                 throw new \InvalidArgumentException(sprintf('The route "%s" was found, but it is not an exposed route.', $input->getArgument('name')));
