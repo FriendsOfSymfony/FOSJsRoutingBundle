@@ -20,7 +20,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
-        unlink($this->cacheDir.'/fosJsRouting.json');
+        unlink($this->cacheDir.'/fosJsRouting/data.json');
     }
 
     public function testIndexAction()
@@ -31,27 +31,28 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
                 'literal' => new ExtractedRoute(array(array('text', '/homepage')), array()),
                 'blog'    => new ExtractedRoute(array(array('variable', '/', '[^/]+?', 'slug'), array('text', '/blog-post')), array()),
             )),
-            $this->cacheDir
+            $this->cacheDir,
+            array()
         );
 
         $response = $controller->indexAction(Request::create('/'), 'json');
-        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[]},"blog":{"tokens":[["variable","\/","[^\/]+?","slug"],["text","\/blog-post"]],"defaults":[]}}}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[]},"blog":{"tokens":[["variable","\/","[^\/]+?","slug"],["text","\/blog-post"]],"defaults":[]}},"prefix":""}', $response->getContent());
     }
 
     public function testGenerateWithCallback()
     {
-        $controller = new Controller($this->getSerializer(), $this->getExtractor(), $this->cacheDir);
+        $controller = new Controller($this->getSerializer(), $this->getExtractor(), $this->cacheDir, array());
 
         $response = $controller->indexAction(Request::create('/', 'GET', array('callback' => 'foo')), 'json');
-        $this->assertEquals('foo({"base_url":"","routes":[]});', $response->getContent());
+        $this->assertEquals('foo({"base_url":"","routes":[],"prefix":""});', $response->getContent());
     }
 
     public function testIndexActionWithoutRoutes()
     {
-        $controller = new Controller($this->getSerializer(), $this->getExtractor(), sys_get_temp_dir());
+        $controller = new Controller($this->getSerializer(), $this->getExtractor(), sys_get_temp_dir(), array());
 
         $response = $controller->indexAction(Request::create('/'), 'json');
-        $this->assertEquals('{"base_url":"","routes":[]}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":[],"prefix":""}', $response->getContent());
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('application/json', $response->headers->get('Content-Type'));
     }
