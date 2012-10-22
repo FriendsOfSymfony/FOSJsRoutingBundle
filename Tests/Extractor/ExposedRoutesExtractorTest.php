@@ -38,7 +38,13 @@ class ExposedRoutesExtractorTest extends \PHPUnit_Framework_TestCase
             'list' => new Route('/list/{page}', array('page' => 1), array('page' => '\d+')),
         ));
 
-        if (defined('Symfony\Component\HttpKernel\Kernel::VERSION_ID') && version_compare(Kernel::VERSION_ID, '20100', '>=')) {
+        if (defined('Symfony\Component\HttpKernel\Kernel::VERSION') && version_compare(Kernel::VERSION, '2.2', '>=')) {
+            $expected = array(
+                'literal'   => new ExtractedRoute(array(array('text', '/literal')), array()),
+                'blog_post' => new ExtractedRoute(array(array('variable', '/', '[^/]++', 'slug'), array('text', '/blog-post')), array()),
+                'list'      => new ExtractedRoute(array(array('variable', '/', '\d+', 'page'), array('text', '/list')), array('page' => 1))
+            );
+        } elseif (defined('Symfony\Component\HttpKernel\Kernel::VERSION_ID') && version_compare(Kernel::VERSION_ID, '20100', '>=')) {
             $expected = array(
                 'literal'   => new ExtractedRoute(array(array('text', '/literal')), array()),
                 'blog_post' => new ExtractedRoute(array(array('variable', '/', '[^/]+', 'slug'), array('text', '/blog-post')), array()),
