@@ -39,6 +39,16 @@ fos.Router.prototype.setRoutes = function(routes) {
 };
 
 /**
+ * Gets a route using its' name
+ * 
+ * @param {string} name Route name
+ * @return {?fos.Router.Route}
+ */
+fos.Router.prototype.getRoute = function(name) {
+    return this.routes_.get(name, null);
+};
+
+/**
  * @param {string} baseUrl
  */
 fos.Router.prototype.setBaseUrl = function(baseUrl) {
