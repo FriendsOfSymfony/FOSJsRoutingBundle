@@ -14,7 +14,7 @@ goog.exportSymbol('fos.Router.setData', function(data) {
     router.setBaseUrl(/** @type {string} */ (data['base_url']));
     router.setRoutes(/** @type {Object.<string, fos.Router.Route>} */ (data['routes']));
     if ('prefix' in data) {
-      router.setPrefix(/** @type {string} */ (data['prefix']));
+        router.setPrefix(/** @type {string} */ (data['prefix']));
     }
     router.setHost(/** @type {string} */ (data['host']));
     router.setScheme(/** @type {string} */ (data['scheme']));
@@ -24,7 +24,6 @@ goog.exportProperty(fos.Router.prototype, 'setRoutes', fos.Router.prototype.setR
 goog.exportProperty(fos.Router.prototype, 'setBaseUrl', fos.Router.prototype.setBaseUrl);
 goog.exportProperty(fos.Router.prototype, 'getBaseUrl', fos.Router.prototype.getBaseUrl);
 goog.exportProperty(fos.Router.prototype, 'generate', fos.Router.prototype.generate);
-goog.exportProperty(fos.Router.prototype, 'generateAbsolute', fos.Router.prototype.generateAbsolute);
 goog.exportProperty(fos.Router.prototype, 'setPrefix', fos.Router.prototype.setPrefix);
 goog.exportProperty(fos.Router.prototype, 'getRoute', fos.Router.prototype.getRoute);
 

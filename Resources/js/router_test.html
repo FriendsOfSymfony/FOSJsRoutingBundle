@@ -122,6 +122,26 @@
             }));
         }
 
+        function testGenerateWithExtraParamsDeep() {
+            var router = new fos.Router(undefined, {
+                foo: {
+                    tokens: [['variable', '/', '', 'bar']],
+                    defaults: {},
+                    requirements: {}
+                }
+            });
+
+            assertEquals('/baz?foo%5B%5D=1&foo%5B1%5D%5B%5D=1&foo%5B1%5D%5B%5D=2&foo%5B1%5D%5B%5D=3&foo%5B1%5D%5B%5D=foo&foo%5B%5D=3&foo%5B%5D=4&foo%5B%5D=bar&foo%5B5%5D%5B%5D=1&foo%5B5%5D%5B%5D=2&foo%5B5%5D%5B%5D=3&foo%5B5%5D%5B%5D=baz&baz%5Bfoo%5D=bar+foo&baz%5Bbar%5D=baz&bob=cat', router.generate('foo', {
+                bar: 'baz', // valid param, not included in the query string
+                foo: [1, [1, 2, 3, 'foo'], 3, 4, 'bar', [1, 2, 3, 'baz']],
+                baz: {
+                    foo : 'bar foo',
+                    bar : 'baz'
+                },
+                bob: 'cat'
+            }));
+        }
+
         function testGenerateThrowsErrorWhenRequiredParameterWasNotGiven() {
             var router = new fos.Router({base_url: ''}, {
                 foo: {
