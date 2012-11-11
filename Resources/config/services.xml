@@ -11,6 +11,8 @@
         <service id="fos_js_routing.extractor" class="%fos_js_routing.extractor.class%">
             <argument type="service" id="router" />
             <argument></argument>
+            <argument>%kernel.cache_dir%</argument>
+            <argument>%kernel.bundles%</argument>
         </service>
     </services>
 

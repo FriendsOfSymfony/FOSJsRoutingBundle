@@ -40,6 +40,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->prototype('scalar')->end()
                 ->end()
+                ->scalarNode('request_context_base_url')->defaultNull()->end()
             ->end();
 
         return $builder;
