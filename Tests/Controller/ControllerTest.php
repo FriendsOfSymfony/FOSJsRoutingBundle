@@ -15,7 +15,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->cachePath = sys_get_temp_dir() . '/fosJsRouting/data.json';
+        $this->cachePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'fosJsRouting' . DIRECTORY_SEPARATOR . 'data.json';
     }
 
     public function tearDown()
@@ -57,7 +57,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
 
     private function getExtractor(array $exposedRoutes = array(), $baseUrl = '')
     {
-        $extractor = $this->getMock('FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface');
+        $extractor = $this->getMock('FOS\\JsRoutingBundle\\Extractor\\ExposedRoutesExtractorInterface');
         $extractor
             ->expects($this->any())
             ->method('getRoutes')
@@ -84,7 +84,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
 
     private function getSerializer()
     {
-        if (!class_exists('Symfony\Component\Serializer\Serializer')) {
+        if (!class_exists('Symfony\\Component\\Serializer\\Serializer')) {
             $this->markTestSkipped('The Serializer component is not available.');
         }
 
