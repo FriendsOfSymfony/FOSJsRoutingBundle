@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag;
-use JMS\I18nRoutingBundle\Router\I18nLoader;
 
 /**
  * Controller class.
@@ -35,10 +34,6 @@ class Controller
      */
     protected $exposedRoutesExtractor;
 
-    protected $cacheDir;
-
-    protected $bundles;
-
     protected $debug;
 
     /**
@@ -46,16 +41,12 @@ class Controller
      *
      * @param mixed $serializer any object with a serialize($data, $format) method
      * @param \FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface $exposedRoutesExtractor   The extractor service.
-     * @param string $cacheDir
-     * @param array $bundles
      * @param boolean $debug
      */
-    public function __construct($serializer, ExposedRoutesExtractorInterface $exposedRoutesExtractor, $cacheDir, $bundles, $debug = false)
+    public function __construct($serializer, ExposedRoutesExtractorInterface $exposedRoutesExtractor, $debug = false)
     {
         $this->serializer = $serializer;
         $this->exposedRoutesExtractor = $exposedRoutesExtractor;
-        $this->cacheDir = $cacheDir;
-        $this->bundles = $bundles;
         $this->debug = $debug;
     }
 
@@ -78,27 +69,13 @@ class Controller
             }
         }
 
-        $cachePath = $this->cacheDir.'/fosJsRouting';
-        if (!file_exists($cachePath)) {
-            mkdir($cachePath);
-        }
-
-        $prefix = '';
-
-        if (isset($this->bundles['JMSI18nRoutingBundle'])) {
-            $prefix = $request->getLocale().I18nLoader::ROUTING_PREFIX;
-            $cachePath = $cachePath . '/data.' . $request->getLocale() . '.json';
-        } else {
-            $cachePath = $cachePath . '/data.json';
-        }
-
-        $cache = new ConfigCache($cachePath, $this->debug);
+        $cache = new ConfigCache($this->exposedRoutesExtractor->getCachePath($request), $this->debug);
         if (!$cache->isFresh()) {
             $content = $this->serializer->serialize(
                 new RoutesResponse(
                     $this->exposedRoutesExtractor->getBaseUrl(),
                     $this->exposedRoutesExtractor->getRoutes(),
-                    $prefix
+                    $this->exposedRoutesExtractor->getPrefix($request)
                 ),
                 'json'
             );

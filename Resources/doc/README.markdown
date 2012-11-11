@@ -9,7 +9,7 @@ Installation
 Add this bundle as a submodule:
 
     git submodule add git://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git vendor/bundles/FOS/JsRoutingBundle
-    
+
 Or add the following lines in your `deps` file:
 
 ``` ini
@@ -75,7 +75,7 @@ Imagine some route definitions:
             expose: true
 
 Or with annotations:
-   
+
     # src/Acme/DemoBundle/Controller/DefaultController.php
     /**
      * @Route ("/foo/{id}/bar", name="my_route_to_expose", options={"expose"=true})
@@ -126,10 +126,44 @@ You can prevent to expose a route by configuring it as below:
             expose: false
 
 
-Command
--------
+Commands
+--------
 
-A command is provided to list all exposed routes: `fos:js-routing:debug`:
+### fos:js-routing:dump
+
+This command dumps the route information into a file so that instead of having
+the controller generated javascript, you can use a normal file. This also allows
+to combine the routes with the other javascript files in assetic.
+
+
+    $ php app/console fos:js-routing:dump
+
+Instead of the line
+
+    <script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
+you now include this as
+
+    <script type="text/javascript" src="/js/fos_js_routes.js"></script>
+
+Or inside assetic, do
+
+{% javascripts filter='?yui_js'
+    'bundles/fosjsrouting/js/router.js'
+    'js/fos_js_routes.js'
+%}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
+
+*Hint*: If you are using JMSI18nRoutingBundle, you need to run the command with
+the --locale parameter once for each locale you use and adjust your include paths
+accordingly.
+
+
+### fos:js-routing:debug
+
+This command lists all exposed routes
 
     $ php app/console fos:js-routing:debug [name]
 

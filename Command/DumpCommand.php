@@ -41,8 +41,15 @@ class DumpCommand extends ContainerAwareCommand
             ->addOption(
                 'target',
                 null,
-                InputOption::VALUE_REQUIRED,
+                InputOption::VALUE_OPTIONAL,
                 'Override the target directory to dump routes in.'
+            )
+            ->addOption(
+               'locale',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Set locale to be used with JMSI18nRoutingBundle.',
+                ''
             )
         ;
     }
@@ -97,18 +104,20 @@ class DumpCommand extends ContainerAwareCommand
 
         $output->writeln('<info>[file+]</info> ' . $this->targetPath);
 
+        $baseUrl = $this->getContainer()->hasParameter('fos_js_routing.request_context_base_url') ?
+            $this->getContainer()->getParameter('fos_js_routing.request_context_base_url') :
+            $this->getExposedRoutesExtractor()->getBaseUrl()
+        ;
+
         $content = $this->getSerializer()->serialize(
             new RoutesResponse(
-                $this->getExposedRoutesExtractor()->getBaseUrl(),
-                $this->getExposedRoutesExtractor()->getRoutes()
+                $baseUrl,
+                $this->getExposedRoutesExtractor()->getRoutes(),
+                $input->getOption('locale')
             ),
             'json'
         );
 
-        if (!$input->getOption('callback')) {
-            throw new \RuntimeException('Callback option value cannot be empty.');
-
-        }
         $content = sprintf("%s(%s);", $input->getOption('callback'), $content);
 
         if (false === @file_put_contents($this->targetPath, $content)) {
