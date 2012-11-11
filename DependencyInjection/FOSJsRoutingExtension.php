@@ -49,7 +49,7 @@ class FOSJsRoutingExtension extends Extension
             ->getDefinition('fos_js_routing.extractor')
             ->replaceArgument(1, $config['routes_to_expose']);
 
-        if (isset($config['request_context.base_url'])) {
+        if (isset($config['request_context_base_url'])) {
             $container->setParameter('fos_js_routing.request_context_base_url', $config['request_context_base_url']);
         }
     }
