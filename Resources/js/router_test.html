@@ -114,6 +114,29 @@
 
             assertEquals('/foo', router.getBaseUrl());
         }
+
+        function testGeti18n() {
+            var router = new fos.Router({base_url: '/foo', prefix: 'en__RG__'}, {
+                en__RG__homepage: {
+                    tokens: [['text', '/bar']],
+                    defaults: {}
+                },
+                es__RG__homepage: {
+                    tokens: [['text', '/es/bar']],
+                    defaults: {}
+                },
+                _admin: {
+                    tokens: [['text', '/admin']],
+                    defaults: {}
+                }
+            });
+
+            assertEquals('/foo/bar', router.generate('homepage'));
+            assertEquals('/foo/admin', router.generate('_admin'));
+
+            router.setPrefix('es__RG__');
+            assertEquals('/foo/es/bar', router.generate('homepage'));
+        }
     </script>
 </body>
 </html>

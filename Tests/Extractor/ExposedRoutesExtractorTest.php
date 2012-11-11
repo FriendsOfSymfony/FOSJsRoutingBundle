@@ -14,7 +14,7 @@ namespace FOS\JsRoutingBundle\Tests\Extractor;
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor;
 use FOS\JsRoutingBundle\Extractor\ExtractedRoute;
 use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * ExposedRoutesExtractorTest class.
@@ -23,6 +23,13 @@ use Symfony\Component\Routing\Router;
  */
 class ExposedRoutesExtractorTest extends \PHPUnit_Framework_TestCase
 {
+    public function setUp()
+    {
+        if (!class_exists('Symfony\Component\Routing\Route')) {
+            $this->markTestSkipped('The Routing component is not available.');
+        }
+    }
+
     public function testGetRoutes()
     {
         $router = $this->getRouter(array(
@@ -31,12 +38,28 @@ class ExposedRoutesExtractorTest extends \PHPUnit_Framework_TestCase
             'list' => new Route('/list/{page}', array('page' => 1), array('page' => '\d+')),
         ));
 
+        if (defined('Symfony\Component\HttpKernel\Kernel::VERSION') && version_compare(Kernel::VERSION, '2.2', '>=')) {
+            $expected = array(
+                'literal'   => new ExtractedRoute(array(array('text', '/literal')), array()),
+                'blog_post' => new ExtractedRoute(array(array('variable', '/', '[^/]++', 'slug'), array('text', '/blog-post')), array()),
+                'list'      => new ExtractedRoute(array(array('variable', '/', '\d+', 'page'), array('text', '/list')), array('page' => 1))
+            );
+        } elseif (defined('Symfony\Component\HttpKernel\Kernel::VERSION_ID') && version_compare(Kernel::VERSION_ID, '20100', '>=')) {
+            $expected = array(
+                'literal'   => new ExtractedRoute(array(array('text', '/literal')), array()),
+                'blog_post' => new ExtractedRoute(array(array('variable', '/', '[^/]+', 'slug'), array('text', '/blog-post')), array()),
+                'list'      => new ExtractedRoute(array(array('variable', '/', '\d+', 'page'), array('text', '/list')), array('page' => 1))
+            );
+        } else {
+            $expected = array(
+                'literal'   => new ExtractedRoute(array(array('text', '/literal')), array()),
+                'blog_post' => new ExtractedRoute(array(array('variable', '/', '[^/]+?', 'slug'), array('text', '/blog-post')), array()),
+                'list'      => new ExtractedRoute(array(array('variable', '/', '\d+', 'page'), array('text', '/list')), array('page' => 1))
+            );
+        }
+
         $extractor = new ExposedRoutesExtractor($router, array('.*'));
-        $this->assertEquals(array(
-            'literal' => new ExtractedRoute(array(array('text', '/literal')), array()),
-            'blog_post' => new ExtractedRoute(array(array('variable', '/', '[^/]+?', 'slug'), array('text', '/blog-post')), array()),
-            'list' => new ExtractedRoute(array(array('variable', '/', '\d+', 'page'), array('text', '/list')), array('page' => 1)),
-        ), $extractor->getRoutes());
+        $this->assertEquals($expected, $extractor->getRoutes());
     }
 
     public function testGetRoutesWithPatterns()

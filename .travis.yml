@@ -5,10 +5,13 @@ php:
   - 5.4
 
 env:
-  - SYMFONY_VERSION=v2.0.6
-  - SYMFONY_VERSION=origin/master
+  - SYMFONY_VERSION=2.0.*
+  - SYMFONY_VERSION=2.1.*
+  - SYMFONY_VERSION=dev-master
 
-before_script: php vendor/vendors.php
+before_script:
+  - curl -s http://getcomposer.org/installer | php
+  - php composer.phar require symfony/framework-bundle:${SYMFONY_VERSION} symfony/serializer:${SYMFONY_VERSION}
 
 notifications:
   email:
