@@ -115,6 +115,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
         if (isset($this->bundles['JMSI18nRoutingBundle'])) {
             return $locale . I18nLoader::ROUTING_PREFIX;
         }
+
         return '';
     }
 
@@ -133,6 +134,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
         } else {
             $cachePath = $cachePath . '/data.json';
         }
+
         return $cachePath;
     }
 
@@ -155,6 +157,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
         foreach ($this->routesToExpose as $toExpose) {
             $patterns[] = '(' . $toExpose . ')';
         }
+
         return implode($patterns, '|');
     }
 }

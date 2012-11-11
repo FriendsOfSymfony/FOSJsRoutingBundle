@@ -74,7 +74,7 @@ class DumpCommand extends ContainerAwareCommand
     /**
      * @return \FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface
      */
-    public function getExposedRoutesExtractor()
+    protected function getExposedRoutesExtractor()
     {
         return $this->getContainer()->get('fos_js_routing.extractor');
     }
@@ -82,7 +82,7 @@ class DumpCommand extends ContainerAwareCommand
     /**
      * @return \Symfony\Component\Serializer\Serializer
      */
-    public function getSerializer()
+    protected function getSerializer()
     {
         return $this->getContainer()->get('fos_js_routing.serializer');
     }
