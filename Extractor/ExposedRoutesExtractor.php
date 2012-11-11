@@ -124,15 +124,15 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
      */
     public function getCachePath($locale)
     {
-        $cachePath = $this->cacheDir.'/fosJsRouting';
+        $cachePath = $this->cacheDir . DIRECTORY_SEPARATOR . 'fosJsRouting';
         if (!file_exists($cachePath)) {
             mkdir($cachePath);
         }
 
         if (isset($this->bundles['JMSI18nRoutingBundle'])) {
-            $cachePath = $cachePath . '/data.' . $locale . '.json';
+            $cachePath = $cachePath . DIRECTORY_SEPARATOR . 'data.' . $locale . '.json';
         } else {
-            $cachePath = $cachePath . '/data.json';
+            $cachePath = $cachePath . DIRECTORY_SEPARATOR . 'data.json';
         }
 
         return $cachePath;

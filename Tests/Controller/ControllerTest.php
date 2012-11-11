@@ -11,16 +11,16 @@ use Symfony\Component\Serializer\Serializer;
 
 class ControllerTest extends \PHPUnit_Framework_TestCase
 {
-    private $cacheDir;
+    private $cachePath;
 
     public function setUp()
     {
-        $this->cacheDir = sys_get_temp_dir();
+        $this->cachePath = sys_get_temp_dir() . '/fosJsRouting/data.json';
     }
 
     public function tearDown()
     {
-        unlink($this->cacheDir.'/fosJsRouting/data.json');
+        unlink($this->cachePath);
     }
 
     public function testIndexAction()
@@ -30,9 +30,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
             $this->getExtractor(array(
                 'literal' => new ExtractedRoute(array(array('text', '/homepage')), array()),
                 'blog'    => new ExtractedRoute(array(array('variable', '/', '[^/]+?', 'slug'), array('text', '/blog-post')), array()),
-            )),
-            $this->cacheDir,
-            array()
+            ))
         );
 
         $response = $controller->indexAction(Request::create('/'), 'json');
@@ -41,7 +39,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testGenerateWithCallback()
     {
-        $controller = new Controller($this->getSerializer(), $this->getExtractor(), $this->cacheDir, array());
+        $controller = new Controller($this->getSerializer(), $this->getExtractor());
 
         $response = $controller->indexAction(Request::create('/', 'GET', array('callback' => 'foo')), 'json');
         $this->assertEquals('foo({"base_url":"","routes":[],"prefix":""});', $response->getContent());
@@ -69,6 +67,16 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('getBaseUrl')
             ->will($this->returnValue($baseUrl))
+        ;
+        $extractor
+            ->expects($this->any())
+            ->method('getCachePath')
+            ->will($this->returnValue($this->cachePath))
+        ;
+        $extractor
+            ->expects($this->any())
+            ->method('getPrefix')
+            ->will($this->returnValue(''))
         ;
 
         return $extractor;
