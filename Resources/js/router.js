@@ -60,6 +60,36 @@ fos.Router.prototype.setPrefix = function(prefix) {
 };
 
 /**
+ * Builds query string params added to a URL.
+ * Port of jQuery's $.param() function, so credit is due there.
+ * 
+ * @param {string} prefix
+ * @param {Array|Object|string} params
+ * @param {Function} add
+ */
+fos.Router.prototype.buildQueryParams = function(prefix, params, add) {
+    var self = this;
+    var name;
+    var rbracket = new RegExp('/\[\]$/');
+
+    if (params instanceof Array) {
+        goog.array.forEach(params, function(val, i) {
+            if (rbracket.test(prefix)) {
+                add(prefix, val);
+            } else {
+                self.buildQueryParams(prefix + '[' + (typeof val === 'object' ? i : '') + ']', val, add);
+            }
+        });
+    } else if (typeof params === 'object') {
+        for (name in params) {
+            this.buildQueryParams(prefix + '[' + name + ']', params[name], add);
+        }
+    } else {
+        add(prefix, params);
+    }
+};
+
+/**
  * Generates the URL for a route.
  *
  * @param {string} name
@@ -126,7 +156,23 @@ fos.Router.prototype.generate = function(name, opt_params) {
     }
 
     if (goog.object.getCount(unusedParams) > 0) {
-        url = goog.uri.utils.appendParamsFromMap(url, unusedParams);
+        var prefix;
+        var queryParams = [];
+        var add = function(key, value) {
+            // if value is a function then call it and assign it's return value as value
+            value = (typeof value === 'function') ? value() : value;
+
+            // change null to empty string
+            value = (value == null) ? '' : value;
+
+            queryParams.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+        };
+
+        for (prefix in unusedParams) {
+            this.buildQueryParams(prefix, unusedParams[prefix], add);
+        }
+
+        url = url + '?' + queryParams.join('&').replace(/%20/g, '+');
     }
 
     return this.context_.base_url + url;
