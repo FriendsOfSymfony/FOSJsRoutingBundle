@@ -62,7 +62,6 @@ class DumpCommand extends ContainerAwareCommand
             sprintf('%s/../web/js/fos_js_routes.js', $this->getContainer()->getParameter('kernel.root_dir'));
     }
 
-
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Dumping exposed routes.');

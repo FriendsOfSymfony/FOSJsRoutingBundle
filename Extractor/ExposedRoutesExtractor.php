@@ -12,7 +12,6 @@
 namespace FOS\JsRoutingBundle\Extractor;
 
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\HttpFoundation\Request;
 use JMS\I18nRoutingBundle\Router\I18nLoader;
 
 /**
@@ -40,10 +39,10 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * Default constructor.
      *
-     * @param RouterInterface $router  The router.
-     * @param array $routesToExpose Some route names to expose.
-     * @param string $cacheDir
-     * @param array $bundles list of loaded bundles to check when generating the prefix
+     * @param RouterInterface $router         The router.
+     * @param array           $routesToExpose Some route names to expose.
+     * @param string          $cacheDir
+     * @param array           $bundles        list of loaded bundles to check when generating the prefix
      */
     public function __construct(RouterInterface $router, array $routesToExpose = array(), $cacheDir, $bundles = array())
     {

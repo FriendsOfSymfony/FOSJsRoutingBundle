@@ -13,7 +13,6 @@ namespace FOS\JsRoutingBundle\Controller;
 
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
 use FOS\JsRoutingBundle\Response\RoutesResponse;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,10 +22,13 @@ use Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag;
 /**
  * Controller class.
  *
- * @author      William DURAND <william.durand1@gmail.com>
+ * @author William DURAND <william.durand1@gmail.com>
  */
 class Controller
 {
+    /**
+     * @var mixed
+     */
     protected $serializer;
 
     /**
@@ -34,14 +36,17 @@ class Controller
      */
     protected $exposedRoutesExtractor;
 
+    /**
+     * @var boolean
+     */
     protected $debug;
 
     /**
      * Default constructor.
      *
-     * @param mixed $serializer any object with a serialize($data, $format) method
-     * @param \FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface $exposedRoutesExtractor   The extractor service.
-     * @param boolean $debug
+     * @param mixed                           $serializer             Any object with a serialize($data, $format) method
+     * @param ExposedRoutesExtractorInterface $exposedRoutesExtractor The extractor service.
+     * @param boolean                         $debug
      */
     public function __construct($serializer, ExposedRoutesExtractorInterface $exposedRoutesExtractor, $debug = false)
     {
