@@ -59,14 +59,14 @@ fos.Router.prototype.setPrefix = function(prefix) {
   this.context_.prefix = prefix;
 };
 
+
 /**
- * Generates the URL for a route.
- *
+ * Returns a raw route object
+ * 
  * @param {string} name
- * @param {Object.<string, string>=} opt_params
- * @return {string}
+ * @return {fos.Router.Route}
  */
-fos.Router.prototype.generate = function(name, opt_params) {
+fos.Router.prototype.getRoute = function(name) {
     var prefixedName = this.context_.prefix + name;
     if (!this.routes_.containsKey(prefixedName)) {
         // Check first for default route before failing
@@ -77,7 +77,18 @@ fos.Router.prototype.generate = function(name, opt_params) {
       name = prefixedName;
     }
 
-    var route = /** @type {fos.Router.Route} */ (this.routes_.get(name));
+    return (this.routes_.get(name));
+}
+
+/**
+ * Generates the URL for a route.
+ *
+ * @param {string} name
+ * @param {Object.<string, string>=} opt_params
+ * @return {string}
+ */
+fos.Router.prototype.generate = function(name, opt_params) {
+    var route = (this.getRoute(name));
     var params = opt_params || {};
     var unusedParams = goog.object.clone(params);
     var url = '';
