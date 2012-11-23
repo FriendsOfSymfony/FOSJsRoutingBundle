@@ -23,5 +23,6 @@ goog.exportProperty(fos.Router.prototype, 'setBaseUrl', fos.Router.prototype.set
 goog.exportProperty(fos.Router.prototype, 'getBaseUrl', fos.Router.prototype.getBaseUrl);
 goog.exportProperty(fos.Router.prototype, 'generate', fos.Router.prototype.generate);
 goog.exportProperty(fos.Router.prototype, 'setPrefix', fos.Router.prototype.setPrefix);
+goog.exportProperty(fos.Router.prototype, 'getRoute', fos.Router.prototype.getRoute);
 
 window['Routing'] = fos.Router.getInstance();
