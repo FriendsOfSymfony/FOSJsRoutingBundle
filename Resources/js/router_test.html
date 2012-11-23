@@ -137,6 +137,25 @@
             router.setPrefix('es__RG__');
             assertEquals('/foo/es/bar', router.generate('homepage'));
         }
+
+        function testgetRoute() {
+            var router = new fos.Router({base_url: ''}, {
+                blog_post: {
+                    tokens: [['variable', '/', '[^/]+?', 'slug'], ['text', '/blog-post']],
+                    defaults: {}
+                }
+            });
+
+            var expected = {
+                'defaults' : {},
+                'tokens' : [
+                    ['variable', '/', '[^/]+?', 'slug'],
+                    ['text', '/blog-post']
+                ]
+            };
+
+            assertObjectEquals(expected, router.getRoute('blog_post'));
+        }
     </script>
 </body>
 </html>
