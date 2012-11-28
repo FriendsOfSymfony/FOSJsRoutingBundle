@@ -11,7 +11,7 @@ goog.require('goog.uri.utils');
  * @param {Object.<string, fos.Router.Route>=} opt_routes
  */
 fos.Router = function(opt_context, opt_routes) {
-    this.context_ = opt_context || {base_url: '', prefix: ''};
+    this.context_ = opt_context || {base_url: '', prefix: '', host: '', scheme: ''};
     this.setRoutes(opt_routes || {});
 };
 goog.addSingletonGetter(fos.Router);
@@ -19,7 +19,8 @@ goog.addSingletonGetter(fos.Router);
 /**
  * @typedef {{
  *     tokens: (Array.<Array.<string>>),
- *     defaults: (Object.<string, string>)
+ *     defaults: (Object.<string, string>),
+ *     requirements: Object
  * }}
  */
 fos.Router.Route;
@@ -50,13 +51,41 @@ fos.Router.prototype.setBaseUrl = function(baseUrl) {
  */
 fos.Router.prototype.getBaseUrl = function() {
     return this.context_.base_url;
-}
+};
 
 /**
  * @param {string} prefix
  */
 fos.Router.prototype.setPrefix = function(prefix) {
   this.context_.prefix = prefix;
+};
+
+/**
+ * @param {string} scheme
+ */
+fos.Router.prototype.setScheme = function(scheme) {
+    this.context_.scheme = scheme;
+};
+
+/**
+ * @return {string}
+ */
+fos.Router.prototype.getScheme = function() {
+    return this.context_.scheme;
+};
+
+/**
+ * @param {string} host
+ */
+fos.Router.prototype.setHost = function(host) {
+    this.context_.host = host;
+};
+
+/**
+ * @return {string}
+ */
+fos.Router.prototype.getHost = function() {
+    return this.context_.host;
 };
 
 
@@ -78,22 +107,23 @@ fos.Router.prototype.getRoute = function(name) {
     }
 
     return (this.routes_.get(name));
-}
+};
+
 
 /**
  * Generates the URL for a route.
  *
  * @param {string} name
- * @param {Object.<string, string>=} opt_params
+ * @param {Object.<string, string>} opt_params
+ * @param {boolean} absolute
  * @return {string}
  */
-fos.Router.prototype.generate = function(name, opt_params) {
+fos.Router.prototype.generate = function(name, opt_params, absolute) {
     var route = (this.getRoute(name));
     var params = opt_params || {};
     var unusedParams = goog.object.clone(params);
     var url = '';
     var optional = true;
-
     goog.array.forEach(route.tokens, function(token) {
         if ('text' === token[0]) {
             url = token[1] + url;
@@ -136,10 +166,19 @@ fos.Router.prototype.generate = function(name, opt_params) {
         url = '/';
     }
 
+    url = this.context_.base_url + url;
+    if(goog.object.containsKey(route.requirements, "_scheme")){
+    	if(this.getScheme() != route.requirements["_scheme"]){
+    		url = route.requirements["_scheme"] + "://" + this.getHost() + url;
+    	}
+    }else if(absolute === true){
+		url = this.getScheme() + "://" + this.getHost() + url;
+	}
+    
     if (goog.object.getCount(unusedParams) > 0) {
         url = goog.uri.utils.appendParamsFromMap(url, unusedParams);
     }
-
-    return this.context_.base_url + url;
+    
+    return url;
 };
 

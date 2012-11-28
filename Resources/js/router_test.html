@@ -14,7 +14,8 @@
             var router = new fos.Router({base_url: ''}, {
                 literal: {
                     tokens: [['text', '/homepage']],
-                    defaults: {}
+                    defaults: {},
+                    requirements : {}
                 }
             });
 
@@ -25,7 +26,8 @@
             var router = new fos.Router({base_url: ''}, {
                 blog_post: {
                     tokens: [['variable', '/', '[^/]+?', 'slug'], ['text', '/blog-post']],
-                    defaults: {}
+                    defaults: {},
+                    requirements : {}
                 }
             });
 
@@ -36,18 +38,44 @@
             var router = new fos.Router({base_url: '/foo'}, {
                 homepage: {
                     tokens: [['text', '/bar']],
-                    defaults: {}
+                    defaults: {},
+                    requirements : {}
                 }
             });
 
             assertEquals('/foo/bar', router.generate('homepage'));
+        }
+        
+        function testGenerateUsesSchemeRequirements() {
+            var router = new fos.Router({base_url: '/foo', host: "localhost"}, {
+                homepage: {
+                    tokens: [['text', '/bar']],
+                    defaults: {},
+                    requirements: {"_scheme": "https"}
+                }
+            });
+
+            assertEquals('https://localhost/foo/bar', router.generate('homepage'));
+        }
+        
+        function testGenerateUsesAbsoluteUrl() {
+            var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
+                homepage: {
+                    tokens: [['text', '/bar']],
+                    defaults: {},
+                    requirements : {}
+                }
+            });
+
+            assertEquals('http://localhost/foo/bar', router.generate('homepage', [], true));
         }
 
         function testGenerateWithOptionalTrailingParam() {
             var router = new fos.Router({base_url: ''}, {
                 posts: {
                     tokens: [['variable', '.', '', '_format'], ['text', '/posts']],
-                    defaults: {}
+                    defaults: {},
+                    requirements : {}
                 }
             });
 
@@ -58,7 +86,8 @@
             var router = new fos.Router({base_url: ''}, {
                 posts: {
                     tokens: [['variable', '/', '.+', 'id'], ['text', '/blog-post']],
-                    defaults: {}
+                    defaults: {},
+                    requirements : {}
                 }
             });
             assertEquals('/blog-post/foo/bar', router.generate('posts', {id: 'foo/bar'}));
@@ -69,7 +98,8 @@
             var router = new fos.Router(undefined, {
                 foo: {
                     tokens: [['variable', '/', '', 'bar']],
-                    defaults: {}
+                    defaults: {},
+                    requirements : {}
                 }
             });
 
@@ -83,7 +113,8 @@
             var router = new fos.Router({base_url: ''}, {
                 foo: {
                     tokens: [['text', '/moo'], ['variable', '/', '', 'bar']],
-                    defaults: {}
+                    defaults: {},
+                    requirements : {}
                 }
             });
 
@@ -108,7 +139,8 @@
             var router = new fos.Router({base_url: '/foo'}, {
                 homepage: {
                     tokens: [['text', '/bar']],
-                    defaults: {}
+                    defaults: {},
+                    requirements : {}
                 }
             });
 
@@ -119,15 +151,18 @@
             var router = new fos.Router({base_url: '/foo', prefix: 'en__RG__'}, {
                 en__RG__homepage: {
                     tokens: [['text', '/bar']],
-                    defaults: {}
+                    defaults: {},
+                    requirements : {}
                 },
                 es__RG__homepage: {
                     tokens: [['text', '/es/bar']],
-                    defaults: {}
+                    defaults: {},
+                    requirements : {}
                 },
                 _admin: {
                     tokens: [['text', '/admin']],
-                    defaults: {}
+                    defaults: {},
+                    requirements : {}
                 }
             });
 
@@ -142,7 +177,8 @@
             var router = new fos.Router({base_url: ''}, {
                 blog_post: {
                     tokens: [['variable', '/', '[^/]+?', 'slug'], ['text', '/blog-post']],
-                    defaults: {}
+                    defaults: {},
+                    requirements : {"_scheme": "http"}
                 }
             });
 
@@ -150,8 +186,9 @@
                 'defaults' : {},
                 'tokens' : [
                     ['variable', '/', '[^/]+?', 'slug'],
-                    ['text', '/blog-post']
-                ]
+                    ['text', '/blog-post'],
+                ],
+                'requirements' : {"_scheme": "http"}
             };
 
             assertObjectEquals(expected, router.getRoute('blog_post'));
