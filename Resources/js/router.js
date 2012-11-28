@@ -11,7 +11,7 @@ goog.require('goog.uri.utils');
  * @param {Object.<string, fos.Router.Route>=} opt_routes
  */
 fos.Router = function(opt_context, opt_routes) {
-    this.context_ = opt_context || {base_url: '', prefix: ''};
+    this.context_ = opt_context || {base_url: '', prefix: '', host: '', scheme: ''};
     this.setRoutes(opt_routes || {});
 };
 goog.addSingletonGetter(fos.Router);
