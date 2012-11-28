@@ -17,11 +17,13 @@ class RoutesResponse
     private $routes;
     private $prefix;
 
-    public function __construct($baseUrl, array $routes, $prefix)
+    public function __construct($baseUrl, array $routes, $prefix, $host, $scheme)
     {
         $this->baseUrl = $baseUrl;
         $this->routes = $routes;
         $this->prefix = $prefix;
+        $this->host = $host;
+        $this->scheme = $scheme;
     }
 
     public function getBase_url()
@@ -37,5 +39,15 @@ class RoutesResponse
     public function getPrefix()
     {
         return $this->prefix;
+    }
+
+    public function getHost()
+    {
+        return $this->host;
+    }
+
+    public function getScheme()
+    {
+        return $this->scheme;
     }
 }

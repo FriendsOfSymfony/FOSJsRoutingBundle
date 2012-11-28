@@ -85,6 +85,8 @@ Just add these two lines in your layout:
 
 It's as simple as calling: `Routing.generate('route_id', /* your params */)`.
 
+Or if you want to generate absolute Url: `Routing.generate('route_id', /* your params */, true)`.
+
 Imagine some route definitions:
 
     # app/config/routing.yml

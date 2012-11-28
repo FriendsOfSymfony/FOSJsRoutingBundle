@@ -30,13 +30,13 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $controller = new Controller(
             $this->getSerializer(),
             $this->getExtractor(array(
-                'literal' => new ExtractedRoute(array(array('text', '/homepage')), array()),
-                'blog'    => new ExtractedRoute(array(array('variable', '/', '[^/]+?', 'slug'), array('text', '/blog-post')), array()),
+                'literal' => new ExtractedRoute(array(array('text', '/homepage')), array(), array()),
+                'blog'    => new ExtractedRoute(array(array('variable', '/', '[^/]+?', 'slug'), array('text', '/blog-post')), array(), array()),
             ))
         );
         $response = $controller->indexAction($this->getRequest('/'), 'json');
 
-        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[]},"blog":{"tokens":[["variable","\/","[^\/]+?","slug"],["text","\/blog-post"]],"defaults":[]}},"prefix":""}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[]},"blog":{"tokens":[["variable","\/","[^\/]+?","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[]}},"prefix":"","host":"","scheme":""}', $response->getContent());
     }
 
     public function testGenerateWithCallback()
@@ -44,7 +44,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $controller = new Controller($this->getSerializer(), $this->getExtractor());
         $response   = $controller->indexAction($this->getRequest('/', 'GET', array('callback' => 'foo')), 'json');
 
-        $this->assertEquals('foo({"base_url":"","routes":[],"prefix":""});', $response->getContent());
+        $this->assertEquals('foo({"base_url":"","routes":[],"prefix":"","host":"","scheme":""});', $response->getContent());
     }
 
     public function testIndexActionWithoutRoutes()
@@ -52,7 +52,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $controller = new Controller($this->getSerializer(), $this->getExtractor(), sys_get_temp_dir(), array());
         $response   = $controller->indexAction($this->getRequest('/'), 'json');
 
-        $this->assertEquals('{"base_url":"","routes":[],"prefix":""}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":[],"prefix":"","host":"","scheme":""}', $response->getContent());
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('application/json', $response->headers->get('Content-Type'));
     }
@@ -78,6 +78,16 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $extractor
             ->expects($this->any())
             ->method('getPrefix')
+            ->will($this->returnValue(''))
+        ;
+        $extractor
+            ->expects($this->any())
+            ->method('getHost')
+            ->will($this->returnValue(''))
+        ;
+        $extractor
+            ->expects($this->any())
+            ->method('getScheme')
             ->will($this->returnValue(''))
         ;
 
