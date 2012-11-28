@@ -5,27 +5,27 @@ Port of the incredible plugin [chCmsExposeRoutingPlugin](https://github.com/them
 
 Installation
 ------------
+
 For the management of the bundle you have 2 options: *submodules* or *composer*.
 
 ### Through composer (Symfony 2.1):
+
 Add the following lines in your `composer.json` file:
 ``` js
 "require": {
     ...
-    "friendsofsymfony/jsrouting-bundle": "dev-master"
+    "friendsofsymfony/jsrouting-bundle": "1.0.*"
     ...
 }
 ```
 
 Run the composer to download the bundle:
-``` bash
-$ php composer.phar update friendsofsymfony/jsrouting-bundle
-```
+
+    $ php composer.phar update friendsofsymfony/jsrouting-bundle
 
 ### Through submodules (Symfony 2.0):
-``` bash
-$ git submodule add git://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git vendor/bundles/FOS/JsRoutingBundle
-```
+
+    $ git submodule add git://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git vendor/bundles/FOS/JsRoutingBundle
 
 Or add the following lines in your `deps` file:
 
@@ -37,7 +37,8 @@ Or add the following lines in your `deps` file:
 
 Then, after the download of the files:
 
-Register the namespace in `app/autoload.php`:
+Register the namespace in `app/autoload.php` (only needed if *not* using composer):
+
 ``` php
 // app/autoload.php
 
@@ -48,6 +49,7 @@ $loader->registerNamespaces(array(
 ```
 
 Register the bundle in `app/AppKernel.php`:
+
 ``` php
 // app/AppKernel.php
 
@@ -61,6 +63,7 @@ public function registerBundles()
 ```
 
 Register the routing in `app/config/routing.yml`:
+
 ``` yml
 # app/config/routing.yml
 
@@ -69,9 +72,8 @@ fos_js_routing:
 ```
 
 Publish assets:
-``` bash
-$ php app/console assets:install --symlink web
-```
+
+    $ php app/console assets:install --symlink web
 
 
 Usage
