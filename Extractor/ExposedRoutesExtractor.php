@@ -65,7 +65,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
                 $route->getDefaults(),
                 array_fill_keys($compiledRoute->getVariables(), null)
             );
-			$requirements = $route->getRequirements();
+            $requirements = $route->getRequirements();
             $exposedRoutes[$name] = new ExtractedRoute(
                 $compiledRoute->getTokens(),
                 $defaults,
@@ -118,7 +118,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
 
         return '';
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -126,7 +126,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     {
         return $this->router->getContext()->getHost();
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -134,7 +134,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     {
         return $this->router->getContext()->getScheme();
     }
-    
+
     /**
      * {@inheritDoc}
      */

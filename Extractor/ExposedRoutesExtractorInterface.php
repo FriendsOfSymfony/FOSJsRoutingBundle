@@ -40,14 +40,14 @@ interface ExposedRoutesExtractorInterface
      * @var string $locale the request locale
      */
     public function getPrefix($locale);
-    
+
     /**
      * Get the host from RequestContext
      *
      * @return string
      */
     public function getHost();
-    
+
     /**
      * Get the scheme from RequestContext
      *

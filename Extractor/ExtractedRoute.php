@@ -33,9 +33,9 @@ class ExtractedRoute
     {
         return $this->defaults;
     }
-    
+
     public function getRequirements()
     {
-    	return $this->requirements;
+        return $this->requirements;
     }
 }
