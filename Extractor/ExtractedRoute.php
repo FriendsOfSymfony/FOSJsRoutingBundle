@@ -15,11 +15,13 @@ class ExtractedRoute
 {
     private $tokens;
     private $defaults;
+    private $requirements;
 
-    public function __construct(array $tokens, array $defaults)
+    public function __construct(array $tokens, array $defaults, array $requirements)
     {
         $this->tokens = $tokens;
         $this->defaults = $defaults;
+        $this->requirements = $requirements;
     }
 
     public function getTokens()
@@ -30,5 +32,10 @@ class ExtractedRoute
     public function getDefaults()
     {
         return $this->defaults;
+    }
+    
+    public function getRequirements()
+    {
+    	return $this->requirements;
     }
 }

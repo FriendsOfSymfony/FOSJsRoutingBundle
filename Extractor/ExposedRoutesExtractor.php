@@ -65,10 +65,11 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
                 $route->getDefaults(),
                 array_fill_keys($compiledRoute->getVariables(), null)
             );
-
+			$requirements = $route->getRequirements();
             $exposedRoutes[$name] = new ExtractedRoute(
                 $compiledRoute->getTokens(),
-                $defaults
+                $defaults,
+            	$requirements
             );
         }
 
