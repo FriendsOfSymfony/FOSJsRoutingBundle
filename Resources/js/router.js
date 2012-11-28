@@ -4,8 +4,6 @@ goog.require('goog.structs.Map');
 goog.require('goog.array');
 goog.require('goog.object');
 goog.require('goog.uri.utils');
-//for dev
-goog.require('goog.debug.Console');
 
 /**
  * @constructor

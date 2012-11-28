@@ -73,7 +73,6 @@ class Controller
                 $session->getFlashBag()->setAll($session->getFlashBag()->peekAll());
             }
         }
-        
         $cache = new ConfigCache($this->exposedRoutesExtractor->getCachePath($request->getLocale()), $this->debug);
         if (!$cache->isFresh()) {
             $content = $this->serializer->serialize(
@@ -81,8 +80,8 @@ class Controller
                     $this->exposedRoutesExtractor->getBaseUrl(),
                     $this->exposedRoutesExtractor->getRoutes(),
                     $this->exposedRoutesExtractor->getPrefix($request->getLocale()),
-                	$request->getHttpHost(),
-                	$request->getScheme()
+                    $this->exposedRoutesExtractor->getHost(),
+                    $this->exposedRoutesExtractor->getScheme()
                 ),
                 'json'
             );
