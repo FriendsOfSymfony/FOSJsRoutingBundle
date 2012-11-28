@@ -44,21 +44,21 @@ class ExposedRoutesExtractorTest extends \PHPUnit_Framework_TestCase
 
         if (defined('Symfony\Component\HttpKernel\Kernel::VERSION') && version_compare(Kernel::VERSION, '2.2', '>=')) {
             $expected = array(
-                'literal'   => new ExtractedRoute(array(array('text', '/literal')), array()),
-                'blog_post' => new ExtractedRoute(array(array('variable', '/', '[^/]++', 'slug'), array('text', '/blog-post')), array()),
-                'list'      => new ExtractedRoute(array(array('variable', '/', '\d+', 'page'), array('text', '/list')), array('page' => 1))
+                'literal'   => new ExtractedRoute(array(array('text', '/literal')), array(), array()),
+                'blog_post' => new ExtractedRoute(array(array('variable', '/', '[^/]++', 'slug'), array('text', '/blog-post')), array(), array()),
+                'list'      => new ExtractedRoute(array(array('variable', '/', '\d+', 'page'), array('text', '/list')), array('page' => 1), array('page' => '\d+'))
             );
         } elseif (defined('Symfony\Component\HttpKernel\Kernel::VERSION_ID') && version_compare(Kernel::VERSION_ID, '20100', '>=')) {
             $expected = array(
-                'literal'   => new ExtractedRoute(array(array('text', '/literal')), array()),
-                'blog_post' => new ExtractedRoute(array(array('variable', '/', '[^/]+', 'slug'), array('text', '/blog-post')), array()),
-                'list'      => new ExtractedRoute(array(array('variable', '/', '\d+', 'page'), array('text', '/list')), array('page' => 1))
+                'literal'   => new ExtractedRoute(array(array('text', '/literal')), array(), array()),
+                'blog_post' => new ExtractedRoute(array(array('variable', '/', '[^/]+', 'slug'), array('text', '/blog-post')), array(), array()),
+                'list'      => new ExtractedRoute(array(array('variable', '/', '\d+', 'page'), array('text', '/list')), array('page' => 1), array('page' => '\d+'))
             );
         } else {
             $expected = array(
-                'literal'   => new ExtractedRoute(array(array('text', '/literal')), array()),
-                'blog_post' => new ExtractedRoute(array(array('variable', '/', '[^/]+?', 'slug'), array('text', '/blog-post')), array()),
-                'list'      => new ExtractedRoute(array(array('variable', '/', '\d+', 'page'), array('text', '/list')), array('page' => 1))
+                'literal'   => new ExtractedRoute(array(array('text', '/literal')), array(), array()),
+                'blog_post' => new ExtractedRoute(array(array('variable', '/', '[^/]+?', 'slug'), array('text', '/blog-post')), array(), array()),
+                'list'      => new ExtractedRoute(array(array('variable', '/', '\d+', 'page'), array('text', '/list')), array('page' => 1), array('page' => '\d+'))
             );
         }
 
