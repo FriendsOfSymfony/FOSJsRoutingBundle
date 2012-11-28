@@ -5,10 +5,27 @@ Port of the incredible plugin [chCmsExposeRoutingPlugin](https://github.com/them
 
 Installation
 ------------
+For the management of the bundle you have 2 options: *submodules* or *composer*.
 
-Add this bundle as a submodule:
+### Through composer (Symfony 2.1):
+Add the following lines in your `composer.json` file:
+``` js
+"require": {
+    ...
+    "friendsofsymfony/jsrouting-bundle": "dev-master"
+    ...
+}
+```
 
-    git submodule add git://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git vendor/bundles/FOS/JsRoutingBundle
+Run the composer to download the bundle:
+``` bash
+$ php composer.phar update friendsofsymfony/jsrouting-bundle
+```
+
+### Through submodules (Symfony 2.0):
+``` bash
+$ git submodule add git://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git vendor/bundles/FOS/JsRoutingBundle
+```
 
 Or add the following lines in your `deps` file:
 
@@ -18,34 +35,43 @@ Or add the following lines in your `deps` file:
 	target=/bundles/FOS/JsRoutingBundle
 ```
 
-Register the namespace in `app/autoload.php`:
+Then, after the download of the files:
 
-    // app/autoload.php
-    $loader->registerNamespaces(array(
-        // ...
-        'FOS' => __DIR__.'/../vendor/bundles',
-    ));
+Register the namespace in `app/autoload.php`:
+``` php
+// app/autoload.php
+
+$loader->registerNamespaces(array(
+    // ...
+    'FOS' => __DIR__.'/../vendor/bundles',
+));
+```
 
 Register the bundle in `app/AppKernel.php`:
+``` php
+// app/AppKernel.php
 
-    // app/AppKernel.php
-    public function registerBundles()
-    {
-        return array(
-            // ...
-            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-        );
-    }
+public function registerBundles()
+{
+    return array(
+        // ...
+        new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+    );
+}
+```
 
 Register the routing in `app/config/routing.yml`:
+``` yml
+# app/config/routing.yml
 
-    # app/config/routing.yml
-    fos_js_routing:
-        resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+```
 
 Publish assets:
-
-    $ php app/console assets:install --symlink web
+``` bash
+$ php app/console assets:install --symlink web
+```
 
 
 Usage
