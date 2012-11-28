@@ -6,20 +6,19 @@ Port of the incredible plugin [chCmsExposeRoutingPlugin](https://github.com/them
 Installation
 ------------
 
-For the management of the bundle you have 2 options: *submodules* or *composer*.
+For the management of the bundle you have 2 options: *submodules* or *Composer*.
 
-### Through composer (Symfony 2.1):
+### Through Composer (Symfony 2.1):
 
 Add the following lines in your `composer.json` file:
+
 ``` js
 "require": {
-    ...
     "friendsofsymfony/jsrouting-bundle": "1.0.*"
-    ...
 }
 ```
 
-Run the composer to download the bundle:
+Run Composer to download and install the bundle:
 
     $ php composer.phar update friendsofsymfony/jsrouting-bundle
 
@@ -31,13 +30,12 @@ Or add the following lines in your `deps` file:
 
 ``` ini
 [FOSJsRoutingBundle]
-	git=git://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git
-	target=/bundles/FOS/JsRoutingBundle
+    git=git://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git
+    target=/bundles/FOS/JsRoutingBundle
 ```
 
-Then, after the download of the files:
-
-Register the namespace in `app/autoload.php` (only needed if *not* using composer):
+After the download of the files, register the namespace in `app/autoload.php` (only needed if 
+you are *not* using Composer):
 
 ``` php
 // app/autoload.php
