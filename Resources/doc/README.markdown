@@ -176,36 +176,36 @@ you now include this as
 
 Or inside assetic, do
 
-{% javascripts filter='?yui_js'
-    'bundles/fosjsrouting/js/router.js'
-    'js/fos_js_routes.js'
-%}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
-{% endjavascripts %}
+    {% javascripts filter='?yui_js'
+        'bundles/fosjsrouting/js/router.js'
+        'js/fos_js_routes.js'
+    %}
+       <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 
 
 *Hint*: If you are using JMSI18nRoutingBundle, you need to run the command with
-the --locale parameter once for each locale you use and adjust your include paths
+the `--locale` parameter once for each locale you use and adjust your include paths
 accordingly.
 
 
 ### fos:js-routing:debug
 
-This command lists all exposed routes
+This command lists all exposed routes:
 
     $ php app/console fos:js-routing:debug [name]
 
 
-Compiling the Javascript files
+Compiling the JavaScript files
 ------------------------------
 
 Note: We already provide a compiled version of the Javascript; this section is only
 relevant if you want to make changes to this script.
 
-In order to re-compile the Javascript source files that we ship with this bundle, you
+In order to re-compile the JavaScript source files that we ship with this bundle, you
 need the Google Closure Tools. While you can install these dependencies manually, we
 recommend that you instead install the JMSGoogleClosureBundle. If you install this bundle,
-you can re-compile the Javascript with the following command:
+you can re-compile the JavaScript with the following command:
 
     $ php app/console plovr:build @FOSJsRoutingBundle/compile.js
 
