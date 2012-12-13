@@ -57,7 +57,7 @@ fos.Router.prototype.getBaseUrl = function() {
  * @param {string} prefix
  */
 fos.Router.prototype.setPrefix = function(prefix) {
-  this.context_.prefix = prefix;
+    this.context_.prefix = prefix;
 };
 
 /**
@@ -100,10 +100,10 @@ fos.Router.prototype.getRoute = function(name) {
     if (!this.routes_.containsKey(prefixedName)) {
         // Check first for default route before failing
         if (!this.routes_.containsKey(name)) {
-          throw new Error('The route "' + name + '" does not exist.');
+            throw new Error('The route "' + name + '" does not exist.');
         }
     } else {
-      name = prefixedName;
+        name = prefixedName;
     }
 
     return (this.routes_.get(name));
@@ -135,31 +135,31 @@ fos.Router.prototype.generate = function(name, opt_params, absolute) {
         if ('variable' === token[0]) {
             var hasDefault = goog.object.containsKey(route.defaults, token[3]);
             if (false === optional || !hasDefault
-                    || (goog.object.containsKey(params, token[3]) && params[token[3]] != route.defaults[token[3]])) {
-                var value;
-                if (goog.object.containsKey(params, token[3])) {
-                    value = params[token[3]];
-                    goog.object.remove(unusedParams, token[3]);
+                || (goog.object.containsKey(params, token[3]) && params[token[3]] != route.defaults[token[3]])) {
+                    var value;
+                    if (goog.object.containsKey(params, token[3])) {
+                        value = params[token[3]];
+                        goog.object.remove(unusedParams, token[3]);
+                    } else if (hasDefault) {
+                        value = route.defaults[token[3]];
+                    } else if (optional) {
+                        return;
+                    } else {
+                        throw new Error('The route "' + name + '" requires the parameter "' + token[3] + '".');
+                    }
+
+                    var empty = true === value || false === value || '' === value;
+
+                    if (!empty || !optional) {
+                        url = token[1] + encodeURIComponent(value).replace(/%2F/g, '/') + url;
+                    }
+
+                    optional = false;
                 } else if (hasDefault) {
-                    value = route.defaults[token[3]];
-                } else if (optional) {
-                    return;
-                } else {
-                    throw new Error('The route "' + name + '" requires the parameter "' + token[3] + '".');
+                    goog.object.remove(unusedParams, token[3]);
                 }
 
-                var empty = true === value || false === value || '' === value;
-
-                if (!empty || !optional) {
-                    url = token[1] + encodeURIComponent(value).replace(/%2F/g, '/') + url;
-                }
-
-                optional = false;
-            } else if (hasDefault) {
-                goog.object.remove(unusedParams, token[3]);
-            }
-
-            return;
+                return;
         }
 
         throw new Error('The token type "' + token[0] + '" is not supported.');
@@ -171,12 +171,12 @@ fos.Router.prototype.generate = function(name, opt_params, absolute) {
 
     url = this.context_.base_url + url;
     if (goog.object.containsKey(route.requirements, "_scheme")) {
-    	if (this.getScheme() != route.requirements["_scheme"]) {
-    		url = route.requirements["_scheme"] + "://" + this.getHost() + url;
-    	}
+        if (this.getScheme() != route.requirements["_scheme"]) {
+            url = route.requirements["_scheme"] + "://" + this.getHost() + url;
+        }
     } else if (absolute === true) {
-		url = this.getScheme() + "://" + this.getHost() + url;
-	}
+        url = this.getScheme() + "://" + this.getHost() + url;
+    }
 
     if (goog.object.getCount(unusedParams) > 0) {
         url = goog.uri.utils.appendParamsFromMap(url, unusedParams);
