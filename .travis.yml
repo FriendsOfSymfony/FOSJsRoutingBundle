@@ -13,6 +13,10 @@ before_script:
   - curl -s http://getcomposer.org/installer | php
   - php composer.phar require symfony/framework-bundle:${SYMFONY_VERSION} symfony/serializer:${SYMFONY_VERSION}
 
+script:
+  - phpunit --coverage-text
+  - phantomjs Resources/js/run_jsunit.js Resources/js/router_test.html
+
 notifications:
   email:
     - friendsofsymfony-dev@googlegroups.com
