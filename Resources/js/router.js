@@ -91,7 +91,7 @@ fos.Router.prototype.getHost = function() {
 
 /**
  * Returns a raw route object
- * 
+ *
  * @param {string} name
  * @return {fos.Router.Route}
  */
@@ -170,18 +170,17 @@ fos.Router.prototype.generate = function(name, opt_params, absolute) {
     }
 
     url = this.context_.base_url + url;
-    if(goog.object.containsKey(route.requirements, "_scheme")){
-    	if(this.getScheme() != route.requirements["_scheme"]){
+    if (goog.object.containsKey(route.requirements, "_scheme")) {
+    	if (this.getScheme() != route.requirements["_scheme"]) {
     		url = route.requirements["_scheme"] + "://" + this.getHost() + url;
     	}
-    }else if(absolute === true){
+    } else if (absolute === true) {
 		url = this.getScheme() + "://" + this.getHost() + url;
 	}
-    
+
     if (goog.object.getCount(unusedParams) > 0) {
         url = goog.uri.utils.appendParamsFromMap(url, unusedParams);
     }
-    
+
     return url;
 };
-
