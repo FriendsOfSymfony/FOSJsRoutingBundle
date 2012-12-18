@@ -16,6 +16,8 @@ class RoutesResponse
     private $baseUrl;
     private $routes;
     private $prefix;
+    private $host;
+    private $scheme;
 
     public function __construct($baseUrl, array $routes, $prefix, $host, $scheme)
     {
