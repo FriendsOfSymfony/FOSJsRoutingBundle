@@ -100,7 +100,7 @@ fos.Router.prototype.getHost = function() {
 fos.Router.prototype.buildQueryParams = function(prefix, params, add) {
     var self = this;
     var name;
-    var rbracket = new RegExp('/\[\]$/');
+    var rbracket = new RegExp(/\[\]$/);
 
     if (params instanceof Array) {
         goog.array.forEach(params, function(val, i) {
@@ -164,8 +164,7 @@ fos.Router.prototype.generate = function(name, opt_params, absolute) {
 
         if ('variable' === token[0]) {
             var hasDefault = goog.object.containsKey(route.defaults, token[3]);
-            if (false === optional || !hasDefault
-                || (goog.object.containsKey(params, token[3]) && params[token[3]] != route.defaults[token[3]])) {
+            if (false === optional || !hasDefault || (goog.object.containsKey(params, token[3]) && params[token[3]] != route.defaults[token[3]])) {
                     var value;
                     if (goog.object.containsKey(params, token[3])) {
                         value = params[token[3]];
@@ -222,7 +221,7 @@ fos.Router.prototype.generate = function(name, opt_params, absolute) {
             value = (typeof value === 'function') ? value() : value;
 
             // change null to empty string
-            value = (value == null) ? '' : value;
+            value = (value === null) ? '' : value;
 
             queryParams.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
         };
