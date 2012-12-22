@@ -181,7 +181,13 @@ fos.Router.prototype.generate = function(name, opt_params, absolute) {
                     var empty = true === value || false === value || '' === value;
 
                     if (!empty || !optional) {
-                        url = token[1] + encodeURIComponent(value).replace(/%2F/g, '/') + url;
+                        var encodedValue = encodeURIComponent(value).replace(/%2F/g, '/');
+
+                        if ('null' === encodedValue && null === value) {
+                            encodedValue = '';
+                        }
+
+                        url = token[1] + encodedValue + url;
                     }
 
                     optional = false;
