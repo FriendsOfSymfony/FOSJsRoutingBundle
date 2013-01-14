@@ -14,7 +14,7 @@ Add the following lines in your `composer.json` file:
 
 ``` js
 "require": {
-    "friendsofsymfony/jsrouting-bundle": "1.0.*"
+    "friendsofsymfony/jsrouting-bundle": "1.1.*"
 }
 ```
 
@@ -34,7 +34,7 @@ Or add the following lines in your `deps` file:
     target=/bundles/FOS/JsRoutingBundle
 ```
 
-After the download of the files, register the namespace in `app/autoload.php` (only needed if 
+After the download of the files, register the namespace in `app/autoload.php` (only needed if
 you are *not* using Composer):
 
 ``` php
