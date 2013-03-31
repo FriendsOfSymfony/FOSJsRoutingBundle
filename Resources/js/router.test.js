@@ -60,6 +60,18 @@ function testGenerateUsesAbsoluteUrl() {
     assertEquals('http://localhost/foo/bar', router.generate('homepage', [], true));
 }
 
+function testGenerateUsesAbsoluteUrlWhenSchemeRequirementGiven() {
+    var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
+        homepage: {
+            tokens: [['text', '/bar']],
+            defaults: {},
+            requirements: {"_scheme": "http"}
+        }
+    });
+
+    assertEquals('http://localhost/foo/bar', router.generate('homepage', [], true));
+}
+
 function testGenerateWithOptionalTrailingParam() {
     var router = new fos.Router({base_url: ''}, {
         posts: {
