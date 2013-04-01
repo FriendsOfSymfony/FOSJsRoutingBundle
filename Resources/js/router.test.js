@@ -48,6 +48,45 @@ function testGenerateUsesSchemeRequirements() {
     assertEquals('https://localhost/foo/bar', router.generate('homepage'));
 }
 
+function testGenerateUsesHost() {
+    var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
+        homepage: {
+            tokens: [['text', '/bar']],
+            defaults: {},
+            requirements: {},
+            host: 'otherhost'
+        }
+    });
+
+    assertEquals('http://otherhost/foo/bar', router.generate('homepage'));
+}
+
+function testGenerateUsesHostWhenTheSameSchemeRequirementGiven() {
+    var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
+        homepage: {
+            tokens: [['text', '/bar']],
+            defaults: {},
+            requirements: {"_scheme": "http"},
+            host: 'otherhost'
+        }
+    });
+
+    assertEquals('http://otherhost/foo/bar', router.generate('homepage'));
+}
+
+function testGenerateUsesHostWhenAnotherSchemeRequirementGiven() {
+    var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
+        homepage: {
+            tokens: [['text', '/bar']],
+            defaults: {},
+            requirements: {"_scheme": "https"},
+            host: 'otherhost'
+        }
+    });
+
+    assertEquals('https://otherhost/foo/bar', router.generate('homepage'));
+}
+
 function testGenerateUsesAbsoluteUrl() {
     var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
         homepage: {

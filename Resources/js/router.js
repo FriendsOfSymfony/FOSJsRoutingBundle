@@ -206,7 +206,9 @@ fos.Router.prototype.generate = function(name, opt_params, absolute) {
 
     url = this.context_.base_url + url;
     if (goog.object.containsKey(route.requirements, "_scheme") && this.getScheme() != route.requirements["_scheme"]) {
-        url = route.requirements["_scheme"] + "://" + this.getHost() + url;
+        url = route.requirements["_scheme"] + "://" + (route.host || this.getHost()) + url;
+    } else if (route.host && this.getHost() !== route.host) {
+        url = this.getScheme() + "://" + route.host + url;
     } else if (absolute === true) {
         url = this.getScheme() + "://" + this.getHost() + url;
     }
