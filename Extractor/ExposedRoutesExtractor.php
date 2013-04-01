@@ -11,6 +11,7 @@
 
 namespace FOS\JsRoutingBundle\Extractor;
 
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 use JMS\I18nRoutingBundle\Router\I18nLoader;
 
@@ -58,6 +59,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     public function getRoutes()
     {
         $exposedRoutes = array();
+        /** @var $route Route */
         foreach ($this->getExposedRoutes() as $name => $route) {
             // Maybe there is a better way to do that...
             $compiledRoute = $route->compile();
@@ -66,10 +68,12 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
                 array_fill_keys($compiledRoute->getVariables(), null)
             );
             $requirements = $route->getRequirements();
+            $host = method_exists($route, 'getHost') ? $route->getHost() : '';
             $exposedRoutes[$name] = new ExtractedRoute(
                 $compiledRoute->getTokens(),
                 $defaults,
-                $requirements
+                $requirements,
+                $host
             );
         }
 
