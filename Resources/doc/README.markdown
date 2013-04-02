@@ -6,7 +6,7 @@ Port of the incredible plugin [chCmsExposeRoutingPlugin](https://github.com/them
 Installation
 ------------
 
-For the management of the bundle you have 2 options: *submodules* or *Composer*.
+For the management of the bundle you have 2 options: *Composer* or *submodules*.
 
 ### Through Composer (Symfony 2.1):
 
