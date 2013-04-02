@@ -116,10 +116,10 @@ You can do:
     Routing.generate('my_route_to_expose', { id: 10 });
     // will result in /foo/10/bar
 
-    Routing.generate('my_route_to_expose', { "id": 10, "foo": "bar" });
+    Routing.generate('my_route_to_expose', { id: 10, foo: "bar" });
     // will result in /foo/10/bar?foo=bar
 
-    $.get(Routing.generate('my_route_to_expose', { "id": 10, "foo": "bar" }));
+    $.get(Routing.generate('my_route_to_expose', { id: 10, foo: "bar" }));
     // will call /foo/10/bar?foo=bar
 
     Routing.generate('my_route_to_expose_with_defaults');
@@ -128,10 +128,10 @@ You can do:
     Routing.generate('my_route_to_expose_with_defaults', { id: 2 });
     // will result in /blog/2
 
-    Routing.generate('my_route_to_expose_with_defaults', { "foo": "bar" });
+    Routing.generate('my_route_to_expose_with_defaults', { foo: "bar" });
     // will result in /blog/1?foo=bar
 
-    Routing.generate('my_route_to_expose_with_defaults', { id: 2, "foo": "bar" });
+    Routing.generate('my_route_to_expose_with_defaults', { id: 2, foo: "bar" });
     // will result in /blog/2?foo=bar
 
 
