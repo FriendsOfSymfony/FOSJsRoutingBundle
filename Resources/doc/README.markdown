@@ -8,7 +8,7 @@ Installation
 
 For the management of the bundle you have 2 options: *Composer* or *submodules*.
 
-### Through Composer (Symfony 2.1):
+### Through Composer (Symfony 2.1+):
 
 Add the following lines in your `composer.json` file:
 
