@@ -91,13 +91,13 @@ Imagine some route definitions:
 
     # app/config/routing.yml
     my_route_to_expose:
-        pattern:  /foo/{id}/bar
-        defaults:  { _controller: HelloBundle:Hello:index }
+        pattern: /foo/{id}/bar
+        defaults: { _controller: HelloBundle:Hello:index }
         options:
             expose: true
 
     my_route_to_expose_with_defaults:
-        pattern:  /blog/{page}
+        pattern: /blog/{page}
         defaults: { _controller: AcmeBlogBundle:Blog:index, page: 1 }
         options:
             expose: true
@@ -106,7 +106,7 @@ Or with annotations:
 
     # src/Acme/DemoBundle/Controller/DefaultController.php
     /**
-     * @Route ("/foo/{id}/bar", name="my_route_to_expose", options={"expose"=true})
+     * @Route("/foo/{id}/bar", name="my_route_to_expose", options={"expose"=true})
      */
     public function exposedAction($foo)
 
