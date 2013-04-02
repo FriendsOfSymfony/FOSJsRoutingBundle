@@ -26,7 +26,7 @@ Run Composer to download and install the bundle:
 
     $ git submodule add git://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git vendor/bundles/FOS/JsRoutingBundle
 
-Or add the following lines in your `deps` file:
+Or add the following lines to your `deps` file:
 
 ``` ini
 [FOSJsRoutingBundle]
