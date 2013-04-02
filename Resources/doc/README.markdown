@@ -14,7 +14,7 @@ Add the following lines in your `composer.json` file:
 
 ``` js
 "require": {
-    "friendsofsymfony/jsrouting-bundle": "1.1.*"
+    "friendsofsymfony/jsrouting-bundle": "~1.1"
 }
 ```
 
