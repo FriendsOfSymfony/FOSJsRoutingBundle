@@ -149,11 +149,12 @@ fos.Router.prototype.getRoute = function(name) {
  * @return {string}
  */
 fos.Router.prototype.generate = function(name, opt_params, absolute) {
-    var route = (this.getRoute(name));
-    var params = opt_params || {};
-    var unusedParams = goog.object.clone(params);
-    var url = '';
-    var optional = true;
+    var route = (this.getRoute(name)),
+        params = opt_params || {},
+        unusedParams = goog.object.clone(params),
+        url = '',
+        optional = true;
+
     goog.array.forEach(route.tokens, function(token) {
         if ('text' === token[0]) {
             url = token[1] + url;
