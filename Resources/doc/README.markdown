@@ -6,15 +6,15 @@ Port of the incredible plugin [chCmsExposeRoutingPlugin](https://github.com/them
 Installation
 ------------
 
-For the management of the bundle you have 2 options: *submodules* or *Composer*.
+For the management of the bundle you have 2 options: *Composer* or *submodules*.
 
-### Through Composer (Symfony 2.1):
+### Through Composer (Symfony 2.1+):
 
 Add the following lines in your `composer.json` file:
 
 ``` js
 "require": {
-    "friendsofsymfony/jsrouting-bundle": "1.1.*"
+    "friendsofsymfony/jsrouting-bundle": "~1.1"
 }
 ```
 
@@ -26,7 +26,7 @@ Run Composer to download and install the bundle:
 
     $ git submodule add git://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git vendor/bundles/FOS/JsRoutingBundle
 
-Or add the following lines in your `deps` file:
+Or add the following lines to your `deps` file:
 
 ``` ini
 [FOSJsRoutingBundle]
@@ -79,8 +79,8 @@ Usage
 
 Just add these two lines in your layout:
 
-    <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 
 
 It's as simple as calling: `Routing.generate('route_id', /* your params */)`.
@@ -91,13 +91,13 @@ Imagine some route definitions:
 
     # app/config/routing.yml
     my_route_to_expose:
-        pattern:  /foo/{id}/bar
-        defaults:  { _controller: HelloBundle:Hello:index }
+        pattern: /foo/{id}/bar
+        defaults: { _controller: HelloBundle:Hello:index }
         options:
             expose: true
 
     my_route_to_expose_with_defaults:
-        pattern:  /blog/{page}
+        pattern: /blog/{page}
         defaults: { _controller: AcmeBlogBundle:Blog:index, page: 1 }
         options:
             expose: true
@@ -106,7 +106,7 @@ Or with annotations:
 
     # src/Acme/DemoBundle/Controller/DefaultController.php
     /**
-     * @Route ("/foo/{id}/bar", name="my_route_to_expose", options={"expose"=true})
+     * @Route("/foo/{id}/bar", name="my_route_to_expose", options={"expose"=true})
      */
     public function exposedAction($foo)
 
@@ -116,10 +116,10 @@ You can do:
     Routing.generate('my_route_to_expose', { id: 10 });
     // will result in /foo/10/bar
 
-    Routing.generate('my_route_to_expose', { "id": 10, "foo": "bar" });
+    Routing.generate('my_route_to_expose', { id: 10, foo: "bar" });
     // will result in /foo/10/bar?foo=bar
 
-    $.get(Routing.generate('my_route_to_expose', { "id": 10, "foo": "bar" }));
+    $.get(Routing.generate('my_route_to_expose', { id: 10, foo: "bar" }));
     // will call /foo/10/bar?foo=bar
 
     Routing.generate('my_route_to_expose_with_defaults');
@@ -128,10 +128,10 @@ You can do:
     Routing.generate('my_route_to_expose_with_defaults', { id: 2 });
     // will result in /blog/2
 
-    Routing.generate('my_route_to_expose_with_defaults', { "foo": "bar" });
+    Routing.generate('my_route_to_expose_with_defaults', { foo: "bar" });
     // will result in /blog/1?foo=bar
 
-    Routing.generate('my_route_to_expose_with_defaults', { id: 2, "foo": "bar" });
+    Routing.generate('my_route_to_expose_with_defaults', { id: 2, foo: "bar" });
     // will result in /blog/2?foo=bar
 
 
@@ -168,11 +168,11 @@ to combine the routes with the other javascript files in assetic.
 
 Instead of the line
 
-    <script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 
 you now include this as
 
-    <script type="text/javascript" src="/js/fos_js_routes.js"></script>
+    <script src="/js/fos_js_routes.js"></script>
 
 Or inside assetic, do
 
@@ -180,7 +180,7 @@ Or inside assetic, do
         'bundles/fosjsrouting/js/router.js'
         'js/fos_js_routes.js'
     %}
-       <script type="text/javascript" src="{{ asset_url }}"></script>
+        <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
 
