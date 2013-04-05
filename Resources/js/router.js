@@ -149,11 +149,13 @@ fos.Router.prototype.getRoute = function(name) {
  * @return {string}
  */
 fos.Router.prototype.generate = function(name, opt_params, absolute) {
-    var route = (this.getRoute(name));
-    var params = opt_params || {};
-    var unusedParams = goog.object.clone(params);
-    var url = '';
-    var optional = true;
+    var route = (this.getRoute(name)),
+        params = opt_params || {},
+        unusedParams = goog.object.clone(params),
+        url = '',
+        optional = true,
+        host = '';
+
     goog.array.forEach(route.tokens, function(token) {
         if ('text' === token[0]) {
             url = token[1] + url;
@@ -204,11 +206,32 @@ fos.Router.prototype.generate = function(name, opt_params, absolute) {
         url = '/';
     }
 
+    goog.array.forEach(route.hosttokens, function (token) {
+        var value;
+
+        if ('text' === token[0]) {
+            host = token[1] + host;
+
+            return;
+        }
+
+        if ('variable' === token[0]) {
+            if (goog.object.containsKey(params, token[3])) {
+                value = params[token[3]];
+                goog.object.remove(unusedParams, token[3]);
+            } else if (goog.object.containsKey(route.defaults, token[3])) {
+                value = route.defaults[token[3]];
+            }
+
+            host = token[1] + value + host;
+        }
+    });
+
     url = this.context_.base_url + url;
     if (goog.object.containsKey(route.requirements, "_scheme") && this.getScheme() != route.requirements["_scheme"]) {
-        url = route.requirements["_scheme"] + "://" + (route.host || this.getHost()) + url;
-    } else if (route.host && this.getHost() !== route.host) {
-        url = this.getScheme() + "://" + route.host + url;
+        url = route.requirements["_scheme"] + "://" + (host || this.getHost()) + url;
+    } else if (host && this.getHost() !== host) {
+        url = this.getScheme() + "://" + host + url;
     } else if (absolute === true) {
         url = this.getScheme() + "://" + this.getHost() + url;
     }
