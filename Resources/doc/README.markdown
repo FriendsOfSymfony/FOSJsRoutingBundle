@@ -45,6 +45,7 @@ $loader->registerNamespaces(array(
     'FOS' => __DIR__.'/../vendor/bundles',
 ));
 ```
+### After downloading (for both Symfony 2.0 or 2.1+):
 
 Register the bundle in `app/AppKernel.php`:
 
