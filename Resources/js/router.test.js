@@ -330,6 +330,20 @@ function testGetRoute() {
     assertObjectEquals(expected, router.getRoute('blog_post'));
 }
 
+function testGetRoutes() {
+    var router = new fos.Router({base_url: ''}, {
+        blog_post: 'test',
+        blog: 'test'
+    });
+
+    var expected = new goog.structs.Map({
+        blog_post: 'test',
+        blog: 'test'
+    });
+
+    assertObjectEquals(expected, router.getRoutes());
+}
+
 function testGenerateWithNullValue() {
     var router = new fos.Router({base_url: ''}, {
         posts: {

@@ -21,6 +21,7 @@ goog.exportSymbol('fos.Router.setData', function(data) {
 });
 goog.exportProperty(fos.Router, 'getInstance', fos.Router.getInstance);
 goog.exportProperty(fos.Router.prototype, 'setRoutes', fos.Router.prototype.setRoutes);
+goog.exportProperty(fos.Router.prototype, 'getRoutes', fos.Router.prototype.getRoutes);
 goog.exportProperty(fos.Router.prototype, 'setBaseUrl', fos.Router.prototype.setBaseUrl);
 goog.exportProperty(fos.Router.prototype, 'getBaseUrl', fos.Router.prototype.getBaseUrl);
 goog.exportProperty(fos.Router.prototype, 'generate', fos.Router.prototype.generate);
