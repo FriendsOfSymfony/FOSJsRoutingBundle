@@ -9,6 +9,7 @@
         <service id="fos_js_routing.controller" class="%fos_js_routing.controller.class%">
             <argument type="service" id="fos_js_routing.serializer" />
             <argument type="service" id="fos_js_routing.extractor" />
+            <argument>%fos_js_routing.cache_control%</argument>
             <argument>%kernel.debug%</argument>
         </service>
     </services>

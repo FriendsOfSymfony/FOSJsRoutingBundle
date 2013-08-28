@@ -37,6 +37,11 @@ class Controller
     protected $exposedRoutesExtractor;
 
     /**
+     * @var array
+     */
+    protected $cacheControl;
+
+    /**
      * @var boolean
      */
     protected $debug;
@@ -46,12 +51,14 @@ class Controller
      *
      * @param mixed                           $serializer             Any object with a serialize($data, $format) method
      * @param ExposedRoutesExtractorInterface $exposedRoutesExtractor The extractor service.
+     * @param array                           $cacheControl
      * @param boolean                         $debug
      */
-    public function __construct($serializer, ExposedRoutesExtractorInterface $exposedRoutesExtractor, $debug = false)
+    public function __construct($serializer, ExposedRoutesExtractorInterface $exposedRoutesExtractor, array $cacheControl = array(), $debug = false)
     {
         $this->serializer = $serializer;
         $this->exposedRoutesExtractor = $exposedRoutesExtractor;
+        $this->cacheControl = $cacheControl;
         $this->debug = $debug;
     }
 
@@ -96,6 +103,40 @@ class Controller
             $content = $callback.'('.$content.');';
         }
 
-        return new Response($content, 200, array('Content-Type' => $request->getMimeType($_format)));
+        $response = new Response($content, 200, array('Content-Type' => $request->getMimeType($_format)));
+
+        return $this->setCacheHeaders($response);
+    }
+
+    /**
+     * @param Response $response
+     *
+     * @return Response
+     */
+    protected function setCacheHeaders(Response $response)
+    {
+        if (empty($this->cacheControl['enabled'])) {
+            return $response;
+        }
+
+        $this->cacheControl['public'] ? $response->setPublic() : $response->setPrivate();
+
+        if (is_integer($this->cacheControl['maxage'])) {
+            $response->setMaxAge($this->cacheControl['maxage']);
+        }
+
+        if (is_integer($this->cacheControl['smaxage'])) {
+            $response->setSharedMaxAge($this->cacheControl['smaxage']);
+        }
+
+        if ($this->cacheControl['expires'] !== null) {
+            $response->setExpires(new \DateTime($this->cacheControl['expires']));
+        }
+
+        if (!empty($this->cacheControl['vary'])) {
+            $response->setVary($this->cacheControl['vary']);
+        }
+
+        return $response;
     }
 }

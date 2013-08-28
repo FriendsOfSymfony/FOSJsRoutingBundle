@@ -154,6 +154,17 @@ You can prevent to expose a route by configuring it as below:
         options:
             expose: false
 
+You can enable HTTP caching as below:
+
+    # app/config/config.yml
+    fos_js_routing:
+        cache_control:
+            # All are optional, defaults shown
+            public: false   # can be true (public) or false (private)
+            maxage: null    # integer value, e.g. 300
+            smaxage: null   # integer value, e.g. 300
+            expires: null   # anything that can be fed to "new \DateTime($expires)", e.g. "5 minutes"
+            vary: []        # string or array, e.g. "Cookie" or [ Cookie, Accept ]
 
 Commands
 --------
