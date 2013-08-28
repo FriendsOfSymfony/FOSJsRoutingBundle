@@ -11,6 +11,7 @@
 
 namespace FOS\JsRoutingBundle\Controller;
 
+use FOS\JsRoutingBundle\CacheControl\CacheControl;
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
 use FOS\JsRoutingBundle\Response\RoutesResponse;
 use Symfony\Component\Config\ConfigCache;
@@ -37,6 +38,11 @@ class Controller
     protected $exposedRoutesExtractor;
 
     /**
+     * @var \FOS\JsRoutingBundle\CacheControl\CacheControl
+     */
+    protected $cacheControl;
+
+    /**
      * @var boolean
      */
     protected $debug;
@@ -48,10 +54,11 @@ class Controller
      * @param ExposedRoutesExtractorInterface $exposedRoutesExtractor The extractor service.
      * @param boolean                         $debug
      */
-    public function __construct($serializer, ExposedRoutesExtractorInterface $exposedRoutesExtractor, $debug = false)
+    public function __construct($serializer, ExposedRoutesExtractorInterface $exposedRoutesExtractor, CacheControl $cacheControl, $debug = false)
     {
         $this->serializer = $serializer;
         $this->exposedRoutesExtractor = $exposedRoutesExtractor;
+        $this->cacheControl = $cacheControl;
         $this->debug = $debug;
     }
 
@@ -96,6 +103,7 @@ class Controller
             $content = $callback.'('.$content.');';
         }
 
-        return new Response($content, 200, array('Content-Type' => $request->getMimeType($_format)));
+        $response = new Response($content, 200, array('Content-Type' => $request->getMimeType($_format)));
+        return $this->cacheControl->setCacheHeaders($response);
     }
 }
