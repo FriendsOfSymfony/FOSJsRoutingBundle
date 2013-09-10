@@ -128,7 +128,26 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
      */
     public function getHost()
     {
-        return $this->router->getContext()->getHost();
+        $requestContext = $this->router->getContext();
+
+        $host = $requestContext->getHost();
+
+        if ($this->usesNonStandardPort()) {
+            $method = sprintf('get%sPort', ucfirst($requestContext->getScheme()));
+            $host .= ':' . $requestContext->$method();
+        }
+
+        return $host;
+    }
+
+    /**
+     * Check whether server is serving this request from a non-standard port.
+     *
+     * @return bool
+     */
+    protected function usesNonStandardPort()
+    {
+        return $this->usesNonStandardHttpPort() || $this->usesNonStandardHttpsPort();
     }
 
     /**
@@ -179,5 +198,25 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
         }
 
         return implode($patterns, '|');
+    }
+
+    /**
+     * Checks whether server is serving HTTP over a non-standard port.
+     *
+     * @return bool
+     */
+    private function usesNonStandardHttpPort()
+    {
+        return 'http' === $this->getScheme() && '80' != $this->router->getContext()->getHttpPort();
+    }
+
+    /**
+     * Checks whether server is serving HTTPS over a non-standard port.
+     *
+     * @return bool
+     */
+    private function usesNonStandardHttpsPort()
+    {
+        return 'https' === $this->getScheme() && '443' != $this->router->getContext()->getHttpsPort();
     }
 }
