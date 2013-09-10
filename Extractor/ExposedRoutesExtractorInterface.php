@@ -42,7 +42,7 @@ interface ExposedRoutesExtractorInterface
     public function getPrefix($locale);
 
     /**
-     * Get the host from RequestContext
+     * Get the host and applicable port from RequestContext
      *
      * @return string
      */

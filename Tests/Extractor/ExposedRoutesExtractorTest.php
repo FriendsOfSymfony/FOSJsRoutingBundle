@@ -13,6 +13,7 @@ namespace FOS\JsRoutingBundle\Tests\Extractor;
 
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor;
 use FOS\JsRoutingBundle\Extractor\ExtractedRoute;
+use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpKernel\Kernel;
 
@@ -103,6 +104,54 @@ class ExposedRoutesExtractorTest extends \PHPUnit_Framework_TestCase
 
         $extractor = new ExposedRoutesExtractor($router, array(), $this->cacheDir, array());
         $this->assertEquals($this->cacheDir . DIRECTORY_SEPARATOR . 'fosJsRouting' . DIRECTORY_SEPARATOR . 'data.json', $extractor->getCachePath(''));
+    }
+
+    /**
+     * @dataProvider provideTestGetHostOverHttp
+     */
+    public function testGetHostOverHttp($host, $httpPort, $expected)
+    {
+        $requestContext = new RequestContext('/app_dev.php', 'GET', $host, 'http', $httpPort);
+
+        $router = $this->getMock('Symfony\\Component\\Routing\\Router', array(), array(), '', false);
+        $router->expects($this->atLeastOnce())
+            ->method('getContext')
+            ->will($this->returnValue($requestContext));
+
+        $extractor = new ExposedRoutesExtractor($router, array(), $this->cacheDir, array());
+
+        $this->assertEquals($expected, $extractor->getHost());
+    }
+    public function provideTestGetHostOverHttp()
+    {
+        return array(
+            'HTTP Standard' => array('127.0.0.1', 80, '127.0.0.1'),
+            'HTTP Non-Standard' => array('127.0.0.1', 8888, '127.0.0.1:8888'),
+        );
+    }
+
+    /**
+     * @dataProvider provideTestGetHostOverHttps
+     */
+    public function testGetHostOverHttps($host, $httpsPort, $expected)
+    {
+        $requestContext = new RequestContext('/app_dev.php', 'GET', $host, 'https', 80, $httpsPort);
+
+        $router = $this->getMock('Symfony\\Component\\Routing\\Router', array(), array(), '', false);
+        $router->expects($this->atLeastOnce())
+            ->method('getContext')
+            ->will($this->returnValue($requestContext));
+
+        $extractor = new ExposedRoutesExtractor($router, array(), $this->cacheDir, array());
+
+        $this->assertEquals($expected, $extractor->getHost());
+    }
+    public function provideTestGetHostOverHttps()
+    {
+        return array(
+            'HTTPS Standard' => array('127.0.0.1', 443, '127.0.0.1'),
+            'HTTPS Non-Standard' => array('127.0.0.1', 9876, '127.0.0.1:9876'),
+        );
     }
 
     /**
