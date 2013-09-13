@@ -54,9 +54,10 @@ class FOSJsRoutingExtension extends Extension
         }
 
         if (isset($config['cache_control'])) {
-            $container->setParameter('fos_js_routing.cache_control', $config['cache_control']);
+            $config['cache_control']['enabled'] = true;
         } else {
-            $container->setParameter('fos_js_routing.cache_control', false);
+            $config['cache_control'] = array('enabled' => false);
         }
+        $container->setParameter('fos_js_routing.cache_control', $config['cache_control']);
     }
 }

@@ -15,10 +15,6 @@
             <argument>%kernel.cache_dir%</argument>
             <argument>%kernel.bundles%</argument>
         </service>
-
-        <service id="fos_js_routing.cache_control" class="%fos_js_routing.cache_control.class%">
-            <argument>%fos_js_routing.cache_control%</argument>
-        </service>
     </services>
 
 </container>

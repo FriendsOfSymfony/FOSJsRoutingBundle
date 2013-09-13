@@ -38,7 +38,7 @@ class Controller
     protected $exposedRoutesExtractor;
 
     /**
-     * @var \FOS\JsRoutingBundle\CacheControl\CacheControl
+     * @var array
      */
     protected $cacheControl;
 
@@ -54,7 +54,7 @@ class Controller
      * @param ExposedRoutesExtractorInterface $exposedRoutesExtractor The extractor service.
      * @param boolean                         $debug
      */
-    public function __construct($serializer, ExposedRoutesExtractorInterface $exposedRoutesExtractor, CacheControl $cacheControl, $debug = false)
+    public function __construct($serializer, ExposedRoutesExtractorInterface $exposedRoutesExtractor, array $cacheControl = array(), $debug = false)
     {
         $this->serializer = $serializer;
         $this->exposedRoutesExtractor = $exposedRoutesExtractor;
@@ -104,6 +104,38 @@ class Controller
         }
 
         $response = new Response($content, 200, array('Content-Type' => $request->getMimeType($_format)));
-        return $this->cacheControl->setCacheHeaders($response);
+        return $this->setCacheHeaders($response);
+    }
+
+    /**
+     * @param Response $response
+     *
+     * @return Response
+     */
+    protected function setCacheHeaders(Response $response)
+    {
+        if (empty($this->cacheControl['enabled'])) {
+            return $response;
+        }
+
+        $this->cacheControl['public'] ? $response->setPublic() : $response->setPrivate();
+
+        if (is_integer($this->cacheControl['maxage'])) {
+            $response->setMaxAge($this->cacheControl['maxage']);
+        }
+
+        if (is_integer($this->cacheControl['smaxage'])) {
+            $response->setSharedMaxAge($this->cacheControl['smaxage']);
+        }
+
+        if ($this->cacheControl['expires'] !== null) {
+            $response->setExpires(new \DateTime($this->cacheControl['expires']));
+        }
+
+        if (!empty($this->cacheControl['vary'])) {
+            $response->setVary($this->cacheControl['vary']);
+        }
+
+        return $response;
     }
 }
