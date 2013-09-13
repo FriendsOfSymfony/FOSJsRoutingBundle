@@ -41,6 +41,21 @@ class Configuration implements ConfigurationInterface
                     ->prototype('scalar')->end()
                 ->end()
                 ->scalarNode('request_context_base_url')->defaultNull()->end()
+                ->arrayNode('cache_control')
+                    ->children()
+                        ->booleanNode('public')->defaultFalse()->end()
+                        ->scalarNode('expires')->defaultNull()->end()
+                        ->scalarNode('maxage')->defaultNull()->end()
+                        ->scalarNode('smaxage')->defaultNull()->end()
+                        ->arrayNode('vary')
+                            ->beforeNormalization()
+                                ->ifTrue(function($v) { return !is_array($v); })
+                                ->then(function($v) { return array($v); })
+                            ->end()
+                            ->prototype('scalar')->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $builder;
