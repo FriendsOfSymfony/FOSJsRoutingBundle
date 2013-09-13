@@ -11,7 +11,6 @@
 
 namespace FOS\JsRoutingBundle\Controller;
 
-use FOS\JsRoutingBundle\CacheControl\CacheControl;
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
 use FOS\JsRoutingBundle\Response\RoutesResponse;
 use Symfony\Component\Config\ConfigCache;
@@ -52,6 +51,7 @@ class Controller
      *
      * @param mixed                           $serializer             Any object with a serialize($data, $format) method
      * @param ExposedRoutesExtractorInterface $exposedRoutesExtractor The extractor service.
+     * @param array                           $cacheControl
      * @param boolean                         $debug
      */
     public function __construct($serializer, ExposedRoutesExtractorInterface $exposedRoutesExtractor, array $cacheControl = array(), $debug = false)
