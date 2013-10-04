@@ -5,7 +5,6 @@
 
     <parameters>
         <parameter key="fos_js_routing.extractor.class">FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor</parameter>
-        <parameter key="fos_js_routing.cache_control.class">FOS\JsRoutingBundle\CacheControl\CacheControl</parameter>
     </parameters>
 
     <services>
@@ -16,5 +15,4 @@
             <argument>%kernel.bundles%</argument>
         </service>
     </services>
-
 </container>

@@ -13,6 +13,7 @@ namespace FOS\JsRoutingBundle\Controller;
 
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
 use FOS\JsRoutingBundle\Response\RoutesResponse;
+use FOS\JsRoutingBundle\Util\CacheControlConfig;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,14 +33,14 @@ class Controller
     protected $serializer;
 
     /**
-     * @var \FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface
+     * @var ExposedRoutesExtractorInterface
      */
     protected $exposedRoutesExtractor;
 
     /**
-     * @var array
+     * @var CacheControlConfig
      */
-    protected $cacheControl;
+    protected $cacheControlConfig;
 
     /**
      * @var boolean
@@ -56,10 +57,10 @@ class Controller
      */
     public function __construct($serializer, ExposedRoutesExtractorInterface $exposedRoutesExtractor, array $cacheControl = array(), $debug = false)
     {
-        $this->serializer = $serializer;
+        $this->serializer             = $serializer;
         $this->exposedRoutesExtractor = $exposedRoutesExtractor;
-        $this->cacheControl = $cacheControl;
-        $this->debug = $debug;
+        $this->cacheControlConfig     = new CacheControlConfig($cacheControl);
+        $this->debug                  = $debug;
     }
 
     /**
@@ -104,38 +105,7 @@ class Controller
         }
 
         $response = new Response($content, 200, array('Content-Type' => $request->getMimeType($_format)));
-
-        return $this->setCacheHeaders($response);
-    }
-
-    /**
-     * @param Response $response
-     *
-     * @return Response
-     */
-    protected function setCacheHeaders(Response $response)
-    {
-        if (empty($this->cacheControl['enabled'])) {
-            return $response;
-        }
-
-        $this->cacheControl['public'] ? $response->setPublic() : $response->setPrivate();
-
-        if (is_integer($this->cacheControl['maxage'])) {
-            $response->setMaxAge($this->cacheControl['maxage']);
-        }
-
-        if (is_integer($this->cacheControl['smaxage'])) {
-            $response->setSharedMaxAge($this->cacheControl['smaxage']);
-        }
-
-        if ($this->cacheControl['expires'] !== null) {
-            $response->setExpires(new \DateTime($this->cacheControl['expires']));
-        }
-
-        if (!empty($this->cacheControl['vary'])) {
-            $response->setVary($this->cacheControl['vary']);
-        }
+        $this->cacheControlConfig->apply($response);
 
         return $response;
     }

@@ -55,6 +55,36 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('{"base_url":"","routes":[],"prefix":"","host":"","scheme":""}', $response->getContent());
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('application/json', $response->headers->get('Content-Type'));
+
+        $this->assertFalse($response->headers->hasCacheControlDirective('public'));
+        $this->assertNull($response->getExpires());
+        $this->assertFalse($response->headers->hasCacheControlDirective('max-age'));
+        $this->assertFalse($response->headers->hasCacheControlDirective('s-maxage'));
+    }
+
+    public function testCacheControl()
+    {
+        $cacheControlConfig = array(
+            'enabled' => true,
+            'public'  => true,
+            'expires' => '2013-10-04 23:59:59 UTC',
+            'maxage'  => 123,
+            'smaxage' => 456,
+            'vary'    => array(),
+        );
+
+        $controller = new Controller($this->getSerializer(), $this->getExtractor(), $cacheControlConfig, sys_get_temp_dir());
+        $response   = $controller->indexAction($this->getRequest('/'), 'json');
+
+        $this->assertTrue($response->headers->hasCacheControlDirective('public'));
+
+        $this->assertEquals('2013-10-04 23:59:59', $response->getExpires()->format('Y-m-d H:i:s'));
+
+        $this->assertTrue($response->headers->hasCacheControlDirective('max-age'));
+        $this->assertEquals(123, $response->headers->getCacheControlDirective('max-age'));
+
+        $this->assertTrue($response->headers->hasCacheControlDirective('s-maxage'));
+        $this->assertEquals(456, $response->headers->getCacheControlDirective('s-maxage'));
     }
 
     private function getExtractor(array $exposedRoutes = array(), $baseUrl = '')
