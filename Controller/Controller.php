@@ -101,6 +101,7 @@ class Controller
         $content = file_get_contents((string) $cache);
 
         if ($callback = $request->query->get('callback')) {
+            $callback = preg_replace('![^a-zA-Z0-9.]!', '', $callback);
             $content = $callback.'('.$content.');';
         }
 
