@@ -17,8 +17,9 @@ use FOS\JsRoutingBundle\Util\CacheControlConfig;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Controller class.
@@ -100,7 +101,11 @@ class Controller
 
         $content = file_get_contents((string) $cache);
 
-        if ($callback = $request->query->get('callback')) {
+        if (null !== $callback = $request->query->get('callback')) {
+            if (false === ctype_alnum($callback)) {
+                throw new HttpException(400, 'Invalid JSONP callback value');
+            }
+
             $content = $callback.'('.$content.');';
         }
 
