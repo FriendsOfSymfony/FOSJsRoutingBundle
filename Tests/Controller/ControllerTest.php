@@ -39,12 +39,29 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]+?","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""}', $response->getContent());
     }
 
-    public function testGenerateWithCallback()
+    /**
+     * @dataProvider dataProviderForTestGenerateWithCallback
+     */
+    public function testGenerateWithCallback($callback)
     {
         $controller = new Controller($this->getSerializer(), $this->getExtractor());
-        $response   = $controller->indexAction($this->getRequest('/', 'GET', array('callback' => 'foo')), 'json');
+        $response   = $controller->indexAction($this->getRequest('/', 'GET', array('callback' => $callback)), 'json');
 
-        $this->assertEquals('foo({"base_url":"","routes":[],"prefix":"","host":"","scheme":""});', $response->getContent());
+        $this->assertEquals(
+            sprintf('%s({"base_url":"","routes":[],"prefix":"","host":"","scheme":""});', $callback),
+            $response->getContent()
+        );
+    }
+
+    public static function dataProviderForTestGenerateWithCallback()
+    {
+        return array(
+            array('foo'),
+            array('foo123'),
+            array('fos.Router.data'),
+            array('$.callback'),
+            array('_.callback'),
+        );
     }
 
     /**

@@ -102,7 +102,7 @@ class Controller
         $content = file_get_contents((string) $cache);
 
         if (null !== $callback = $request->query->get('callback')) {
-            if (false === ctype_alnum($callback)) {
+            if (0 === preg_match('/^[a-zA-Z0-9\.$_]+$/', $callback)) {
                 throw new HttpException(400, 'Invalid JSONP callback value');
             }
 
