@@ -56,11 +56,8 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
     public static function dataProviderForTestGenerateWithCallback()
     {
         return array(
-            array('foo'),
-            array('foo123'),
             array('fos.Router.data'),
-            array('$.callback'),
-            array('_.callback'),
+            array('foo'),
         );
     }
 
