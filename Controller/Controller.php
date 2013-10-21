@@ -14,7 +14,6 @@ namespace FOS\JsRoutingBundle\Controller;
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
 use FOS\JsRoutingBundle\Response\RoutesResponse;
 use FOS\JsRoutingBundle\Util\CacheControlConfig;
-use FOS\JsRoutingBundle\Validator\CallbackValidator;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -103,8 +102,8 @@ class Controller
         $content = file_get_contents((string) $cache);
 
         if (null !== $callback = $request->query->get('callback')) {
-            $validator = new CallbackValidator();
-            if (!$validator->isValid($callback)) {
+            $validator = new \JsonpCallbackValidator();
+            if (!$validator->validate($callback)) {
                 throw new HttpException(400, 'Invalid JSONP callback value');
             }
 
