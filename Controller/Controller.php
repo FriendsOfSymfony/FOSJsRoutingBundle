@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Controller class.
@@ -32,6 +33,12 @@ class Controller
      * @var mixed
      */
     protected $serializer;
+
+
+    /**
+     * @var KernelInterface
+     */
+    protected $kernel;
 
     /**
      * @var ExposedRoutesExtractorInterface
@@ -53,13 +60,15 @@ class Controller
      *
      * @param mixed                           $serializer             Any object with a serialize($data, $format) method
      * @param ExposedRoutesExtractorInterface $exposedRoutesExtractor The extractor service.
+     * @param KernelInterface                 $kernel
      * @param array                           $cacheControl
      * @param boolean                         $debug
      */
-    public function __construct($serializer, ExposedRoutesExtractorInterface $exposedRoutesExtractor, array $cacheControl = array(), $debug = false)
+    public function __construct($serializer, ExposedRoutesExtractorInterface $exposedRoutesExtractor, KernelInterface $kernel, array $cacheControl = array(), $debug = false)
     {
         $this->serializer             = $serializer;
         $this->exposedRoutesExtractor = $exposedRoutesExtractor;
+        $this->kernel                 = $kernel;
         $this->cacheControlConfig     = new CacheControlConfig($cacheControl);
         $this->debug                  = $debug;
     }
@@ -85,7 +94,7 @@ class Controller
 
         $cache = new ConfigCache($this->exposedRoutesExtractor->getCachePath($request->getLocale()), $this->debug);
 
-        if (!$cache->isFresh()) {
+        if (("prod" !== $this->kernel->getEnvironment()) || !$cache->isFresh()) {
             $content = $this->serializer->serialize(
                 new RoutesResponse(
                     $this->exposedRoutesExtractor->getBaseUrl(),
