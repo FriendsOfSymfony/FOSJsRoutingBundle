@@ -1,8 +1,8 @@
 {
     "name": "friendsofsymfony/jsrouting-bundle",
     "type": "symfony-bundle",
-    "description": "Symfony FOSJsRoutingBundle",
-    "keywords": ["Js Routing"],
+    "description": "A pretty nice way to expose your Symfony2 routing to client applications.",
+    "keywords": [ "js routing", "routing", "javascript" ],
     "homepage": "http://friendsofsymfony.github.com",
     "license": "MIT",
     "authors": [
@@ -15,7 +15,6 @@
             "homepage": "https://github.com/friendsofsymfony/FOSJsRoutingBundle/contributors"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.2",
         "symfony/framework-bundle": "~2.0",
