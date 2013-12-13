@@ -37,7 +37,6 @@ Register the bundle in `app/AppKernel.php`:
 
 ``` php
 // app/AppKernel.php
-
 public function registerBundles()
 {
     return array(
@@ -51,7 +50,6 @@ Register the routing definition in `app/config/routing.yml`:
 
 ``` yml
 # app/config/routing.yml
-
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 ```
@@ -66,7 +64,7 @@ Usage
 
 Add these two lines in your layout:
 
-```html
+```
 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 ```
@@ -76,7 +74,7 @@ add the two JavaScript files above loaded at some point in your web page.
 
 ### Generating URIs
 
-Then, it's as simple as calling:
+It's as simple as calling:
 
 ```javascript
 Routing.generate('route_id', /* your params */)
@@ -113,7 +111,7 @@ Or using annotations:
      */
     public function exposedAction($foo)
 
-You can do:
+You can use the `generate()` method that way:
 
 ```javascript
 Routing.generate('my_route_to_expose', { id: 10 });
