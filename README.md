@@ -9,20 +9,33 @@ That means you'll be able to generate URL with given parameters like you can do 
 
 This is a port of the _symfony 1.x_ plugin: [chCmsExposeRoutingPlugin](https://github.com/themouette/chCmsExposeRoutingPlugin).
 
-#### Documentation
+Documentation
+-------------
 
-Please, find the README file in `Resources/doc/` to get more information about this bundle.
+For documentation, see:
 
-[Read the documentation](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc/README.markdown)
+    Resources/doc/
 
+[Read the
+documentation](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc/index.md)
 
-#### License
+Contributing
+------------
 
-See `Resources/meta/LICENSE`.
+See
+[CONTRIBUTING](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/CONTRIBUTING.md)
+file.
 
-
-#### Original Credits
+Original Credits
+----------------
 
 * William DURAND as main author.
 * Julien MUETTON (Carpe Hora) for the inspiration.
 
+License
+-------
+
+This bundle is released under the MIT license. See the complete license in the
+bundle:
+
+    Resources/meta/LICENSE
