@@ -12,6 +12,7 @@
 namespace FOS\JsRoutingBundle\Extractor;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Route;
 
 /**
  * ExposedRoutesExtractorInterface interface.
@@ -23,7 +24,7 @@ interface ExposedRoutesExtractorInterface
     /**
      * Returns an array of exposed routes where keys are the route names.
      *
-     * @return array
+     * @return \Symfony\Component\Routing\RouteCollection
      */
     public function getRoutes();
 
@@ -70,9 +71,12 @@ interface ExposedRoutesExtractorInterface
     public function getResources();
 
     /**
-     * Returns an array of all exposed Route objects.
+     * Tells if a route should be considered as exposed
      *
-     * @return array
+     * @param Route  $route
+     * @param string $name
+     *
+     * @return bool
      */
-    public function getExposedRoutes();
+    public function isRouteExposed(Route $route, $name);
 }
