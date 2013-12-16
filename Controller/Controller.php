@@ -86,20 +86,23 @@ class Controller
         $cache = new ConfigCache($this->exposedRoutesExtractor->getCachePath($request->getLocale()), $this->debug);
 
         if (!$cache->isFresh()) {
-            $content = $this->serializer->serialize(
-                new RoutesResponse(
-                    $this->exposedRoutesExtractor->getBaseUrl(),
-                    $this->exposedRoutesExtractor->getRoutes(),
-                    $this->exposedRoutesExtractor->getPrefix($request->getLocale()),
-                    $this->exposedRoutesExtractor->getHost(),
-                    $this->exposedRoutesExtractor->getScheme()
-                ),
-                'json'
-            );
-            $cache->write($content, $this->exposedRoutesExtractor->getResources());
+            $exposedRoutes = $this->exposedRoutesExtractor->getRoutes();
+            $serializedRoutes = $this->serializer->serialize($exposedRoutes, 'json');
+            $cache->write($serializedRoutes, $this->exposedRoutesExtractor->getResources());
+        } else {
+            $serializedRoutes = file_get_contents((string) $cache);
+            $exposedRoutes = json_decode($serializedRoutes, true);
         }
 
-        $content = file_get_contents((string) $cache);
+        $routesResponse = new RoutesResponse(
+            $this->exposedRoutesExtractor->getBaseUrl(),
+            $exposedRoutes,
+            $this->exposedRoutesExtractor->getPrefix($request->getLocale()),
+            $this->exposedRoutesExtractor->getHost(),
+            $this->exposedRoutesExtractor->getScheme()
+        );
+
+        $content = $this->serializer->serialize($routesResponse, 'json');
 
         if (null !== $callback = $request->query->get('callback')) {
             $validator = new \JsonpCallbackValidator();
