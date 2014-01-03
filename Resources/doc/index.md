@@ -229,7 +229,7 @@ need the Google Closure Tools. You need the
 also need a working Java environment. You can re-compile the JavaScript with the
 following command:
 
-    $ java -jar plovr.jar build compile.js
+    $ java -jar plovr.jar build Resources/config/plovr/compile.js
 
 Alternatively, you can use the JMSGoogleClosureBundle. If you install this bundle,
 you can re-compile the JavaScript with the following command:
