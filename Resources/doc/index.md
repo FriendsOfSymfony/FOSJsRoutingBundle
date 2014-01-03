@@ -76,13 +76,13 @@ add the two JavaScript files above loaded at some point in your web page.
 
 It's as simple as calling:
 
-```javascript
+```JavaScript
 Routing.generate('route_id', /* your params */)
 ```
 
 Or if you want to generate **absolute URLs**:
 
-```javascript
+```JavaScript
 Routing.generate('route_id', /* your params */, true)
 ```
 
@@ -113,7 +113,7 @@ Or using annotations:
 
 You can use the `generate()` method that way:
 
-```javascript
+```JavaScript
 Routing.generate('my_route_to_expose', { id: 10 });
 // will result in /foo/10/bar
 
@@ -179,8 +179,8 @@ fos_js_routing:
 #### fos:js-routing:dump
 
 This command dumps the route information into a file so that instead of having
-the controller generated javascript, you can use a normal file. This also allows
-to combine the routes with the other javascript files in assetic.
+the controller generated JavaScript, you can use a normal file. This also allows
+to combine the routes with the other JavaScript files in assetic.
 
     $ php app/console fos:js-routing:dump
 
@@ -194,12 +194,12 @@ you now include this as
 
 Or inside assetic, do
 
-    {% javascripts filter='?yui_js'
+    {% JavaScripts filter='?yui_js'
         'bundles/fosjsrouting/js/router.js'
         'js/fos_js_routes.js'
     %}
         <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    {% endJavaScripts %}
 
 
 *Hint*: If you are using JMSI18nRoutingBundle, you need to run the command with
@@ -217,7 +217,7 @@ This command lists all exposed routes:
 Compiling the JavaScript files
 ------------------------------
 
-Note: We already provide a compiled version of the Javascript; this section is only
+Note: We already provide a compiled version of the JavaScript; this section is only
 relevant if you want to make changes to this script.
 
 In order to re-compile the JavaScript source files that we ship with this bundle, you
