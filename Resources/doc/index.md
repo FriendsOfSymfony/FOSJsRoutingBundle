@@ -201,6 +201,9 @@ Or inside assetic, do
         <script src="{{ asset_url }}"></script>
     {% endJavaScripts %}
 
+**Important:** you should follow the Symfony documentation about generating URLs
+in the console: [Configuring The Request Context
+Globally](http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally).
 
 *Hint*: If you are using JMSI18nRoutingBundle, you need to run the command with
 the `--locale` parameter once for each locale you use and adjust your include paths
