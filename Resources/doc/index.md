@@ -194,12 +194,12 @@ you now include this as
 
 Or inside assetic, do
 
-    {% JavaScripts filter='?yui_js'
+    {% javascripts filter='?yui_js'
         'bundles/fosjsrouting/js/router.js'
         'js/fos_js_routes.js'
     %}
         <script src="{{ asset_url }}"></script>
-    {% endJavaScripts %}
+    {% endjavascripts %}
 
 **Important:** you should follow the Symfony documentation about generating URLs
 in the console: [Configuring The Request Context
