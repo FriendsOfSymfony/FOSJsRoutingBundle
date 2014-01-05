@@ -11,9 +11,12 @@
 
 namespace FOS\JsRoutingBundle\Command;
 
+use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
 use Symfony\Bundle\FrameworkBundle\Command\RouterDebugCommand;
+use Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Routing\Route;
 
 /**
  * A console command for retrieving information about exposed routes.
@@ -51,20 +54,44 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        /** @var ExposedRoutesExtractorInterface $extractor */
         $extractor = $this->getContainer()->get('fos_js_routing.extractor');
-        if ($input->getArgument('name')) {
-            $route = $this->getContainer()->get('router')->getRouteCollection()->get($input->getArgument('name'));
+
+        if ($name = $input->getArgument('name')) {
+            /** @var Route $route */
+            $route = $this->getContainer()->get('router')->getRouteCollection()->get($name);
+
             if (!$route) {
-                throw new \InvalidArgumentException(sprintf('The route "%s" does not exist.', $input->getArgument('name')));
+                throw new \InvalidArgumentException(sprintf('The route "%s" does not exist.', $name));
             }
-            $exposedRoutes = $extractor->getExposedRoutes();
-            if (isset($exposedRoutes[$input->getArgument('name')])) {
-                $this->outputRoute($output, $input->getArgument('name'));
+
+            if (!$extractor->isRouteExposed($route, $name)) {
+                throw new \InvalidArgumentException(sprintf('The route "%s" was found, but it is not an exposed route.', $name));
+            }
+
+            if (!class_exists('Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper')) {
+                // BC layer for Symfony 2.3
+                $this->outputRoute($output, $name);
             } else {
-                throw new \InvalidArgumentException(sprintf('The route "%s" was found, but it is not an exposed route.', $input->getArgument('name')));
+                $helper = new DescriptorHelper();
+                $helper->describe($output, $route, array(
+                    'format'           => $input->getOption('format'),
+                    'raw_text'         => $input->getOption('raw'),
+                    'show_controllers' => $input->getOption('show-controllers'),
+                ));
             }
         } else {
-            $this->outputRoutes($output, $extractor->getExposedRoutes());
+            if (!class_exists('Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper')) {
+                // BC layer for Symfony 2.3
+                $this->outputRoutes($output, $extractor->getRoutes());
+            } else {
+                $helper = new DescriptorHelper();
+                $helper->describe($output, $extractor->getRoutes(), array(
+                    'format'           => $input->getOption('format'),
+                    'raw_text'         => $input->getOption('raw'),
+                    'show_controllers' => $input->getOption('show-controllers'),
+                ));
+            }
         }
     }
 }
