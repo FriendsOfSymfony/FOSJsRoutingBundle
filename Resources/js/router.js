@@ -20,7 +20,8 @@ goog.addSingletonGetter(fos.Router);
  * @typedef {{
  *     tokens: (Array.<Array.<string>>),
  *     defaults: (Object.<string, string>),
- *     requirements: Object
+ *     requirements: Object,
+ *     hosttokens: (Array.<string>)
  * }}
  */
 fos.Router.Route;
@@ -175,6 +176,7 @@ fos.Router.prototype.generate = function(name, opt_params, absolute) {
             var hasDefault = goog.object.containsKey(route.defaults, token[3]);
             if (false === optional || !hasDefault || (goog.object.containsKey(params, token[3]) && params[token[3]] != route.defaults[token[3]])) {
                     var value;
+
                     if (goog.object.containsKey(params, token[3])) {
                         value = params[token[3]];
                         goog.object.remove(unusedParams, token[3]);
