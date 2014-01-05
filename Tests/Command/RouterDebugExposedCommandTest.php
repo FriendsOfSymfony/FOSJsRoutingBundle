@@ -55,7 +55,6 @@ class RouterDebugExposedCommandTest extends \PHPUnit_Framework_TestCase
             ->method('getRoutes')
             ->will($this->returnValue($routes));
 
-
         $command = new RouterDebugExposedCommand();
         $command->setContainer($this->container);
 

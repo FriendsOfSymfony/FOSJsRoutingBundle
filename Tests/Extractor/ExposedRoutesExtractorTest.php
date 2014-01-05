@@ -14,7 +14,6 @@ namespace FOS\JsRoutingBundle\Tests\Extractor;
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollection;
 
 /**

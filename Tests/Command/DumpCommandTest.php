@@ -53,7 +53,6 @@ class DumpCommandTest extends \PHPUnit_Framework_TestCase
             ->with('fos_js_routing.serializer')
             ->will($this->returnValue($this->serializer));
 
-
         $command = new DumpCommand();
         $command->setContainer($this->container);
 
@@ -81,7 +80,6 @@ class DumpCommandTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with('fos_js_routing.serializer')
             ->will($this->returnValue($this->serializer));
-
 
         $command = new DumpCommand();
         $command->setContainer($this->container);
@@ -130,7 +128,6 @@ class DumpCommandTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with('fos_js_routing.serializer')
             ->will($this->returnValue($this->serializer));
-
 
         $command = new DumpCommand();
         $command->setContainer($this->container);

@@ -19,8 +19,6 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\HttpFoundation\Session;
 
 class ControllerTest extends \PHPUnit_Framework_TestCase
 {
@@ -80,7 +78,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
     public function testGenerateWithInvalidCallback()
     {
         $controller = new Controller($this->getSerializer(), $this->getExtractor());
-        $controller->indexAction($this->getRequest('/', 'GET', array('callback' => '(function xss(x){evil()})')), 'json');
+        $controller->indexAction($this->getRequest('/', 'GET', array('callback' => '(function xss(x) {evil()})')), 'json');
     }
 
     public function testIndexActionWithoutRoutes()
