@@ -1,12 +1,23 @@
 <?php
 
+/*
+ * This file is part of the FOSJsRoutingBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FOS\JsRoutingBundle\Tests\Controller;
 
 use FOS\JsRoutingBundle\Controller\Controller;
-use FOS\JsRoutingBundle\Extractor\ExtractedRoute;
+use FOS\JsRoutingBundle\Serializer\Normalizer\RouteCollectionNormalizer;
+use FOS\JsRoutingBundle\Serializer\Normalizer\RoutesResponseNormalizer;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpFoundation\Session;
@@ -27,16 +38,18 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testIndexAction()
     {
+        $routes = new RouteCollection();
+        $routes->add('literal', new Route('/homepage'));
+        $routes->add('blog', new Route('/blog-post/{slug}', array(), array(), array(), 'localhost'));
+
         $controller = new Controller(
             $this->getSerializer(),
-            $this->getExtractor(array(
-                'literal' => new ExtractedRoute(array(array('text', '/homepage')), array(), array()),
-                'blog'    => new ExtractedRoute(array(array('variable', '/', '[^/]+?', 'slug'), array('text', '/blog-post')), array(), array(), array(array('text', 'localhost'))),
-            ))
+            $this->getExtractor($routes)
         );
+
         $response = $controller->indexAction($this->getRequest('/'), 'json');
 
-        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]+?","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""}', $response->getContent());
     }
 
     /**
@@ -62,12 +75,12 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\HttpKernel\Exception\HttpException
+     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
      */
     public function testGenerateWithInvalidCallback()
     {
         $controller = new Controller($this->getSerializer(), $this->getExtractor());
-        $response   = $controller->indexAction($this->getRequest('/', 'GET', array('callback' => '(function xss(x){evil()})')), 'json');
+        $controller->indexAction($this->getRequest('/', 'GET', array('callback' => '(function xss(x){evil()})')), 'json');
     }
 
     public function testIndexActionWithoutRoutes()
@@ -110,7 +123,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(456, $response->headers->getCacheControlDirective('s-maxage'));
     }
 
-    private function getExtractor(array $exposedRoutes = array(), $baseUrl = '')
+    private function getExtractor(RouteCollection $exposedRoutes = null, $baseUrl = '')
     {
         $extractor = $this->getMock('FOS\\JsRoutingBundle\\Extractor\\ExposedRoutesExtractorInterface');
         $extractor
@@ -153,19 +166,16 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('The Serializer component is not available.');
         }
 
-        return new Serializer(array(new GetSetMethodNormalizer()), array('json' => new JsonEncoder()));
+        return new Serializer(array(
+            new RoutesResponseNormalizer(new RouteCollectionNormalizer()),
+            new RouteCollectionNormalizer(),
+        ), array(
+            'json' => new JsonEncoder()
+        ));
     }
 
     private function getRequest($uri, $method = 'GET', $parameters = array(), $cookies = array(), $files = array(), $server = array(), $content = null)
     {
-        $request = Request::create($uri, $method, $parameters, $cookies, $files, $server, $content);
-
-        if (version_compare(strtolower(Kernel::VERSION), '2.1.0-dev', '<')) {
-            $request->setSession(new Session(
-                $this->getMock('Symfony\Component\HttpFoundation\SessionStorage\SessionStorageInterface')
-            ));
-        }
-
-        return $request;
+        return Request::create($uri, $method, $parameters, $cookies, $files, $server, $content);
     }
 }

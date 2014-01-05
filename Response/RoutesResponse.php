@@ -11,6 +11,8 @@
 
 namespace FOS\JsRoutingBundle\Response;
 
+use Symfony\Component\Routing\RouteCollection;
+
 class RoutesResponse
 {
     private $baseUrl;
@@ -19,16 +21,16 @@ class RoutesResponse
     private $host;
     private $scheme;
 
-    public function __construct($baseUrl, array $routes, $prefix, $host, $scheme)
+    public function __construct($baseUrl, RouteCollection $routes = null, $prefix, $host, $scheme)
     {
         $this->baseUrl = $baseUrl;
-        $this->routes = $routes;
+        $this->routes = $routes ?: new RouteCollection();
         $this->prefix = $prefix;
         $this->host = $host;
         $this->scheme = $scheme;
     }
 
-    public function getBase_url()
+    public function getBaseUrl()
     {
         return $this->baseUrl;
     }

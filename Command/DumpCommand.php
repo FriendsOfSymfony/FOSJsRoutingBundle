@@ -24,7 +24,20 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class DumpCommand extends ContainerAwareCommand
 {
+    /**
+     * @var string
+     */
     private $targetPath;
+
+    /**
+     * @var \FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface
+     */
+    private $extractor;
+
+    /**
+     * @var \Symfony\Component\Serializer\SerializerInterface
+     */
+    private $serializer;
 
     protected function configure()
     {
@@ -60,6 +73,9 @@ class DumpCommand extends ContainerAwareCommand
 
         $this->targetPath = $input->getOption('target') ?:
             sprintf('%s/../web/js/fos_js_routes.js', $this->getContainer()->getParameter('kernel.root_dir'));
+
+        $this->extractor = $this->getContainer()->get('fos_js_routing.extractor');
+        $this->serializer = $this->getContainer()->get('fos_js_routing.serializer');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -68,22 +84,6 @@ class DumpCommand extends ContainerAwareCommand
         $output->writeln('');
 
         $this->doDump($input, $output);
-    }
-
-    /**
-     * @return \FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface
-     */
-    protected function getExposedRoutesExtractor()
-    {
-        return $this->getContainer()->get('fos_js_routing.extractor');
-    }
-
-    /**
-     * @return \Symfony\Component\Serializer\Serializer
-     */
-    protected function getSerializer()
-    {
-        return $this->getContainer()->get('fos_js_routing.serializer');
     }
 
     /**
@@ -105,16 +105,16 @@ class DumpCommand extends ContainerAwareCommand
 
         $baseUrl = $this->getContainer()->hasParameter('fos_js_routing.request_context_base_url') ?
             $this->getContainer()->getParameter('fos_js_routing.request_context_base_url') :
-            $this->getExposedRoutesExtractor()->getBaseUrl()
+            $this->extractor->getBaseUrl()
         ;
 
-        $content = $this->getSerializer()->serialize(
+        $content = $this->serializer->serialize(
             new RoutesResponse(
                 $baseUrl,
-                $this->getExposedRoutesExtractor()->getRoutes(),
+                $this->extractor->getRoutes(),
                 $input->getOption('locale'),
-                $this->getExposedRoutesExtractor()->getHost(),
-                $this->getExposedRoutesExtractor()->getScheme()
+                $this->extractor->getHost(),
+                $this->extractor->getScheme()
             ),
             'json'
         );
