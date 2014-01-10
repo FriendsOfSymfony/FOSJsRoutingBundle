@@ -24,10 +24,10 @@ class RoutesResponse
     public function __construct($baseUrl, RouteCollection $routes = null, $prefix, $host, $scheme)
     {
         $this->baseUrl = $baseUrl;
-        $this->routes = $routes ?: new RouteCollection();
-        $this->prefix = $prefix;
-        $this->host = $host;
-        $this->scheme = $scheme;
+        $this->routes  = $routes ?: new RouteCollection();
+        $this->prefix  = $prefix;
+        $this->host    = $host;
+        $this->scheme  = $scheme;
     }
 
     public function getBaseUrl()
