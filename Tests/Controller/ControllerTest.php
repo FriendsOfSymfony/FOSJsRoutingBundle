@@ -39,6 +39,23 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]+?","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""}', $response->getContent());
     }
 
+    public function testConfigCache()
+    {
+        $controller = new Controller(
+            $this->getSerializer(),
+            $this->getExtractor(array(
+                'literal' => new ExtractedRoute(array(array('text', '/homepage')), array(), array()),
+            ))
+        );
+
+        $response = $controller->indexAction($this->getRequest('/'), 'json');
+        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]}},"prefix":"","host":"","scheme":""}', $response->getContent());
+
+        // second call should serve the cached content
+        $response = $controller->indexAction($this->getRequest('/'), 'json');
+        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]}},"prefix":"","host":"","scheme":""}', $response->getContent());
+    }
+
     /**
      * @dataProvider dataProviderForTestGenerateWithCallback
      */
