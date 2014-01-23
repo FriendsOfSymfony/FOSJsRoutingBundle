@@ -79,12 +79,12 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\HttpKernel\Exception\HttpException
+     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
      */
     public function testGenerateWithInvalidCallback()
     {
         $controller = new Controller($this->getSerializer(), $this->getExtractor());
-        $response   = $controller->indexAction($this->getRequest('/', 'GET', array('callback' => '(function xss(x){evil()})')), 'json');
+        $controller->indexAction($this->getRequest('/', 'GET', array('callback' => '(function xss(x){evil()})')), 'json');
     }
 
     public function testIndexActionWithoutRoutes()

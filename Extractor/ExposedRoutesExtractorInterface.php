@@ -11,7 +11,8 @@
 
 namespace FOS\JsRoutingBundle\Extractor;
 
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Config\Resource\ResourceInterface;
+use Symfony\Component\Routing\Route;
 
 /**
  * ExposedRoutesExtractorInterface interface.
@@ -23,7 +24,7 @@ interface ExposedRoutesExtractorInterface
     /**
      * Returns an array of exposed routes where keys are the route names.
      *
-     * @return array
+     * @return ExtractedRoute[]
      */
     public function getRoutes();
 
@@ -37,7 +38,9 @@ interface ExposedRoutesExtractorInterface
     /**
      * Get the route prefix to use, i.e. the language if JMSI18nRoutingBundle is active
      *
-     * @var string $locale the request locale
+     * @param string $locale the request locale
+     *
+     * @return string
      */
     public function getPrefix($locale);
 
@@ -58,21 +61,23 @@ interface ExposedRoutesExtractorInterface
     /**
      * Get the cache path for this request
      *
-     * @var string $locale the request locale
+     * @param string $locale the request locale
+     *
+     * @return string
      */
     public function getCachePath($locale);
 
     /**
      * Returns an array of routing resources.
      *
-     * @return array
+     * @return ResourceInterface[]
      */
     public function getResources();
 
     /**
      * Returns an array of all exposed Route objects.
      *
-     * @return array
+     * @return Route[]
      */
     public function getExposedRoutes();
 }
