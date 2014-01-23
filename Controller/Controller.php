@@ -50,7 +50,7 @@ class Controller
     /**
      * Default constructor.
      *
-     * @param mixed                           $serializer             Any object with a serialize($data, $format) method
+     * @param object                          $serializer             Any object with a serialize($data, $format) method
      * @param ExposedRoutesExtractorInterface $exposedRoutesExtractor The extractor service.
      * @param array                           $cacheControl
      * @param boolean                         $debug
