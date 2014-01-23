@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Route;
 interface ExposedRoutesExtractorInterface
 {
     /**
-     * Returns an array of exposed routes where keys are the route names.
+     * Returns a collection of exposed routes.
      *
      * @return \Symfony\Component\Routing\RouteCollection
      */
