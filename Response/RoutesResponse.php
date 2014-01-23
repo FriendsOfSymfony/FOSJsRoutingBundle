@@ -21,7 +21,7 @@ class RoutesResponse
     private $host;
     private $scheme;
 
-    public function __construct($baseUrl, RouteCollection $routes = null, $prefix, $host, $scheme)
+    public function __construct($baseUrl, RouteCollection $routes = null, $prefix = null, $host = null, $scheme = null)
     {
         $this->baseUrl = $baseUrl;
         $this->routes  = $routes ?: new RouteCollection();
@@ -37,7 +37,23 @@ class RoutesResponse
 
     public function getRoutes()
     {
-        return $this->routes;
+        $exposedRoutes = array();
+        foreach ($this->routes->all() as $name => $route) {
+            $compiledRoute = $route->compile();
+            $defaults      = array_intersect_key(
+                $route->getDefaults(),
+                array_fill_keys($compiledRoute->getVariables(), null)
+            );
+
+            $exposedRoutes[$name] = array(
+                'tokens'       => $compiledRoute->getTokens(),
+                'defaults'     => $defaults,
+                'requirements' => $route->getRequirements(),
+                'hosttokens'   => method_exists($compiledRoute, 'getHostTokens') ? $compiledRoute->getHostTokens() : array(),
+            );
+        }
+
+        return $exposedRoutes;
     }
 
     public function getPrefix()

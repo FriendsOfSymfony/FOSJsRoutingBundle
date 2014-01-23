@@ -13,11 +13,7 @@ namespace FOS\JsRoutingBundle\Tests\Serializer\Normalizer;
 
 use FOS\JsRoutingBundle\Serializer\Normalizer\RouteCollectionNormalizer;
 use FOS\JsRoutingBundle\Serializer\Normalizer\RoutesResponseNormalizer;
-use Symfony\Component\Routing\RouteCollection;
 
-/**
- * Class RoutesResponseNormalizerTest
- */
 class RoutesResponseNormalizerTest extends \PHPUnit_Framework_TestCase
 {
     public function testSupportsNormalization()
@@ -28,12 +24,6 @@ class RoutesResponseNormalizerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->assertFalse($normalizer->supportsNormalization(new \stdClass()));
-        $this->assertFalse($normalizer->supportsNormalization($response));
-
-        $response->expects($this->once())
-            ->method('getRoutes')
-            ->will($this->returnValue(new RouteCollection()));
-
         $this->assertTrue($normalizer->supportsNormalization($response));
     }
 
@@ -46,7 +36,7 @@ class RoutesResponseNormalizerTest extends \PHPUnit_Framework_TestCase
 
         $response->expects($this->once())
             ->method('getRoutes')
-            ->will($this->returnValue(new RouteCollection()));
+            ->will($this->returnValue(array()));
 
         $response->expects($this->once())
             ->method('getBaseUrl')

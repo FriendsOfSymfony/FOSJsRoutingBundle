@@ -38,44 +38,41 @@ class RouteCollectionNormalizerTest extends \PHPUnit_Framework_TestCase
         $routes->add('list', new Route('/literal'));
 
         $expected = array(
-            'literal'   => array(
-                'tokens'       => array(
-                    0 => array(
-                        0 => 'text',
-                        1 => '/literal',
-                    ),
-                ),
+            'literal' => array (
+                'path'         => '/literal',
+                'host'         => '',
                 'defaults'     => array(),
                 'requirements' => array(),
-                'hosttokens'   => array(),
+                'options'      => array(
+                    'compiler_class' => 'Symfony\Component\Routing\RouteCompiler'
+                ),
+                'schemes'   => array(),
+                'methods'   => array(),
+                'condition' => '',
             ),
             'blog_post' => array(
-                'tokens'       => array(
-                    0 => array(
-                        0 => 'variable',
-                        1 => '/',
-                        2 => '[^/]++',
-                        3 => 'slug',
-                    ),
-                    1 => array(
-                        0 => 'text',
-                        1 => '/blog-post',
-                    ),
-                ),
+                'path'         => '/blog-post/{slug}',
+                'host'         => '',
                 'defaults'     => array(),
                 'requirements' => array(),
-                'hosttokens'   => array(),
+                'options'      => array(
+                    'compiler_class' => 'Symfony\Component\Routing\RouteCompiler'
+                ),
+                'schemes'   => array(),
+                'methods'   => array(),
+                'condition' => '',
             ),
-            'list'      => array(
-                'tokens'       => array(
-                    0 => array(
-                        0 => 'text',
-                        1 => '/literal',
-                    ),
-                ),
+            'list' => array(
+                'path'         => '/literal',
+                'host'         => '',
                 'defaults'     => array(),
                 'requirements' => array(),
-                'hosttokens'   => array(),
+                'options'      => array(
+                    'compiler_class' => 'Symfony\Component\Routing\RouteCompiler',
+                ),
+                'schemes'   => array(),
+                'methods'   => array(),
+                'condition' => '',
             ),
         );
 

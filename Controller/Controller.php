@@ -78,12 +78,16 @@ class Controller
         $cache = new ConfigCache($this->exposedRoutesExtractor->getCachePath($request->getLocale()), $this->debug);
 
         if (!$cache->isFresh()) {
-            $exposedRoutes = $this->exposedRoutesExtractor->getRoutes();
+            $exposedRoutes    = $this->exposedRoutesExtractor->getRoutes();
             $serializedRoutes = $this->serializer->serialize($exposedRoutes, 'json');
             $cache->write($serializedRoutes, $this->exposedRoutesExtractor->getResources());
         } else {
             $serializedRoutes = file_get_contents((string) $cache);
-            $exposedRoutes = json_decode($serializedRoutes, true);
+            $exposedRoutes    = $this->serializer->deserialize(
+                $serializedRoutes,
+                'Symfony\Component\Routing\RouteCollection',
+                'json'
+            );
         }
 
         $routesResponse = new RoutesResponse(

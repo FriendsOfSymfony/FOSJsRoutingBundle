@@ -12,6 +12,7 @@
 namespace FOS\JsRoutingBundle\Tests\Controller;
 
 use FOS\JsRoutingBundle\Controller\Controller;
+use FOS\JsRoutingBundle\Serializer\Denormalizer\RouteCollectionDenormalizer;
 use FOS\JsRoutingBundle\Serializer\Normalizer\RouteCollectionNormalizer;
 use FOS\JsRoutingBundle\Serializer\Normalizer\RoutesResponseNormalizer;
 use Symfony\Component\HttpFoundation\Request;
@@ -141,6 +142,10 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
 
     private function getExtractor(RouteCollection $exposedRoutes = null, $baseUrl = '')
     {
+        if (null === $exposedRoutes) {
+            $exposedRoutes = new RouteCollection();
+        }
+
         $extractor = $this->getMock('FOS\\JsRoutingBundle\\Extractor\\ExposedRoutesExtractorInterface');
         $extractor
             ->expects($this->any())
@@ -185,6 +190,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         return new Serializer(array(
             new RoutesResponseNormalizer(new RouteCollectionNormalizer()),
             new RouteCollectionNormalizer(),
+            new RouteCollectionDenormalizer(),
         ), array(
             'json' => new JsonEncoder()
         ));

@@ -20,37 +20,30 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class RouteCollectionNormalizer implements NormalizerInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($data, $format = null, array $context = array())
     {
-        $normalizedRoutes = array();
+        $collection = array();
 
-        foreach ($object->all() as $name => $route) {
-            $compiledRoute = $route->compile();
-            $defaults = array_intersect_key(
-                $route->getDefaults(),
-                array_fill_keys($compiledRoute->getVariables(), null)
-            );
-
-            $normalizedRoutes[$name] = array(
-                'tokens' => $compiledRoute->getTokens(),
-                'defaults' => $defaults,
+        foreach ($data->all() as $name => $route) {
+            $collection[$name] = array(
+                'path'         => $route->getPath(),
+                'host'         => $route->getHost(),
+                'defaults'     => $route->getDefaults(),
                 'requirements' => $route->getRequirements(),
-                'hosttokens' => method_exists($compiledRoute, 'getHostTokens') ? $compiledRoute->getHostTokens() : array(),
+                'options'      => $route->getOptions(),
+                'schemes'      => $route->getSchemes(),
+                'methods'      => $route->getMethods(),
+                'condition'    => method_exists($route, 'getCondition') ? $route->getCondition() : null,
             );
         }
 
-        return $normalizedRoutes;
+        return $collection;
     }
 
     /**
-     * Checks if the given class implements the NormalizableInterface.
-     *
-     * @param mixed  $data   Data to normalize.
-     * @param string $format The format being (de-)serialized from or into.
-     *
-     * @return Boolean
+     * {@inheritDoc}
      */
     public function supportsNormalization($data, $format = null)
     {
