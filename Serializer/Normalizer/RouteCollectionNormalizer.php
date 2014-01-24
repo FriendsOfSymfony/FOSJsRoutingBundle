@@ -25,17 +25,18 @@ class RouteCollectionNormalizer implements NormalizerInterface
     public function normalize($data, $format = null, array $context = array())
     {
         $collection = array();
-
         foreach ($data->all() as $name => $route) {
+            $compiledRoute = $route->compile();
+            $defaults      = array_intersect_key(
+                $route->getDefaults(),
+                array_fill_keys($compiledRoute->getVariables(), null)
+            );
+
             $collection[$name] = array(
-                'path'         => $route->getPath(),
-                'host'         => $route->getHost(),
-                'defaults'     => $route->getDefaults(),
+                'tokens'       => $compiledRoute->getTokens(),
+                'defaults'     => $defaults,
                 'requirements' => $route->getRequirements(),
-                'options'      => $route->getOptions(),
-                'schemes'      => $route->getSchemes(),
-                'methods'      => $route->getMethods(),
-                'condition'    => method_exists($route, 'getCondition') ? $route->getCondition() : null,
+                'hosttokens'   => method_exists($compiledRoute, 'getHostTokens') ? $compiledRoute->getHostTokens() : array(),
             );
         }
 

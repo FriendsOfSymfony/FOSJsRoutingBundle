@@ -12,7 +12,6 @@
 namespace FOS\JsRoutingBundle\Controller;
 
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
-use FOS\JsRoutingBundle\Response\RoutesResponse;
 use FOS\JsRoutingBundle\Util\CacheControlConfig;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\HttpFoundation\Request;
@@ -78,30 +77,16 @@ class Controller
         $cache = new ConfigCache($this->exposedRoutesExtractor->getCachePath($request->getLocale()), $this->debug);
 
         if (!$cache->isFresh()) {
-            $exposedRoutes    = $this->exposedRoutesExtractor->getRoutes();
-            $serializedRoutes = $this->serializer->serialize($exposedRoutes, 'json');
-            $cache->write($serializedRoutes, $this->exposedRoutesExtractor->getResources());
+            $exposedRoutes = array('routes' => $this->exposedRoutesExtractor->getRoutes());
+            $content       = $this->serializer->serialize($exposedRoutes, 'json');
+            $cache->write($content, $this->exposedRoutesExtractor->getResources());
         } else {
-            $serializedRoutes = file_get_contents((string) $cache);
-            $exposedRoutes    = $this->serializer->deserialize(
-                $serializedRoutes,
-                'Symfony\Component\Routing\RouteCollection',
-                'json'
-            );
+            $content = file_get_contents((string) $cache);
         }
-
-        $routesResponse = new RoutesResponse(
-            $this->exposedRoutesExtractor->getBaseUrl(),
-            $exposedRoutes,
-            $this->exposedRoutesExtractor->getPrefix($request->getLocale()),
-            $this->exposedRoutesExtractor->getHost(),
-            $this->exposedRoutesExtractor->getScheme()
-        );
-
-        $content = $this->serializer->serialize($routesResponse, 'json');
 
         if (null !== $callback = $request->query->get('callback')) {
             $validator = new \JsonpCallbackValidator();
+
             if (!$validator->validate($callback)) {
                 throw new HttpException(400, 'Invalid JSONP callback value');
             }
@@ -109,7 +94,9 @@ class Controller
             $content = $callback.'('.$content.');';
         }
 
-        $response = new Response($content, 200, array('Content-Type' => $request->getMimeType($_format)));
+        $response = new Response($content, 200, array(
+            'Content-Type' => $request->getMimeType($_format)
+        ));
         $this->cacheControlConfig->apply($response);
 
         return $response;

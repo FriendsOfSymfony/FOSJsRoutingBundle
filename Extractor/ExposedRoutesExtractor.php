@@ -14,7 +14,6 @@ namespace FOS\JsRoutingBundle\Extractor;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RouterInterface;
-use JMS\I18nRoutingBundle\Router\I18nLoader;
 
 /**
  * @author      William DURAND <william.durand1@gmail.com>
@@ -80,51 +79,6 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function getBaseUrl()
-    {
-        return $this->router->getContext()->getBaseUrl() ?: '';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPrefix($locale)
-    {
-        if (isset($this->bundles['JMSI18nRoutingBundle'])) {
-            return $locale . I18nLoader::ROUTING_PREFIX;
-        }
-
-        return '';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getHost()
-    {
-        $requestContext = $this->router->getContext();
-
-        $host = $requestContext->getHost();
-
-        if ($this->usesNonStandardPort()) {
-            $method = sprintf('get%sPort', ucfirst($requestContext->getScheme()));
-            $host .= ':' . $requestContext->$method();
-        }
-
-        return $host;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getScheme()
-    {
-        return $this->router->getContext()->getScheme();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getCachePath($locale)
     {
         $cachePath = $this->cacheDir . DIRECTORY_SEPARATOR . 'fosJsRouting';
@@ -174,35 +128,5 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
         }
 
         return implode($patterns, '|');
-    }
-
-    /**
-     * Check whether server is serving this request from a non-standard port
-     *
-     * @return bool
-     */
-    private function usesNonStandardPort()
-    {
-        return $this->usesNonStandardHttpPort() || $this->usesNonStandardHttpsPort();
-    }
-
-    /**
-     * Check whether server is serving HTTP over a non-standard port
-     *
-     * @return bool
-     */
-    private function usesNonStandardHttpPort()
-    {
-        return 'http' === $this->getScheme() && '80' != $this->router->getContext()->getHttpPort();
-    }
-
-    /**
-     * Check whether server is serving HTTPS over a non-standard port
-     *
-     * @return bool
-     */
-    private function usesNonStandardHttpsPort()
-    {
-        return 'https' === $this->getScheme() && '443' != $this->router->getContext()->getHttpsPort();
     }
 }
