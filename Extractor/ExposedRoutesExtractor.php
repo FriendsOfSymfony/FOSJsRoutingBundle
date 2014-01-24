@@ -53,10 +53,10 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
      */
     public function __construct(RouterInterface $router, array $routesToExpose = array(), $cacheDir, $bundles = array())
     {
-        $this->router = $router;
+        $this->router         = $router;
         $this->routesToExpose = $routesToExpose;
-        $this->cacheDir = $cacheDir;
-        $this->bundles = $bundles;
+        $this->cacheDir       = $cacheDir;
+        $this->bundles        = $bundles;
     }
 
     /**
@@ -65,7 +65,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     public function getRoutes()
     {
         $collection = $this->router->getRouteCollection();
-        $routes = new RouteCollection();
+        $routes     = new RouteCollection();
 
         /** @var Route $route */
         foreach ($collection->all() as $name => $route) {
@@ -115,16 +115,6 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     }
 
     /**
-     * Check whether server is serving this request from a non-standard port.
-     *
-     * @return bool
-     */
-    protected function usesNonStandardPort()
-    {
-        return $this->usesNonStandardHttpPort() || $this->usesNonStandardHttpsPort();
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function getScheme()
@@ -160,10 +150,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     }
 
     /**
-     * @param Route  $route
-     * @param string $name
-     *
-     * @return bool
+     * {@inheritDoc}
      */
     public function isRouteExposed(Route $route, $name)
     {
@@ -175,7 +162,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     }
 
     /**
-     * Convert the routesToExpose array in a regular expression pattern.
+     * Convert the routesToExpose array in a regular expression pattern
      *
      * @return string
      */
@@ -190,7 +177,17 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     }
 
     /**
-     * Checks whether server is serving HTTP over a non-standard port.
+     * Check whether server is serving this request from a non-standard port
+     *
+     * @return bool
+     */
+    private function usesNonStandardPort()
+    {
+        return $this->usesNonStandardHttpPort() || $this->usesNonStandardHttpsPort();
+    }
+
+    /**
+     * Check whether server is serving HTTP over a non-standard port
      *
      * @return bool
      */
@@ -200,7 +197,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     }
 
     /**
-     * Checks whether server is serving HTTPS over a non-standard port.
+     * Check whether server is serving HTTPS over a non-standard port
      *
      * @return bool
      */

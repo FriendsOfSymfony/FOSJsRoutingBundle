@@ -10,9 +10,13 @@ env:
   - SYMFONY_VERSION=2.4.*
   - SYMFONY_VERSION=dev-master
 
+matrix:
+    allow_failures:
+      - env: SYMFONY_VERSION=dev-master
+
 before_script:
-  - curl -s http://getcomposer.org/installer | php
-  - php composer.phar require symfony/framework-bundle:${SYMFONY_VERSION} symfony/serializer:${SYMFONY_VERSION}
+  - composer self-update
+  - composer require symfony/framework-bundle:${SYMFONY_VERSION} symfony/serializer:${SYMFONY_VERSION}
 
 script:
   - phpunit --coverage-text
