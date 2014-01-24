@@ -27,36 +27,6 @@ interface ExposedRoutesExtractorInterface
     public function getRoutes();
 
     /**
-     * Return the Base URL
-     *
-     * @return string
-     */
-    public function getBaseUrl();
-
-    /**
-     * Get the route prefix to use, i.e. the language if JMSI18nRoutingBundle is active
-     *
-     * @param string $locale the request locale
-     *
-     * @return string
-     */
-    public function getPrefix($locale);
-
-    /**
-     * Get the host and applicable port from RequestContext
-     *
-     * @return string
-     */
-    public function getHost();
-
-    /**
-     * Get the scheme from RequestContext
-     *
-     * @return string
-     */
-    public function getScheme();
-
-    /**
      * Get the cache path for this request
      *
      * @param string $locale the request locale

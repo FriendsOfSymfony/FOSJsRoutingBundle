@@ -11,7 +11,6 @@
 
 namespace FOS\JsRoutingBundle\Command;
 
-use FOS\JsRoutingBundle\Response\RoutesResponse;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -103,22 +102,9 @@ class DumpCommand extends ContainerAwareCommand
 
         $output->writeln('<info>[file+]</info> ' . $this->targetPath);
 
-        $baseUrl = $this->getContainer()->hasParameter('fos_js_routing.request_context_base_url') ?
-            $this->getContainer()->getParameter('fos_js_routing.request_context_base_url') :
-            $this->extractor->getBaseUrl()
-        ;
-
-        $content = $this->serializer->serialize(
-            new RoutesResponse(
-                $baseUrl,
-                $this->extractor->getRoutes(),
-                $input->getOption('locale'),
-                $this->extractor->getHost(),
-                $this->extractor->getScheme()
-            ),
-            'json'
-        );
-
+        $content = $this->serializer->serialize(array(
+            'routes' => $this->extractor->getRoutes(),
+        ), 'json');
         $content = sprintf("%s(%s);", $input->getOption('callback'), $content);
 
         if (false === @file_put_contents($this->targetPath, $content)) {
