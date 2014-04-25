@@ -45,6 +45,10 @@ class FOSJsRoutingExtension extends Extension
             $loader->load('serializer.xml');
         }
 
+        $container->setAlias(
+            'fos_js_routing.router',
+            new Alias($config['router'], false)
+        );
         $container
             ->getDefinition('fos_js_routing.extractor')
             ->replaceArgument(1, $config['routes_to_expose']);

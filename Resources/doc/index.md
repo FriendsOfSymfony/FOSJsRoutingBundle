@@ -158,6 +158,17 @@ my_very_secret_route:
         expose: false
 ```
 
+### Router service
+
+By default, this bundle exports routes from the default service `router`. You
+can configure a different router service if needed:
+
+```yml
+# app/config/config.yml
+fos_js_routing:
+    router: my_router_service
+```
+
 ### HTTP Caching
 
 You can enable HTTP caching as below:
