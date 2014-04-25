@@ -40,6 +40,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->prototype('scalar')->end()
                 ->end()
+                ->scalarNode('router')->defaultValue('router')->end()
                 ->scalarNode('request_context_base_url')->defaultNull()->end()
                 ->arrayNode('cache_control')
                     ->children()
