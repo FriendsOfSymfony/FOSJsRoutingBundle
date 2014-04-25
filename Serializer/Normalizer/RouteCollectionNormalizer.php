@@ -35,7 +35,7 @@ class RouteCollectionNormalizer implements NormalizerInterface
                 'options'      => $route->getOptions(),
                 'schemes'      => $route->getSchemes(),
                 'methods'      => $route->getMethods(),
-                'condition'    => method_exists($route, 'getCondition') ? $route->getCondition() : null,
+                'condition'    => method_exists($route, 'getCondition') ? $route->getCondition() : '',
             );
         }
 
