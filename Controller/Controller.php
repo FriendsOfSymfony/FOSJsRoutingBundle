@@ -95,7 +95,8 @@ class Controller
             $exposedRoutes,
             $this->exposedRoutesExtractor->getPrefix($request->getLocale()),
             $this->exposedRoutesExtractor->getHost(),
-            $this->exposedRoutesExtractor->getScheme()
+            $this->exposedRoutesExtractor->getScheme(),
+            $request->getLocale()
         );
 
         $content = $this->serializer->serialize($routesResponse, 'json');

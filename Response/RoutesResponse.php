@@ -20,14 +20,16 @@ class RoutesResponse
     private $prefix;
     private $host;
     private $scheme;
+    private $locale;
 
-    public function __construct($baseUrl, RouteCollection $routes = null, $prefix = null, $host = null, $scheme = null)
+    public function __construct($baseUrl, RouteCollection $routes = null, $prefix = null, $host = null, $scheme = null, $locale = null)
     {
         $this->baseUrl = $baseUrl;
         $this->routes  = $routes ?: new RouteCollection();
         $this->prefix  = $prefix;
         $this->host    = $host;
         $this->scheme  = $scheme;
+        $this->locale  = $locale;
     }
 
     public function getBaseUrl()
@@ -44,6 +46,10 @@ class RoutesResponse
                 $route->getDefaults(),
                 array_fill_keys($compiledRoute->getVariables(), null)
             );
+
+            if (!isset($defaults['_locale']) && in_array('_locale', $compiledRoute->getVariables())) {
+                $defaults['_locale'] = $this->locale;
+            }
 
             $exposedRoutes[$name] = array(
                 'tokens'       => $compiledRoute->getTokens(),
