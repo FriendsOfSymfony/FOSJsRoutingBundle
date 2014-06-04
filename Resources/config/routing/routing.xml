@@ -8,4 +8,12 @@
         <default key="_format">js</default>
         <requirement key="_format">js|json</requirement>
     </route>
+
+    <route id="fos_js_routing_js_sets" pattern="/js/routing.{sets}.{_format}">
+        <default key="_controller">fos_js_routing.controller:indexAction</default>
+        <default key="_format">js</default>
+        <requirement key="_format">js|json</requirement>
+        <default key="sets"></default>
+        <requirement key="sets">[^.]*</requirement>
+    </route>
 </routes>

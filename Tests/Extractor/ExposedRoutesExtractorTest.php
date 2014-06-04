@@ -46,6 +46,40 @@ class ExposedRoutesExtractorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $extractor->getRoutes());
     }
 
+    public function testGetRoutesWithSets()
+    {
+        $routes = new RouteCollection();
+
+        $routesDefinition = array(
+            'no_set' => array(),
+            'set1' => array('set1'),
+            'set1set2' => array('set1', 'set2'),
+            'set3' => array('set3')
+        );
+        foreach ($routesDefinition as $name => $sets) {
+            $routes->add($name, new Route('/'.$name, array(), array(), array('expose_sets' => $sets)));
+        }
+
+        $router = $this->getRouter($routes);
+        $extractor = new ExposedRoutesExtractor($router, array('.*'), $this->cacheDir, array());
+
+        $tests = array(
+            array(array(), array('no_set')),
+            array(array('set1'), array('set1', 'set1set2')),
+            array(array('set3'), array('set3')),
+        );
+
+        foreach ($tests as $test) {
+            list ($sets, $routesNames) = $test;
+            $expectedRoutes = new RouteCollection();
+            foreach ($routesNames as $name) {
+                $expectedRoutes->add($name, $routes->get($name));
+            }
+
+            $this->assertEquals($expectedRoutes, $extractor->getRoutes($sets));
+        }
+    }
+
     public function testGetRoutesWithPatterns()
     {
         $expected = new RouteCollection();
@@ -83,6 +117,43 @@ class ExposedRoutesExtractorTest extends \PHPUnit_Framework_TestCase
 
         $extractor = new ExposedRoutesExtractor($router, array(), $this->cacheDir, array());
         $this->assertEquals($this->cacheDir . DIRECTORY_SEPARATOR . 'fosJsRouting' . DIRECTORY_SEPARATOR . 'data.json', $extractor->getCachePath(''));
+    }
+
+    public function testGetCachePathWithSets()
+    {
+        $router = $this->getMock('Symfony\\Component\\Routing\\Router', array(), array(), '', false);
+
+        $extractor = new ExposedRoutesExtractor($router, array(), $this->cacheDir, array());
+        $cacheDir = $this->cacheDir . DIRECTORY_SEPARATOR . 'fosJsRouting' . DIRECTORY_SEPARATOR;
+
+        $this->assertEquals($cacheDir . 'data.bc862c2.json', $extractor->getCachePath('', array('one-set')));
+        $this->assertEquals($cacheDir . 'data.59d8b65.json', $extractor->getCachePath('', array('set1', 'set2')));
+        $this->assertEquals($cacheDir . 'data.59d8b65.json', $extractor->getCachePath('', array('set2', 'set1')));
+    }
+
+    /**
+     * @dataProvider provideTestBadExposeSet
+     * @expectedException \RuntimeException
+     */
+    public function testBadExposeSet($exposeSets)
+    {
+        $routes = new RouteCollection();
+        $routes->add('literal', new Route('/literal', array(), array(), array('expose_sets' => $exposeSets)));
+
+        $router = $this->getRouter($routes);
+        $extractor = new ExposedRoutesExtractor($router, array('.*'), $this->cacheDir, array());
+        $extractor->getRoutes(array('set'));
+    }
+
+    /**
+     * @return array
+     */
+    public function provideTestBadExposeSet()
+    {
+        return array(
+            'Expose set with underscore _' => array('set_1'),
+            'Expose set with dot .' => array('set.1'),
+        );
     }
 
     /**

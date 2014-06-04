@@ -64,6 +64,12 @@ class DumpCommand extends ContainerAwareCommand
                 'Set locale to be used with JMSI18nRoutingBundle.',
                 ''
             )
+            ->addOption(
+                'sets',
+                null,
+                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+                'Dump only routes from specific set'
+            )
         ;
     }
 
@@ -71,8 +77,12 @@ class DumpCommand extends ContainerAwareCommand
     {
         parent::initialize($input, $output);
 
+        $sets = $input->getOption('sets');
+        sort($sets);
+        $sets_suffix = $sets ? '.' . join('_', $sets) : '';
+
         $this->targetPath = $input->getOption('target') ?:
-            sprintf('%s/../web/js/fos_js_routes.js', $this->getContainer()->getParameter('kernel.root_dir'));
+            sprintf('%s/../web/js/fos_js_routes' . $sets_suffix . '.js', $this->getContainer()->getParameter('kernel.root_dir'));
 
         $this->extractor = $this->getContainer()->get('fos_js_routing.extractor');
         $this->serializer = $this->getContainer()->get('fos_js_routing.serializer');
@@ -111,7 +121,7 @@ class DumpCommand extends ContainerAwareCommand
         $content = $this->serializer->serialize(
             new RoutesResponse(
                 $baseUrl,
-                $this->extractor->getRoutes(),
+                $this->extractor->getRoutes($input->getOption('sets')),
                 $input->getOption('locale'),
                 $this->extractor->getHost(),
                 $this->extractor->getScheme()
