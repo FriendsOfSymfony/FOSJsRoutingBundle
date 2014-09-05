@@ -54,6 +54,11 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // if called command is not fos:js-routing:debug, return parent logic
+        if ($input->hasArgument('command') && $input->getArgument('command') != $this->getName()) {
+            return parent::execute($input, $output);
+        }
+
         /** @var ExposedRoutesExtractorInterface $extractor */
         $extractor = $this->getContainer()->get('fos_js_routing.extractor');
 
