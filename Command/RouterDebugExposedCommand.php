@@ -34,6 +34,7 @@ class RouterDebugExposedCommand extends RouterDebugCommand
 
         $this
             ->setName('fos:js-routing:debug')
+            ->setAliases(array()) // reset the aliases used by the parent command in Symfony 2.6+
             ->setDescription('Displays currently exposed routes for an application')
             ->setHelp(<<<EOF
 The <info>fos:js-routing:debug</info> command displays an application's routes which will be available via JavaScript.
