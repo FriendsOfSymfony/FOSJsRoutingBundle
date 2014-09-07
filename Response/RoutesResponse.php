@@ -12,6 +12,7 @@
 namespace FOS\JsRoutingBundle\Response;
 
 use Symfony\Component\Routing\RouteCollection;
+use JMS\I18nRoutingBundle\Router\I18nLoader;
 
 class RoutesResponse
 {
@@ -21,15 +22,17 @@ class RoutesResponse
     private $host;
     private $scheme;
     private $locale;
+    private $localeOnly;
 
-    public function __construct($baseUrl, RouteCollection $routes = null, $prefix = null, $host = null, $scheme = null, $locale = null)
+    public function __construct($baseUrl, RouteCollection $routes = null, $prefix = null, $host = null, $scheme = null, $locale = null, $localeOnly = false)
     {
-        $this->baseUrl = $baseUrl;
-        $this->routes  = $routes ?: new RouteCollection();
-        $this->prefix  = $prefix;
-        $this->host    = $host;
-        $this->scheme  = $scheme;
-        $this->locale  = $locale;
+        $this->baseUrl    = $baseUrl;
+        $this->routes     = $routes ?: new RouteCollection();
+        $this->prefix     = $prefix;
+        $this->host       = $host;
+        $this->scheme     = $scheme;
+        $this->locale     = $locale;
+        $this->localeOnly = $localeOnly;
     }
 
     public function getBaseUrl()
@@ -49,6 +52,21 @@ class RoutesResponse
 
             if (!isset($defaults['_locale']) && in_array('_locale', $compiledRoute->getVariables())) {
                 $defaults['_locale'] = $this->locale;
+            }
+
+            if (true === $this->localeOnly) {
+                $options = $route->getOptions();
+                if ((isset($options['i18n']) && true === $options['i18n']) ||
+                        (isset($options['i18n_prefix']) && $options['i18n_prefix'])) {
+
+                    $locale = $route->getDefault('_locale');
+                    if ($locale !== $this->locale) {
+                        continue;
+                    }
+
+                    // Remove I18n prefix
+                    $name = str_replace(sprintf('%s%s', $this->locale, I18nLoader::ROUTING_PREFIX), '', $name);
+                }
             }
 
             $exposedRoutes[$name] = array(
