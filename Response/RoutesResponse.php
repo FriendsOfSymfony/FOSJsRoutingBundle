@@ -65,7 +65,8 @@ class RoutesResponse
                     }
 
                     // Remove I18n prefix
-                    $name = str_replace(sprintf('%s%s', $this->locale, I18nLoader::ROUTING_PREFIX), '', $name);
+                    $pattern = sprintf('/%s%s/', $this->locale, I18nLoader::ROUTING_PREFIX);
+                    $name = preg_replace($pattern, '', $name, 1);
                 }
             }
 

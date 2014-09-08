@@ -82,14 +82,15 @@ class DumpCommand extends ContainerAwareCommand
             throw new \RuntimeException('You must provide a locale to use with --locale-only.');
         }
 
+        $targetPathLocale = '';
         if ($localeOnly) {
-            $localeOnly = sprintf('.%s', $input->getOption('locale'));
+            $targetPathLocale = sprintf('.%s', $input->getOption('locale'));
         }
 
         $this->targetPath = $input->getOption('target') ?:
             sprintf('%s/../web/js/fos_js_routes%s.js',
                 $this->getContainer()->getParameter('kernel.root_dir'),
-                $localeOnly
+                $targetPathLocale
             );
 
         $this->extractor = $this->getContainer()->get('fos_js_routing.extractor');
