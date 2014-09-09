@@ -1,0 +1,30 @@
+homepage:
+    pattern: /
+    defaults: { _controller: homepage }
+    options:  { expose: true }
+
+foo:
+    pattern: /foo
+    defaults: { _controller: foo }
+    options:  { expose: true }
+
+bar:
+    pattern: /bar
+    defaults: { _controller: bar }
+    options:  { expose: true }
+
+untranslated_route:
+    pattern: /not-translated
+    options:  { expose: true }
+
+english_only:
+    pattern: /english-only
+    options: { i18n_locales: ['en'], expose: true }
+
+spanish_only:
+    pattern: /spanish-only
+    options: { i18n_locales: ['es'], expose: true }
+
+non_i18n_route:
+    pattern: /non-i18n-route
+    options: { i18n: false, expose: true }

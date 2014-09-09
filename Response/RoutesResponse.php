@@ -54,20 +54,20 @@ class RoutesResponse
                 $defaults['_locale'] = $this->locale;
             }
 
-            if (true === $this->localeOnly) {
-                $options = $route->getOptions();
-                if ((isset($options['i18n']) && true === $options['i18n']) ||
-                        (isset($options['i18n_prefix']) && $options['i18n_prefix'])) {
-
-                    $locale = $route->getDefault('_locale');
-                    if ($locale !== $this->locale) {
-                        continue;
-                    }
-
-                    // Remove I18n prefix
-                    $pattern = sprintf('/%s%s/', $this->locale, I18nLoader::ROUTING_PREFIX);
-                    $name = preg_replace($pattern, '', $name, 1);
+            // Removes all the pefix if the route is I18n
+            if (true === $this->localeOnly && false !== ($pos = mb_strpos($name, I18nLoader::ROUTING_PREFIX))) {
+                // Check if the current route is valid to expose with the locale
+                $i18nLocales = $route->getOption('i18n_locales');
+                if ($i18nLocales && !in_array($this->locale, $i18nLocales)) {
+                    continue;
                 }
+
+                $locale = $route->getDefault('_locale');
+                if ($locale !== $this->locale) {
+                    continue;
+                }
+
+                $name = substr($name, $pos + strlen(I18nLoader::ROUTING_PREFIX));
             }
 
             $exposedRoutes[$name] = array(
