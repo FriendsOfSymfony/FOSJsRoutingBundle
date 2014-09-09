@@ -54,7 +54,7 @@ class RoutesResponse
                 $defaults['_locale'] = $this->locale;
             }
 
-            // Removes all the pefix if the route is I18n
+            // Check if the route is I18n
             if (true === $this->localeOnly && false !== ($pos = mb_strpos($name, I18nLoader::ROUTING_PREFIX))) {
                 // Check if the current route is valid to expose with the locale
                 $i18nLocales = $route->getOption('i18n_locales');
@@ -67,6 +67,7 @@ class RoutesResponse
                     continue;
                 }
 
+                // Removes all the pefix
                 $name = substr($name, $pos + strlen(I18nLoader::ROUTING_PREFIX));
             }
 
