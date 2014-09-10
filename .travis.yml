@@ -10,13 +10,18 @@ php:
 matrix:
   include:
     - php: 5.5
-      env: SYMFONY_VERSION='2.3.*'
+      env:
+        - SYMFONY_VERSION='2.3.*'
+        - JMSI18NROUTING_VERSION='dev-master'
     - php: 5.5
-      env: SYMFONY_VERSION='dev-master'
+      env:
+        - SYMFONY_VERSION='dev-master'
+        - JMSI18NROUTING_VERSION='dev-master'
 
 before_script:
   - composer self-update
   - sh -c 'if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/symfony=$SYMFONY_VERSION; fi;'
+  - sh -c 'if [ "JMSI18NROUTING_VERSION" != "" ]; then composer require --no-update jms/i18n-routing-bundle=$JMSI18NROUTING_VERSION; fi;'
   - composer install --prefer-source
 
 script:
