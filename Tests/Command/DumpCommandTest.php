@@ -158,20 +158,18 @@ class DumpCommandTest extends \PHPUnit_Framework_TestCase
         $container = new Container();
         $router = $this->getRouter($container);
 
-        $tmpDir = sys_get_temp_dir();
-        $container->setParameter('kernel.root_dir', $tmpDir);
-
         $container->set('fos_js_routing.extractor', new ExposedRoutesExtractor($router, array(), null));
         $container->set('fos_js_routing.serializer', new Serializer(array(new GetSetMethodNormalizer()), array(new JsonEncoder())));
+
+        $target = sprintf('%s/FOSJsRoutingBundle/fos_js_routes%s.js', sys_get_temp_dir(), sprintf('.%s', $locale));
 
         $command = new DumpCommand();
         $command->setContainer($container);
 
         $tester = new CommandTester($command);
-        $tester->execute(array('--locale' => $locale, '--locale-only' => true));
+        $tester->execute(array('--target' => $target, '--locale' => $locale, '--locale-only' => true));
 
-        $filename = sprintf('%s/../web/js/fos_js_routes%s.js', $tmpDir, sprintf('.%s', $locale));
-        $this->assertEquals($expected, @file_get_contents($filename));
+        $this->assertEquals($expected, @file_get_contents($target));
     }
 
     public function getLocaleOnlyData()
