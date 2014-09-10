@@ -3,6 +3,7 @@ goog.provide('fos.Router');
 goog.require('goog.structs.Map');
 goog.require('goog.array');
 goog.require('goog.object');
+goog.require('goog.math.Integer');
 goog.require('goog.uri.utils');
 
 /**
@@ -147,7 +148,6 @@ fos.Router.prototype.getRoute = function(name) {
     return (this.routes_.get(name));
 };
 
-
 /**
  * Generates the URL for a route.
  *
@@ -266,4 +266,90 @@ fos.Router.prototype.generate = function(name, opt_params, absolute) {
     }
 
     return url;
+};
+
+/**
+ * @todo: need to move it somewhere.
+ *
+ * @param value
+ * @returns {string|void}
+ */
+RegExp.escape = function( value ) {
+    return ;
+}
+
+/**
+ * Match route with routes.
+ *
+ * @param {string} url
+ * @param {Object.<string,Object>} routes - optional, routes to search
+ */
+fos.Router.prototype.match = function(url, routes) {
+    if (routes === undefined) {
+        routes = this.getRoutes().getKeys();
+    }
+
+    if (url.indexOf("?") !== -1) {
+        url = url.substring(0, url.indexOf("?"));
+    }
+
+    if (url.indexOf("#") !== -1) {
+        url = url.substring(0, url.indexOf("#"));
+    }
+
+    function escape(value) {
+        return value.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&")
+    }
+
+    for (var i in routes) {
+        var route, routeName, rule, regex, variables, matches;
+
+        routeName = routes[i];
+        route = this.getRoute(routeName);
+        variables = [];
+        rule = "";
+
+        for (var t in route.tokens) {
+            var token = route.tokens[t];
+
+            switch (token[0]) {
+                case "text":
+                    rule = escape(token[1]) + rule;
+                    break;
+                case "variable":
+                    rule = escape(token[1]) + "(" + token[2] + ")" + rule;
+                    variables[variables.length] = token[3];
+                    break;
+                default:
+                    throw "Unknown type allowed are 'variable', 'text'.";
+            }
+        }
+
+        /**
+         * fixme: here add strcit support
+         */
+
+        regex = new RegExp(rule + "$");
+
+        matches = url.match(regex);
+
+        if (matches) {
+            var ret = {
+                "route": routeName,
+                "variables": {}
+            };
+
+            variables.reverse();
+
+            for (var j in variables) {
+                var index = goog.math.Integer.fromString(j);
+
+                ret.variables[variables[index.toInt()]] = matches[index.toInt() + 1];
+            }
+
+            return ret;
+        }
+    }
+
+    return false;
 };

@@ -268,6 +268,127 @@ function testGenerateThrowsErrorForNonExistentRoute() {
     } catch (e) { }
 }
 
+function testMatchRoute() {
+    var router = new fos.Router(
+        {
+            base_url: ''
+        },
+        {
+            blog_post: {
+                tokens: [
+                    ['variable', '/', '[^/]+?', 'slug'],
+                    ['variable', '/', '\\d+', 'id'],
+                    ['text', '/blog-post']
+                ],
+                defaults: {},
+                requirements: {},
+                hosttokens: []
+            },
+            blog: {
+                tokens: [
+                    ['text', '/blog']
+                ],
+                defaults: {},
+                requirements: {},
+                hosttokens: []
+            }
+        }
+    );
+
+    assertObjectEquals( {
+        "route": "blog_post",
+        "variables": {
+            "slug": "foo",
+            "id": "10"
+        }
+    }, router.match( "/blog-post/10/foo" ) );
+}
+
+function testMatchRouteFrom() {
+    var router = new fos.Router(
+        {
+            base_url: ''
+        },
+        {
+            blog_aaa: {
+                tokens: [
+                    ['variable', '/', '[^/]+?', 'slug'],
+                    ['variable', '/', '\\d+', 'id'],
+                    ['text', '/blog-post']
+                ],
+                defaults: {},
+                requirements: {},
+                hosttokens: []
+            },
+            blog_post: {
+                tokens: [
+                    ['variable', '/', '[^/]+?', 'slug'],
+                    ['variable', '/', '\\d+', 'id'],
+                    ['text', '/blog-post']
+                ],
+                defaults: {},
+                requirements: {},
+                hosttokens: []
+            },
+            blog: {
+                tokens: [
+                    ['text', '/blog']
+                ],
+                defaults: {},
+                requirements: {},
+                hosttokens: []
+            }
+        }
+    );
+    assertObjectEquals( {
+        "route": "blog_post",
+        "variables": {
+            "slug": "foo",
+            "id": "10"
+        }
+    }, router.match( "/blog-post/10/foo" , ["blog_post", "blog_aaa", "blog"]) );
+}
+
+function testMatchRouteFromNotMatched() {
+    var router = new fos.Router(
+        {
+            base_url: ''
+        },
+        {
+            blog_aaa: {
+                tokens: [
+                    ['variable', '/', '[^/]+?', 'slug'],
+                    ['variable', '/', '\\d+', 'id'],
+                    ['text', '/blog-post']
+                ],
+                defaults: {},
+                requirements: {},
+                hosttokens: []
+            },
+            blog_post: {
+                tokens: [
+                    ['variable', '/', '[^/]+?', 'slug'],
+                    ['variable', '/', '\\d+', 'id'],
+                    ['text', '/blog-post']
+                ],
+                defaults: {},
+                requirements: {},
+                hosttokens: []
+            },
+            blog: {
+                tokens: [
+                    ['text', '/blog']
+                ],
+                defaults: {},
+                requirements: {},
+                hosttokens: []
+            }
+        }
+    );
+
+    assertEquals( false, router.match( "/blog-post/10/foo" , ["blog"]) );
+}
+
 function testGetBaseUrl() {
     var router = new fos.Router({base_url: '/foo'}, {
         homepage: {
