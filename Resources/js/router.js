@@ -21,7 +21,8 @@ goog.addSingletonGetter(fos.Router);
  *     tokens: (Array.<Array.<string>>),
  *     defaults: (Object.<string, string>),
  *     requirements: Object,
- *     hosttokens: (Array.<string>)
+ *     hosttokens: (Array.<string>),
+ *     regexpr: (string)
  * }}
  */
 fos.Router.Route;
@@ -267,3 +268,77 @@ fos.Router.prototype.generate = function(name, opt_params, absolute) {
 
     return url;
 };
+
+/**
+ * Generates the URL for a route.
+ *
+ * @param {string} url
+ * @return {Array}
+ */
+fos.Router.prototype.match = function(url) {
+    // TODO: Extract only uri from url
+    // TODO: Extract GET params
+    // TODO: Remove hash
+    // TODO: Write tests
+
+    var matchedRoutes = [];
+
+    var routes     = this.getRoutes();
+    var routeNames = routes.getKeys();
+
+    for (var i in routeNames) {
+        var routeName = routeNames[i];
+        var route = routes.get(routeName);
+
+        var regexpr = route['regexpr'];
+
+        // Extract base regexpr
+        var match = regexpr.match(/^#(.*?)#s?$/);
+
+        if (null !== match) {
+
+            // Ignore all groups by adding :? after (
+            // Dont replace if bracket is backslashed
+            var baseRegExpr = match[1].replace(/(((\\\\)+)|([^\\]))(\((\:\?)?)/, "$1(?:");
+            var paramsMapper = [];
+
+            // Look for (?P<param_name> groups
+            while (match = baseRegExpr.match(/(.*?)\((?:\?\:)?\?P\<([^\>]+)\>(.*)/)) {
+
+                baseRegExpr = match[1] + '(' + match[3];
+
+                // Save param name
+                paramsMapper.push(match[2]);
+            }
+
+            // Add backslashes and remove doubled plus char
+            baseRegExpr = baseRegExpr.replace(/\//g, "\\/").replace(/\+\+/g, "+");
+
+            var newRegExpr = new RegExp(baseRegExpr);
+
+            var urlMatch, params = {};
+
+            if (urlMatch = newRegExpr.exec(url)) {
+
+                // Recover params
+                for (var i in paramsMapper) {
+
+                    var paramName  = paramsMapper[i++];
+                    var paramValue = urlMatch[i];
+
+                    params[paramName] = paramValue;
+                }
+
+                matchedRoutes.push({
+                    'name':   routeName,
+                    'route':  route,
+                    'params': params
+                });
+
+            }
+        } 
+    }        
+
+
+    return matchedRoutes;
+}
