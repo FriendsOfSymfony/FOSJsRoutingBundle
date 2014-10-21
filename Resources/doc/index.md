@@ -223,6 +223,8 @@ Globally](http://symfony.com/doc/current/cookbook/console/sending_emails.html#co
 the `--locale` parameter once for each locale you use and adjust your include paths
 accordingly.
 
+You can force the routes file to use a host and/or scheme with `--host=(host)` and `--scheme=(http|https)`.
+
 
 #### fos:js-routing:debug
 
