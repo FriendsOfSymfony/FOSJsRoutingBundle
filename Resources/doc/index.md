@@ -20,13 +20,8 @@ Installation
 Require [`friendsofsymfony/jsrouting-bundle`](https://packagist.org/packages/friendsofsymfony/jsrouting-bundle)
 into your `composer.json` file:
 
-
-``` json
-{
-    "require": {
-        "friendsofsymfony/jsrouting-bundle": "@stable"
-    }
-}
+```sh
+composer require friendsofsymfony/jsrouting-bundle
 ```
 
 **Protip:** you should browse the
