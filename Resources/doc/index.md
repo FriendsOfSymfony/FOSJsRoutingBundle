@@ -41,6 +41,16 @@ public function registerBundles()
 }
 ```
 
+Configure the Routing Context to know about hostnames when run from the command line:
+``` yml
+# app/config/parameters.yml
+parameters
+    # ...
+    router.request_context.host: example.com
+    # Optionally, if you serve your site through https only
+    # router.request_context.scheme: https
+```
+
 Register the routing definition in `app/config/routing.yml`:
 
 ``` yml
