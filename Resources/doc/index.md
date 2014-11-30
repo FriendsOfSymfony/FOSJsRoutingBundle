@@ -17,18 +17,19 @@ Port of the incredible plugin
 Installation
 ------------
 
-Require [`friendsofsymfony/jsrouting-bundle`](https://packagist.org/packages/friendsofsymfony/jsrouting-bundle)
-into your `composer.json` file:
+### Step 1: Download the bundle
+
+Open your command console, browse to your project and execute the following:
 
 ```sh
-composer require friendsofsymfony/jsrouting-bundle
+$ composer require friendsofsymfony/jsrouting-bundle
 ```
 
 **Protip:** you should browse the
 [`friendsofsymfony/jsrouting-bundle`](https://packagist.org/packages/friendsofsymfony/jsrouting-bundle)
 page to choose a stable version to use, avoid the `@stable` meta constraint.
 
-Register the bundle in `app/AppKernel.php`:
+### Step 2: Enable the bundle
 
 ``` php
 // app/AppKernel.php
@@ -41,7 +42,7 @@ public function registerBundles()
 }
 ```
 
-Register the routing definition in `app/config/routing.yml`:
+### Step 3: Register the routing definition
 
 ``` yml
 # app/config/routing.yml
@@ -49,10 +50,11 @@ fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 ```
 
-Publish assets:
+### Step 4: Publish assets
 
-    $ php app/console assets:install --symlink web
-
+```sh
+$ php app/console assets:install --symlink web
+```
 
 Usage
 -----
