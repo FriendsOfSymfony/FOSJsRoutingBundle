@@ -50,6 +50,13 @@ interface ExposedRoutesExtractorInterface
     public function getHost();
 
     /**
+     * Get the port extension from RequestContext, only if non standard port (Eg: ":8080")
+     *
+     * @return string
+     */
+    public function getPortExtension();
+
+    /**
      * Get the scheme from RequestContext
      *
      * @return string
