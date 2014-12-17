@@ -25,10 +25,6 @@ Open your command console, browse to your project and execute the following:
 $ composer require friendsofsymfony/jsrouting-bundle
 ```
 
-**Protip:** you should browse the
-[`friendsofsymfony/jsrouting-bundle`](https://packagist.org/packages/friendsofsymfony/jsrouting-bundle)
-page to choose a stable version to use, avoid the `@stable` meta constraint.
-
 ### Step 2: Enable the bundle
 
 ``` php
