@@ -40,7 +40,7 @@ public function registerBundles()
 
 ### Step 3: Register the routing definition
 
-``` yml
+```yaml
 # app/config/routing.yml
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
@@ -57,7 +57,7 @@ Usage
 
 Add these two lines in your layout:
 
-```
+```jinja
 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 ```
@@ -98,11 +98,13 @@ my_route_to_expose_with_defaults:
 
 Or using annotations:
 
-    # src/Acme/DemoBundle/Controller/DefaultController.php
-    /**
-     * @Route("/foo/{id}/bar", name="my_route_to_expose", options={"expose"=true})
-     */
-    public function exposedAction($foo)
+```php
+// src/Acme/DemoBundle/Controller/DefaultController.php
+/**
+ * @Route("/foo/{id}/bar", name="my_route_to_expose", options={"expose"=true})
+ */
+public function exposedAction($foo)
+```
 
 You can use the `generate()` method that way:
 
@@ -131,7 +133,7 @@ Routing.generate('my_route_to_expose_with_defaults', { id: 2, foo: "bar" });
 
 Moreover, you can configure a list of routes to expose in `app/config/config.yml`:
 
-``` yaml
+```yaml
 # app/config/config.yml
 fos_js_routing:
     routes_to_expose: [ route_1, route_2, ... ]
@@ -142,7 +144,7 @@ if you don't want to list all your routes name by name.
 
 You can prevent to expose a route by configuring it as below:
 
-```yml
+```yaml
 # app/config/routing.yml
 my_very_secret_route:
     pattern: /admin
@@ -156,7 +158,7 @@ my_very_secret_route:
 By default, this bundle exports routes from the default service `router`. You
 can configure a different router service if needed:
 
-```yml
+```yaml
 # app/config/config.yml
 fos_js_routing:
     router: my_router_service
@@ -166,7 +168,7 @@ fos_js_routing:
 
 You can enable HTTP caching as below:
 
-```
+```yaml
 # app/config/config.yml
 fos_js_routing:
     cache_control:
@@ -186,24 +188,32 @@ This command dumps the route information into a file so that instead of having
 the controller generated JavaScript, you can use a normal file. This also allows
 to combine the routes with the other JavaScript files in assetic.
 
-    $ php app/console fos:js-routing:dump
+```bash
+$ php app/console fos:js-routing:dump
+```
 
 Instead of the line
 
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+```jinja
+<script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+```
 
 you now include this as
 
-    <script src="/js/fos_js_routes.js"></script>
+```html
+<script src="/js/fos_js_routes.js"></script>
+```
 
 Or inside assetic, do
 
-    {% javascripts filter='?yui_js'
-        'bundles/fosjsrouting/js/router.js'
-        'js/fos_js_routes.js'
-    %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+```jinja
+{% javascripts filter='?yui_js'
+    'bundles/fosjsrouting/js/router.js'
+    'js/fos_js_routes.js'
+%}
+    <script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+```
 
 **Important:** you should follow the Symfony documentation about generating URLs
 in the console: [Configuring The Request Context
@@ -218,8 +228,9 @@ accordingly.
 
 This command lists all exposed routes:
 
-    $ php app/console fos:js-routing:debug [name]
-
+```bash
+$ php app/console fos:js-routing:debug [name]
+```
 
 Compiling the JavaScript files
 ------------------------------
@@ -233,27 +244,36 @@ need the Google Closure Tools. You need the
 also need a working Java environment. You can re-compile the JavaScript with the
 following command:
 
-    $ java -jar plovr.jar build Resources/config/plovr/compile.js
+```bash
+$ java -jar plovr.jar build Resources/config/plovr/compile.js
+```
 
 Alternatively, you can use the JMSGoogleClosureBundle. If you install this bundle,
 you can re-compile the JavaScript with the following command:
 
-    $ php app/console plovr:build @FOSJsRoutingBundle/compile.js
-
+```bash
+$ php app/console plovr:build @FOSJsRoutingBundle/compile.js
+```
 
 Testing
 -------
 
 Setup the test suite using [Composer](http://getcomposer.org/):
 
-    $ composer install --dev
+```bash
+$ composer install --dev
+```
 
 Run it using PHPUnit:
 
-    $ phpunit
+```bash
+$ phpunit
+```
 
 ### JavaScript Test Suite
 
 You need [PhantomJS](http://phantomjs.org/):
 
-    $ phantomjs Resources/js/run_jsunit.js Resources/js/router_test.html
+```bash
+$ phantomjs Resources/js/run_jsunit.js Resources/js/router_test.html
+```
