@@ -64,6 +64,12 @@ class DumpCommand extends ContainerAwareCommand
                 'Set locale to be used with JMSI18nRoutingBundle.',
                 ''
             )
+            ->addOption(
+                'locale-only',
+                null,
+                InputOption::VALUE_NONE,
+                'Set locale only to be used with JMSI18nRoutingBundle. The option --locale must be set.'
+            )
         ;
     }
 
@@ -71,8 +77,21 @@ class DumpCommand extends ContainerAwareCommand
     {
         parent::initialize($input, $output);
 
+        $localeOnly = $input->getOption('locale-only');
+        if (true === $localeOnly && !$input->getOption('locale')) {
+            throw new \RuntimeException('You must provide a locale to use with --locale-only.');
+        }
+
+        $targetPathLocale = '';
+        if ($localeOnly) {
+            $targetPathLocale = sprintf('.%s', $input->getOption('locale'));
+        }
+
         $this->targetPath = $input->getOption('target') ?:
-            sprintf('%s/../web/js/fos_js_routes.js', $this->getContainer()->getParameter('kernel.root_dir'));
+            sprintf('%s/../web/js/fos_js_routes%s.js',
+                $this->getContainer()->getParameter('kernel.root_dir'),
+                $targetPathLocale
+            );
 
         $this->extractor = $this->getContainer()->get('fos_js_routing.extractor');
         $this->serializer = $this->getContainer()->get('fos_js_routing.serializer');
@@ -108,13 +127,17 @@ class DumpCommand extends ContainerAwareCommand
             $this->extractor->getBaseUrl()
         ;
 
+        $localeOnly = $input->getOption('locale-only');
+
         $content = $this->serializer->serialize(
             new RoutesResponse(
                 $baseUrl,
                 $this->extractor->getRoutes(),
-                $input->getOption('locale'),
+                $localeOnly ? '' : $input->getOption('locale'),
                 $this->extractor->getHost(),
-                $this->extractor->getScheme()
+                $this->extractor->getScheme(),
+                $localeOnly ? $input->getOption('locale') : null,
+                $localeOnly
             ),
             'json'
         );

@@ -12,6 +12,7 @@
 namespace FOS\JsRoutingBundle\Response;
 
 use Symfony\Component\Routing\RouteCollection;
+use JMS\I18nRoutingBundle\Router\I18nLoader;
 
 class RoutesResponse
 {
@@ -21,15 +22,17 @@ class RoutesResponse
     private $host;
     private $scheme;
     private $locale;
+    private $localeOnly;
 
-    public function __construct($baseUrl, RouteCollection $routes = null, $prefix = null, $host = null, $scheme = null, $locale = null)
+    public function __construct($baseUrl, RouteCollection $routes = null, $prefix = null, $host = null, $scheme = null, $locale = null, $localeOnly = false)
     {
-        $this->baseUrl = $baseUrl;
-        $this->routes  = $routes ?: new RouteCollection();
-        $this->prefix  = $prefix;
-        $this->host    = $host;
-        $this->scheme  = $scheme;
-        $this->locale  = $locale;
+        $this->baseUrl    = $baseUrl;
+        $this->routes     = $routes ?: new RouteCollection();
+        $this->prefix     = $prefix;
+        $this->host       = $host;
+        $this->scheme     = $scheme;
+        $this->locale     = $locale;
+        $this->localeOnly = $localeOnly;
     }
 
     public function getBaseUrl()
@@ -49,6 +52,23 @@ class RoutesResponse
 
             if (!isset($defaults['_locale']) && in_array('_locale', $compiledRoute->getVariables())) {
                 $defaults['_locale'] = $this->locale;
+            }
+
+            // Check if the route is I18n
+            if (true === $this->localeOnly && false !== ($pos = mb_strpos($name, I18nLoader::ROUTING_PREFIX))) {
+                // Check if the current route is valid to expose with the locale
+                $i18nLocales = $route->getOption('i18n_locales');
+                if ($i18nLocales && !in_array($this->locale, $i18nLocales)) {
+                    continue;
+                }
+
+                $locale = $route->getDefault('_locale');
+                if ($locale !== $this->locale) {
+                    continue;
+                }
+
+                // Removes all the pefix
+                $name = substr($name, $pos + strlen(I18nLoader::ROUTING_PREFIX));
             }
 
             $exposedRoutes[$name] = array(
