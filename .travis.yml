@@ -9,15 +9,22 @@ php:
 
 matrix:
   include:
-    - php: 5.5
+    - php: 5.6
       env: SYMFONY_VERSION='2.3.*'
-    - php: 5.5
-      env: SYMFONY_VERSION='dev-master'
+    - php: 5.6
+      env: SYMFONY_VERSION='2.5.*'
 
-before_script:
-  - composer self-update
+sudo: false
+
+cache:
+  directory:
+    - $HOME/.composer/cache
+
+before_install:
   - sh -c 'if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/symfony=$SYMFONY_VERSION; fi;'
-  - composer install --prefer-source
+
+install:
+  - composer install
 
 script:
   - phpunit --coverage-text

@@ -22,10 +22,12 @@
         "symfony/console": "~2.3",
         "willdurand/jsonp-callback-validator": "~1.0"
     },
-    "autoload": {
-        "psr-0": { "FOS\\JsRoutingBundle": "" }
+    "require-dev": {
+        "symfony/expression-language": "~2.4"
     },
-    "target-dir": "FOS/JsRoutingBundle",
+    "autoload": {
+        "psr-4": { "FOS\\JsRoutingBundle\\": "" }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "2.0-dev"
