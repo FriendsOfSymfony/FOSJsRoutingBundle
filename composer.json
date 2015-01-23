@@ -23,9 +23,8 @@
         "willdurand/jsonp-callback-validator": "~1.0"
     },
     "autoload": {
-        "psr-0": { "FOS\\JsRoutingBundle": "" }
+        "psr-4": { "FOS\\JsRoutingBundle\\": "" }
     },
-    "target-dir": "FOS/JsRoutingBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "1.5-dev"
