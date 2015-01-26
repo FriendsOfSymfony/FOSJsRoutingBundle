@@ -19,7 +19,7 @@ class Router {
      * @param {Object.<string, Router.Route>=} routes
      */
     constructor(context, routes) {
-        this.context_ = context || {base_url: '', prefix: '', host: '', scheme: ''};
+        this.context_ = context || {base_url: '', prefix: '', host: '', portextension: '', scheme: ''};
         this.setRoutes(routes || {});
     }
 
@@ -121,6 +121,20 @@ class Router {
     }
 
     /**
+     * @param {string} portextension
+    */
+    setPortExtension(portextension) {
+      this.context_.portextension = portextension;
+    }
+
+    /**
+     * @return {string}
+     */
+    getPortExtension() {
+      return this.context_.portextension;
+    };
+
+    /**
      * Builds query string params added to a URL.
      * Port of jQuery's $.param() function, so credit is due there.
      *
@@ -184,7 +198,8 @@ class Router {
             unusedParams = Object.assign({}, params),
             url = '',
             optional = true,
-            host = '';
+            host = '',
+            portextension = this.getPortExtension();
 
         route.tokens.forEach((token) => {
             if ('text' === token[0]) {
@@ -263,6 +278,8 @@ class Router {
             url = route.requirements["_scheme"] + "://" + (host || this.getHost()) + url;
         } else if ("undefined" !== typeof route.schemes && "undefined" !== typeof route.schemes[0] && this.getScheme() !== route.schemes[0]) {
             url = route.schemes[0] + "://" + (host || this.getHost()) + url;
+        } else if (host && this.getHost() !== host + portextension) {
+          url = this.getScheme() + "://" + host + portextension + url;
         } else if (host && this.getHost() !== host) {
             url = this.getScheme() + "://" + host + url;
         } else if (absolute === true) {

@@ -49,7 +49,7 @@ class ControllerTest extends TestCase
 
         $response = $controller->indexAction($this->getRequest('/'), 'json');
 
-        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]}},"prefix":"","host":"","scheme":""}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]}},"prefix":"","host":"","portextension":null,"scheme":""}', $response->getContent());
     }
 
     public function testIndexActionWithLocalizedRoutes()
@@ -65,7 +65,7 @@ class ControllerTest extends TestCase
 
         $response = $controller->indexAction($this->getRequest('/'), 'json');
 
-        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"blog":{"tokens":[["variable","\/","[^\/]++","_locale"],["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":{"_locale":"en"},"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]}},"prefix":"","host":"","scheme":""}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"blog":{"tokens":[["variable","\/","[^\/]++","_locale"],["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":{"_locale":"en"},"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]}},"prefix":"","host":"","portextension":null,"scheme":""}', $response->getContent());
     }
 
     public function testConfigCache()
@@ -79,11 +79,11 @@ class ControllerTest extends TestCase
         );
 
         $response = $controller->indexAction($this->getRequest('/'), 'json');
-        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]}},"prefix":"","host":"","scheme":""}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]}},"prefix":"","host":"","portextension":null,"scheme":""}', $response->getContent());
 
         // second call should serve the cached content
         $response = $controller->indexAction($this->getRequest('/'), 'json');
-        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]}},"prefix":"","host":"","scheme":""}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]}},"prefix":"","host":"","portextension":null,"scheme":""}', $response->getContent());
     }
 
     /**
@@ -95,7 +95,7 @@ class ControllerTest extends TestCase
         $response   = $controller->indexAction($this->getRequest('/', 'GET', array('callback' => $callback)), 'json');
 
         $this->assertEquals(
-            sprintf('/**/%s({"base_url":"","routes":[],"prefix":"","host":"","scheme":""});', $callback),
+            sprintf('/**/%s({"base_url":"","routes":[],"prefix":"","host":"","portextension":null,"scheme":""});', $callback),
             $response->getContent()
         );
     }

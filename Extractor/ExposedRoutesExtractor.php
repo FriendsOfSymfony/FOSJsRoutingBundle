@@ -104,14 +104,25 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     {
         $requestContext = $this->router->getContext();
 
-        $host = $requestContext->getHost();
-
-        if ($this->usesNonStandardPort()) {
-            $method = sprintf('get%sPort', ucfirst($requestContext->getScheme()));
-            $host .= ':' . $requestContext->$method();
-        }
+        $host = $requestContext->getHost().$this->getPortExtension();        
 
         return $host;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPortExtension()
+    {
+        $requestContext = $this->router->getContext();
+
+        $port="";
+        if ($this->usesNonStandardPort()) {
+            $method = sprintf('get%sPort', ucfirst($requestContext->getScheme()));
+            $port = ':' . $requestContext->$method();
+        }
+
+        return $port;
     }
 
     /**
