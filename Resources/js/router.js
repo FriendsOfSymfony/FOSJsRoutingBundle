@@ -11,7 +11,7 @@ goog.require('goog.uri.utils');
  * @param {Object.<string, fos.Router.Route>=} opt_routes
  */
 fos.Router = function(opt_context, opt_routes) {
-    this.context_ = opt_context || {base_url: '', prefix: '', host: '', scheme: ''};
+    this.context_ = opt_context || {base_url: '', prefix: '', host: '', portextension: '', scheme: ''};
     this.setRoutes(opt_routes || {});
 };
 goog.addSingletonGetter(fos.Router);
@@ -96,6 +96,19 @@ fos.Router.prototype.getHost = function() {
     return this.context_.host;
 };
 
+/**
+ * @param {string} portextension
+ */
+fos.Router.prototype.setPortExtension = function(portextension) {
+    this.context_.portextension = portextension;
+};
+
+/**
+ * @return {string}
+ */
+fos.Router.prototype.getPortExtension = function() {
+    return this.context_.portextension;
+};
 
 /**
  * Builds query string params added to a URL.
@@ -162,7 +175,8 @@ fos.Router.prototype.generate = function(name, opt_params, absolute) {
         unusedParams = goog.object.clone(params),
         url = '',
         optional = true,
-        host = '';
+        host = '',
+        portextension = (typeof this.getPortExtension() == "undefined" || this.getPortExtension() === null) ? '' : this.getPortExtension();
 
     goog.array.forEach(route.tokens, function(token) {
         if ('text' === token[0]) {
@@ -239,8 +253,8 @@ fos.Router.prototype.generate = function(name, opt_params, absolute) {
     url = this.context_.base_url + url;
     if (goog.object.containsKey(route.requirements, "_scheme") && this.getScheme() != route.requirements["_scheme"]) {
         url = route.requirements["_scheme"] + "://" + (host || this.getHost()) + url;
-    } else if (host && this.getHost() !== host) {
-        url = this.getScheme() + "://" + host + url;
+    } else if (host && this.getHost() !== host + portextension) {
+        url = this.getScheme() + "://" + host + portextension + url;
     } else if (absolute === true) {
         url = this.getScheme() + "://" + this.getHost() + url;
     }
