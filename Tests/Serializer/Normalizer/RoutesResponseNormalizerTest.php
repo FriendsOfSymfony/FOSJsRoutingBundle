@@ -59,6 +59,7 @@ class RoutesResponseNormalizerTest extends \PHPUnit_Framework_TestCase
             'routes'   => array(),
             'prefix'   => 'prefix',
             'host'     => 'host',
+            'portextension' => null,
             'scheme'   => 'scheme',
         );
 
