@@ -59,7 +59,7 @@ Add these two lines in your layout:
 
 ```jinja
 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-<script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+<script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
 ```
 
 **Note:** if you are not using Twig, then it is no problem. What you need is to
