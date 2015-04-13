@@ -64,6 +64,20 @@ class DumpCommand extends ContainerAwareCommand
                 'Set locale to be used with JMSI18nRoutingBundle.',
                 ''
             )
+            ->addOption(
+               'host',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Set the host to be used.',
+                ''
+            )
+            ->addOption(
+               'scheme',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Set the scheme to be used.',
+                ''
+            )
         ;
     }
 
@@ -76,6 +90,9 @@ class DumpCommand extends ContainerAwareCommand
 
         $this->extractor = $this->getContainer()->get('fos_js_routing.extractor');
         $this->serializer = $this->getContainer()->get('fos_js_routing.serializer');
+
+        $this->host = $input->getOption('host') ?: $this->extractor->getHost();
+        $this->scheme = $input->getOption('scheme') ?: $this->extractor->getScheme();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -113,8 +130,8 @@ class DumpCommand extends ContainerAwareCommand
                 $baseUrl,
                 $this->extractor->getRoutes(),
                 $input->getOption('locale'),
-                $this->extractor->getHost(),
-                $this->extractor->getScheme()
+                $this->host,
+                $this->scheme
             ),
             'json'
         );

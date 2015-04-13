@@ -13,6 +13,7 @@ namespace FOS\JsRoutingBundle\Tests\Command;
 
 use FOS\JsRoutingBundle\Command\DumpCommand;
 use Symfony\Component\Console\Tester\CommandTester;
+use FOS\JsRoutingBundle\Response\RoutesResponse;
 
 class DumpCommandTest extends \PHPUnit_Framework_TestCase
 {
@@ -52,6 +53,12 @@ class DumpCommandTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with('fos_js_routing.serializer')
             ->will($this->returnValue($this->serializer));
+
+        $this->extractor->expects($this->once())
+            ->method('getHost');
+
+        $this->extractor->expects($this->once())
+            ->method('getScheme');
 
         $command = new DumpCommand();
         $command->setContainer($this->container);
@@ -96,12 +103,60 @@ class DumpCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('test({"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""});', file_get_contents('/tmp/dump-command-test'));
     }
 
+    public function testExecuteHostOptionAndSchemeOption()
+    {
+        $this->container->expects($this->at(0))
+            ->method('get')
+            ->with('fos_js_routing.extractor')
+            ->will($this->returnValue($this->extractor));
+
+        $this->serializer->expects($this->once())
+            ->method('serialize')
+            ->will($this->returnCallback(function(RoutesResponse $routesResponse) {
+                $this->assertEquals('example.test', $routesResponse->getHost());
+                $this->assertEquals('https', $routesResponse->getScheme());
+
+                return '{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"example.test","scheme":"https"}';
+            }));
+
+        $this->container->expects($this->at(1))
+            ->method('get')
+            ->with('fos_js_routing.serializer')
+            ->will($this->returnValue($this->serializer));
+
+        $this->extractor->expects($this->never())
+            ->method('getHost');
+
+        $this->extractor->expects($this->never())
+            ->method('getScheme');
+
+        $command = new DumpCommand();
+        $command->setContainer($this->container);
+
+        $tester = new CommandTester($command);
+        $tester->execute(array(
+            '--target' => '/tmp/dump-command-test',
+            '--host' => 'example.test',
+            '--scheme' => 'https'
+        ));
+
+        $this->assertContains('Dumping exposed routes.', $tester->getDisplay());
+        $this->assertContains('[file+] /tmp/dump-command-test', $tester->getDisplay());
+
+        $this->assertEquals('fos.Router.setData({"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"example.test","scheme":"https"});', file_get_contents('/tmp/dump-command-test'));
+    }
+
     /**
      * @expectedException \RuntimeException
      * @expectedExceptionMessage Unable to create directory /../web/js
      */
     public function testExecuteUnableToCreateDirectory()
     {
+        $this->container->expects($this->at(1))
+            ->method('get')
+            ->with('fos_js_routing.extractor')
+            ->will($this->returnValue($this->extractor));
+
         $command = new DumpCommand();
         $command->setContainer($this->container);
 
