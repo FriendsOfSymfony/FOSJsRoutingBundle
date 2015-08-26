@@ -90,7 +90,7 @@ class Controller
             $serializedRoutes = $this->serializer->serialize($exposedRoutes, 'json');
             $cache->write($serializedRoutes, $this->exposedRoutesExtractor->getResources());
         } else {
-            $serializedRoutes = file_get_contents((string) $cache);
+            $serializedRoutes = file_get_contents(method_exists($cache, 'getPath') ? $cache->getPath() : (string) $cache);
             $exposedRoutes = json_decode($serializedRoutes, true);
         }
 
