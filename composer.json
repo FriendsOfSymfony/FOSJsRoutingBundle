@@ -25,6 +25,8 @@
     "require-dev": {
         "symfony/expression-language": "~2.4|3.*"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": { "FOS\\JsRoutingBundle\\": "" }
     },
