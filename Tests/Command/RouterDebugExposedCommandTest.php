@@ -61,9 +61,9 @@ class RouterDebugExposedCommandTest extends \PHPUnit_Framework_TestCase
         $tester = new CommandTester($command);
         $tester->execute(array());
 
-        $this->assertContains('literal   ANY    ANY    ANY  /literal', $tester->getDisplay());
-        $this->assertContains('blog_post ANY    ANY    ANY  /blog-post/{slug}', $tester->getDisplay());
-        $this->assertContains('list      ANY    ANY    ANY  /literal', $tester->getDisplay());
+        $this->assertRegExp('/literal(.*ANY){3}.*\/literal/', $tester->getDisplay());
+        $this->assertRegExp('/blog_post(.*ANY){3}.*\/blog-post\/{slug}/', $tester->getDisplay());
+        $this->assertRegExp('/list(.*ANY){3}.*\/literal/', $tester->getDisplay());
     }
 
     /**
