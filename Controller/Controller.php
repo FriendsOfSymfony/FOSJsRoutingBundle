@@ -108,7 +108,7 @@ class Controller
                 throw new HttpException(400, 'Invalid JSONP callback value');
             }
 
-            $content = $callback.'('.$content.');';
+            $content = '/**/'.$callback.'('.$content.');';
         }
 
         $response = new Response($content, 200, array('Content-Type' => $request->getMimeType($_format)));

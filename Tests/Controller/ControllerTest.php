@@ -94,7 +94,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $response   = $controller->indexAction($this->getRequest('/', 'GET', array('callback' => $callback)), 'json');
 
         $this->assertEquals(
-            sprintf('%s({"base_url":"","routes":[],"prefix":"","host":"","scheme":""});', $callback),
+	    sprintf('%s({"base_url":"","routes":[],"prefix":"","host":"","scheme":""});', '/**/'.$callback),
             $response->getContent()
         );
     }
