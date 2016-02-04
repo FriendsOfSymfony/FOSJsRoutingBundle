@@ -17,13 +17,13 @@ For documentation, see:
     Resources/doc/
 
 [Read the
-documentation](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc/index.md)
+documentation](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/1.x/Resources/doc/index.md)
 
 Contributing
 ------------
 
 See
-[CONTRIBUTING](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/CONTRIBUTING.md)
+[CONTRIBUTING](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/1.x/CONTRIBUTING.md)
 file.
 
 Original Credits
