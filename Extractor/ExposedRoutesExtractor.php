@@ -62,14 +62,14 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function getRoutes()
+    public function getRoutes(array $sets = array())
     {
         $collection = $this->router->getRouteCollection();
         $routes     = new RouteCollection();
 
         /** @var Route $route */
         foreach ($collection->all() as $name => $route) {
-            if ($this->isRouteExposed($route, $name)) {
+            if ($this->isRouteExposed($route, $name, $sets)) {
                 $routes->add($name, $route);
             }
         }
@@ -125,18 +125,28 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function getCachePath($locale)
+    public function getCachePath($locale, array $sets = array())
     {
         $cachePath = $this->cacheDir . DIRECTORY_SEPARATOR . 'fosJsRouting';
         if (!file_exists($cachePath)) {
             mkdir($cachePath);
         }
 
-        if (isset($this->bundles['JMSI18nRoutingBundle'])) {
-            $cachePath = $cachePath . DIRECTORY_SEPARATOR . 'data.' . $locale . '.json';
-        } else {
-            $cachePath = $cachePath . DIRECTORY_SEPARATOR . 'data.json';
+        $cachePath = $cachePath . DIRECTORY_SEPARATOR . 'data';
+
+        $sets_suffix = '';
+        if (!empty($sets)) {
+            $sorted_sets = $sets;
+            sort($sorted_sets);
+            $sets_suffix = '.' . substr(md5(join('_', $sorted_sets)), 0, 7);
         }
+        $cachePath.= $sets_suffix;
+
+        if (isset($this->bundles['JMSI18nRoutingBundle'])) {
+            $cachePath.= '.' . $locale;
+        }
+
+        $cachePath.= '.json';
 
         return $cachePath;
     }
@@ -152,13 +162,31 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function isRouteExposed(Route $route, $name)
+    public function isRouteExposed(Route $route, $name, array $sets = array())
     {
         $pattern = $this->buildPattern();
 
-        return true === $route->getOption('expose')
+        $exposed = true === $route->getOption('expose')
             || 'true' === $route->getOption('expose')
             || ('' !== $pattern && preg_match('#' . $pattern . '#', $name));
+
+        if (!$exposed) {
+            return false;
+        }
+
+        $routeSets = $route->getOption('expose_sets');
+
+        // If no sets are asked, return true if route does not have any set
+        if (0 == count($sets)) {
+            return !$routeSets;
+        }
+
+        if (!is_array($routeSets)) {
+            $routeSets = array($routeSets);
+        }
+        $this->assertSetsAreValid($routeSets);
+
+        return 0 != count(array_intersect($routeSets, $sets));
     }
 
     /**
@@ -204,5 +232,20 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     private function usesNonStandardHttpsPort()
     {
         return 'https' === $this->getScheme() && '443' != $this->router->getContext()->getHttpsPort();
+    }
+
+    private function assertSetsAreValid(array $sets)
+    {
+        foreach ($sets as $set) {
+            if (false !== strpos($set, '_') || false !== strpos($set, '.')) {
+                throw new \RuntimeException(
+                    sprintf(
+                        "The expose set %s is not a valid set\n".
+                        "Set name should not contain '.' nor '_'. Use '-' instead.",
+                        $set
+                    )
+                );
+            }
+        }
     }
 }

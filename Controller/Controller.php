@@ -66,7 +66,7 @@ class Controller
     /**
      * indexAction action.
      */
-    public function indexAction(Request $request, $_format)
+    public function indexAction(Request $request, $_format, $sets = false)
     {
         $session = $request->getSession();
 
@@ -75,10 +75,15 @@ class Controller
             $session->getFlashBag()->setAll($session->getFlashBag()->peekAll());
         }
 
-        $cache = new ConfigCache($this->exposedRoutesExtractor->getCachePath($request->getLocale()), $this->debug);
+        $exposedSets = array();
+        if (false !== $sets) {
+            $exposedSets = explode('_', $sets);
+        }
+
+        $cache = new ConfigCache($this->exposedRoutesExtractor->getCachePath($request->getLocale(), $exposedSets), $this->debug);
 
         if (!$cache->isFresh()) {
-            $exposedRoutes    = $this->exposedRoutesExtractor->getRoutes();
+            $exposedRoutes    = $this->exposedRoutesExtractor->getRoutes($exposedSets);
             $serializedRoutes = $this->serializer->serialize($exposedRoutes, 'json');
             $cache->write($serializedRoutes, $this->exposedRoutesExtractor->getResources());
         } else {

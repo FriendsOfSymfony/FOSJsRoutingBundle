@@ -15,6 +15,7 @@ use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
 use Symfony\Bundle\FrameworkBundle\Command\RouterDebugCommand;
 use Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Routing\Route;
 
@@ -47,6 +48,12 @@ You can alternatively specify a route name as an argument to get more info about
 
 EOF
             )
+            ->addOption(
+                'sets',
+                null,
+                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+                'Dump only routes from specific set'
+            )
         ;
     }
 
@@ -58,6 +65,8 @@ EOF
         /** @var ExposedRoutesExtractorInterface $extractor */
         $extractor = $this->getContainer()->get('fos_js_routing.extractor');
 
+        $exposeSets = $input->getOption('sets');
+
         if ($name = $input->getArgument('name')) {
             /** @var Route $route */
             $route = $this->getContainer()->get('router')->getRouteCollection()->get($name);
@@ -66,8 +75,12 @@ EOF
                 throw new \InvalidArgumentException(sprintf('The route "%s" does not exist.', $name));
             }
 
-            if (!$extractor->isRouteExposed($route, $name)) {
-                throw new \InvalidArgumentException(sprintf('The route "%s" was found, but it is not an exposed route.', $name));
+            if (!$extractor->isRouteExposed($route, $name, $exposeSets)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'The route "%s" was found, but it is not an exposed route, or it is not in one of the sets : %s',
+                    $name,
+                    join(', ', $exposeSets)
+                ));
             }
 
             if (!class_exists('Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper')) {
@@ -84,10 +97,10 @@ EOF
         } else {
             if (!class_exists('Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper')) {
                 // BC layer for Symfony 2.3
-                $this->outputRoutes($output, $extractor->getRoutes());
+                $this->outputRoutes($output, $extractor->getRoutes($exposeSets));
             } else {
                 $helper = new DescriptorHelper();
-                $helper->describe($output, $extractor->getRoutes(), array(
+                $helper->describe($output, $extractor->getRoutes($exposeSets), array(
                     'format'           => $input->getOption('format'),
                     'raw_text'         => $input->getOption('raw'),
                     'show_controllers' => $input->getOption('show-controllers'),

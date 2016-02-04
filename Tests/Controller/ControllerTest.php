@@ -12,6 +12,7 @@
 namespace FOS\JsRoutingBundle\Tests\Controller;
 
 use FOS\JsRoutingBundle\Controller\Controller;
+use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
 use FOS\JsRoutingBundle\Serializer\Denormalizer\RouteCollectionDenormalizer;
 use FOS\JsRoutingBundle\Serializer\Normalizer\RouteCollectionNormalizer;
 use FOS\JsRoutingBundle\Serializer\Normalizer\RoutesResponseNormalizer;
@@ -33,6 +34,9 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         unlink($this->cachePath);
+
+        $additionalCachePath = $this->cachePath.'_set2_set3';
+        file_exists($additionalCachePath) && unlink($additionalCachePath);
     }
 
     public function testIndexAction()
@@ -65,6 +69,58 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $response = $controller->indexAction($this->getRequest('/'), 'json');
 
         $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","_locale"],["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":{"_locale":"en"},"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""}', $response->getContent());
+    }
+
+    public function testIndexActionWithSets()
+    {
+        $controller = $this->getIndexControllerWithSets();
+        $response = $controller->indexAction($this->getRequest('/'), 'json', 'set1');
+        $this->assertEquals('{"base_url":"","routes":{"set1":{"tokens":[["text","\/set1"]],"defaults":[],"requirements":[],"hosttokens":[]},"set1set2":{"tokens":[["text","\/set1set2"]],"defaults":[],"requirements":[],"hosttokens":[]}},"prefix":"","host":"","scheme":""}', $response->getContent());
+
+        $controller = $this->getIndexControllerWithSets($this->cachePath.'_set2_set3');
+        $response = $controller->indexAction($this->getRequest('/'), 'json', 'set2_set3');
+        $this->assertEquals('{"base_url":"","routes":{"set1set2":{"tokens":[["text","\/set1set2"]],"defaults":[],"requirements":[],"hosttokens":[]},"set3":{"tokens":[["text","\/set3"]],"defaults":[],"requirements":[],"hosttokens":[]}},"prefix":"","host":"","scheme":""}', $response->getContent());
+    }
+
+    private function getIndexControllerWithSets($cachePath = null)
+    {
+        $extractor = $this->getExtractor(null, '', $cachePath);
+        $extractor
+            ->expects($this->any())
+            ->method('getRoutes')
+            ->will($this->returnCallback(function (array $sets = array()) {
+                $routes = new RouteCollection();
+
+                $routesDefinition = array(
+                    'no_set' => array(),
+                    'set1' => array('set1'),
+                    'set1set2' => array('set1', 'set2'),
+                    'set3' => array('set3')
+                );
+                foreach ($routesDefinition as $name => $routeSets) {
+                    $routes->add($name, new Route('/'.$name, array(), array(), array('expose_sets' => $routeSets)));
+                }
+
+                $routesSet1 = new RouteCollection();
+                $routesSet1->add('set1', $routes->get('set1'));
+                $routesSet1->add('set1set2', $routes->get('set1set2'));
+
+                $routesSet2Set3 = new RouteCollection();
+                $routesSet2Set3->add('set1set2', $routes->get('set1set2'));
+                $routesSet2Set3->add('set3', $routes->get('set3'));
+
+                if ($sets == array('set1')) {
+                    return $routesSet1;
+                } elseif ($sets == array('set2', 'set3')) {
+                    return $routesSet2Set3;
+                }
+
+                throw new \InvalidArgumentException(sprintf('Theses sets are not configured : %s', join(', ', $sets)));
+            }));
+
+        $controller = new Controller($this->getSerializer(), $extractor);
+
+        return $controller;
     }
 
     public function testConfigCache()
@@ -156,18 +212,18 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(456, $response->headers->getCacheControlDirective('s-maxage'));
     }
 
-    private function getExtractor(RouteCollection $exposedRoutes = null, $baseUrl = '')
+    private function getExtractor(RouteCollection $exposedRoutes = null, $baseUrl = '', $cachePath = false)
     {
-        if (null === $exposedRoutes) {
-            $exposedRoutes = new RouteCollection();
-        }
+        $resolvedCachePath = $cachePath ?: $this->cachePath;
 
         $extractor = $this->getMock('FOS\\JsRoutingBundle\\Extractor\\ExposedRoutesExtractorInterface');
-        $extractor
-            ->expects($this->any())
-            ->method('getRoutes')
-            ->will($this->returnValue($exposedRoutes))
-        ;
+        if ($exposedRoutes !== null) {
+            $extractor
+                ->expects($this->any())
+                ->method('getRoutes')
+                ->will($this->returnValue($exposedRoutes))
+            ;
+        }
         $extractor
             ->expects($this->any())
             ->method('getBaseUrl')
@@ -176,7 +232,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $extractor
             ->expects($this->any())
             ->method('getCachePath')
-            ->will($this->returnValue($this->cachePath))
+            ->will($this->returnValue($resolvedCachePath))
         ;
         $extractor
             ->expects($this->any())

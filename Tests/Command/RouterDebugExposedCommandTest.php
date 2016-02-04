@@ -100,7 +100,7 @@ class RouterDebugExposedCommandTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage The route "literal" was found, but it is not an exposed route.
+     * @expectedExceptionMessage The route "literal" was found, but it is not an exposed route
      */
     public function testExecuteWithNameNotExposed()
     {

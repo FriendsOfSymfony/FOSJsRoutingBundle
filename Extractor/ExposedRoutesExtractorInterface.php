@@ -22,9 +22,11 @@ interface ExposedRoutesExtractorInterface
     /**
      * Returns a collection of exposed routes
      *
+     * @param array $sets
+     *
      * @return \Symfony\Component\Routing\RouteCollection
      */
-    public function getRoutes();
+    public function getRoutes(array $sets = array());
 
     /**
      * Return the Base URL
@@ -63,7 +65,7 @@ interface ExposedRoutesExtractorInterface
      *
      * @return string
      */
-    public function getCachePath($locale);
+    public function getCachePath($locale, array $sets = array());
 
     /**
      * Return an array of routing resources
@@ -73,12 +75,14 @@ interface ExposedRoutesExtractorInterface
     public function getResources();
 
     /**
-     * Tell whether a route should be considered as exposed
+     * Tell whether a route should be considered as exposed. If $sets in not
+     * empty, it will also test if one of the route exposet_sets is present in
+     * the $sets argument.
      *
      * @param Route  $route
      * @param string $name
      *
      * @return bool
      */
-    public function isRouteExposed(Route $route, $name);
+    public function isRouteExposed(Route $route, $name, array $sets = array());
 }
