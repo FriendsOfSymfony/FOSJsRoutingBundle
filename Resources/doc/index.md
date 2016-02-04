@@ -204,7 +204,7 @@ you now include this as
 <script src="/js/fos_js_routes.js"></script>
 ```
 
-Or inside assetic, do
+**IMPORTANT**: you **CANNOT** use assetic this way:
 
 ```jinja
 {% javascripts filter='?yui_js'
@@ -214,6 +214,9 @@ Or inside assetic, do
     <script src="{{ asset_url }}"></script>
 {% endjavascripts %}
 ```
+
+because if you starts with an empty cache, and use `cache:clear`, the Assetic cache-warmer will fail because `js/fos_js_routes.js` does not exist yet.
+
 
 **Important:** you should follow the Symfony documentation about generating URLs
 in the console: [Configuring The Request Context
