@@ -208,7 +208,7 @@ Or inside assetic, do
 
 ```jinja
 {% javascripts filter='?yui_js'
-    'bundles/fosjsrouting/js/router.js'
+    '@FOSJsRoutingBundle/Resources/public/js/router.js'
     'js/fos_js_routes.js'
 %}
     <script src="{{ asset_url }}"></script>
