@@ -38,7 +38,7 @@ class RouteCollectionNormalizerTest extends \PHPUnit_Framework_TestCase
         $routes->add('list', new Route('/literal'));
 
         $expected = array(
-            'literal' => array (
+            'literal' => array(
                 'path'         => '/literal',
                 'host'         => '',
                 'defaults'     => array(),
