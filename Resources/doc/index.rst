@@ -9,5 +9,4 @@ relative or absolute URLs in the browser using the same routes as in the backend
 
     installation
     usage
-    compilling
-    testing
+    commands

@@ -3,10 +3,17 @@ Usage
 
 Add these two lines in your layout:
 
-.. code-block:: twig
+.. configuration-block::
 
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+    .. code-block:: html+twig
+
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+
+    .. code-block:: html+php
+
+        <script src="<?php echo $view['assets']->getUrl('bundles/fosjsrouting/js/router.js') ?>"></script>
+        <script src="<?php echo $view['router']->generate('fos_js_routing_js', array('callback' => 'fos.Router.setData')) ?>"></script>
 
 .. note::
 
@@ -20,13 +27,13 @@ It's as simple as calling:
 
 .. code-block:: javascript
 
-    Routing.generate('route_id', /* your params */)
+    Routing.generate('route_name', /* your params */)
 
 Or if you want to generate **absolute URLs**:
 
 .. code-block:: javascript
 
-    Routing.generate('route_id', /* your params */, true)
+    Routing.generate('route_name', /* your params */, true)
 
 Assuming some route definitions:
 
@@ -34,25 +41,38 @@ Assuming some route definitions:
 
     .. code-block:: php-annotations
 
-        // src/Acme/DemoBundle/Controller/DefaultController.php
+        // src/AppBundle/Controller/DefaultController.php
 
         /**
-         * @Route("/foo/{id}/bar", name="my_route_to_expose", options={"expose"=true})
+         * @Route("/foo/{id}/bar", options={"expose"=true}, name="my_route_to_expose")
          */
-        public function exposedAction($foo)
+        public function indexAction($foo) {
+            // ...
+        }
+
+        /**
+         * @Route("/blog/{page}",
+         *     defaults = { "page" = 1 },
+         *     options = { "expose" = true },
+         *     name = "my_route_to_expose_with_defaults",
+         * )
+         */
+        public function blogAction($page) {
+            // ...
+        }
 
     .. code-block:: yaml
 
         # app/config/routing.yml
         my_route_to_expose:
             pattern: /foo/{id}/bar
-            defaults: { _controller: HelloBundle:Hello:index }
+            defaults: { _controller: AppBundle:Default:index }
             options:
                 expose: true
 
         my_route_to_expose_with_defaults:
             pattern: /blog/{page}
-            defaults: { _controller: AcmeBlogBundle:Blog:index, page: 1 }
+            defaults: { _controller: AppBundle:Default:blog, page: 1 }
             options:
                 expose: true
 
@@ -119,62 +139,3 @@ You can enable HTTP caching as below:
             smaxage: null   # integer value, e.g. 300
             expires: null   # anything that can be fed to "new \DateTime($expires)", e.g. "5 minutes"
             vary: []        # string or array, e.g. "Cookie" or [ Cookie, Accept ]
-
-Commands
---------
-
-fos:js-routing:dump
-~~~~~~~~~~~~~~~~~~~
-
-This command dumps the route information into a file so that instead of having
-the controller generated JavaScript, you can use a normal file. This also allows
-to combine the routes with the other JavaScript files in assetic.
-
-.. code-block:: bash
-
-    $ php app/console fos:js-routing:dump
-
-Instead of the line
-
-.. code-block:: twig
-
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-
-you now include this as
-
-.. code-block:: html
-
-    <script src="/js/fos_js_routes.js"></script>
-
-Or inside assetic, do
-
-.. code-block:: twig
-
-    {% javascripts filter='?yui_js'
-        'bundles/fosjsrouting/js/router.js'
-        'js/fos_js_routes.js'
-    %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-
-.. caution::
-
-    You should follow the Symfony documentation about generating URLs
-    in the console: `Configuring The Request Context Globally`_.
-
-.. tip::
-
-    If you are using JMSI18nRoutingBundle, you need to run the command with the
-    ``--locale`` parameter once for each locale you use and adjust your include
-    paths accordingly.
-
-fos:js-routing:debug
-~~~~~~~~~~~~~~~~~~~~
-
-This command lists all exposed routes:
-
-.. code-block:: bash
-
-    $ php app/console fos:js-routing:debug [name]
-
-.. _`Configuring The Request Context Globally`: http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally
