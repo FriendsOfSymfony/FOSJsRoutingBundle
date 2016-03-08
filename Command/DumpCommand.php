@@ -120,13 +120,19 @@ class DumpCommand extends ContainerAwareCommand
             $params = array();
         }
 
+        $exposeRouteOptions = $this->getContainer()->hasParameter('fos_js_routing.expose_options') ?
+            $this->getContainer()->getParameter('fos_js_routing.expose_options') :
+            false;
+
         $content = $this->serializer->serialize(
             new RoutesResponse(
                 $baseUrl,
                 $this->extractor->getRoutes(),
                 $input->getOption('locale'),
                 $this->extractor->getHost(),
-                $this->extractor->getScheme()
+                $this->extractor->getScheme(),
+                null,
+                $exposeRouteOptions
             ),
             'json',
             $params

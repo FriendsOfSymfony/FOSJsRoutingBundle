@@ -13,9 +13,13 @@ namespace FOS\JsRoutingBundle\Tests\Command;
 
 use FOS\JsRoutingBundle\Command\DumpCommand;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class DumpCommandTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var ContainerInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
     protected $container;
     protected $extractor;
     protected $router;
@@ -52,6 +56,18 @@ class DumpCommandTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with('fos_js_routing.serializer')
             ->will($this->returnValue($this->serializer));
+
+        $this->container
+            ->method('hasParameter')
+            ->willReturnMap(array(
+                array('fos_js_routing.request_context_base_url', false),
+                array('fos_js_routing.expose_options', true),
+            ));
+
+        $this->container->expects($this->atLeastOnce())
+            ->method('getParameter')
+            ->with('fos_js_routing.expose_options')
+            ->will($this->returnValue(true));
 
         $command = new DumpCommand();
         $command->setContainer($this->container);

@@ -11,6 +11,7 @@
             <argument type="service" id="fos_js_routing.extractor" />
             <argument>%fos_js_routing.cache_control%</argument>
             <argument>%kernel.debug%</argument>
+            <argument>%fos_js_routing.expose_options%</argument>
         </service>
     </services>
 </container>
