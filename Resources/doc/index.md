@@ -184,6 +184,10 @@ Or using annotations:
 public function exposedAction($foo)
 ```
 
+Will result in the options property:
+```JavaScript
+{"base_url":"","routes":{"my_route_to_expose":{"tokens":[["text","\/bar"],["variable","\/","[^\/]++","id"],["text","\/development\/foo"]],"defaults":[],"requirements":[],"hosttokens":[],"options":{"callback":"doStuff","is_single_page":true}}},"prefix":"","host":"localhost","scheme":"http"}
+```
 
 ### Router service
 
