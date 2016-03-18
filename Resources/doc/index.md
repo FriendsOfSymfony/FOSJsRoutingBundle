@@ -215,6 +215,13 @@ Or inside assetic, do
 {% endjavascripts %}
 ```
 
+**Important:** in development environment, you have to specify a `router.request_context.base_url` parameter. For example in `config_dev.yml`, you can add:
+
+```yml
+parameters:
+    router.request_context.base_url: "/app_dev.php"
+```
+
 **Important:** you should follow the Symfony documentation about generating URLs
 in the console: [Configuring The Request Context
 Globally](http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally).
