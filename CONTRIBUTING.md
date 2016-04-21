@@ -46,7 +46,14 @@ $ phpunit
 
 ### JavaScript Test Suite
 
-First, install [PhantomJS](http://phantomjs.org/) and then, execute this command:
+First, install [PhantomJS](http://phantomjs.org/) and [Google Closure
+Library](https://github.com/google/closure-library):
+
+```bash
+$ npm install google-closure-library
+```
+
+Run the JS test suite with:
 
 ```bash
 $ phantomjs Resources/js/run_jsunit.js Resources/js/router_test.html
