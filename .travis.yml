@@ -30,6 +30,7 @@ before_install:
 
 install:
   - composer update $COMPOSER_FLAGS --prefer-dist
+  - npm install google-closure-library
 
 script:
   - ./phpunit
