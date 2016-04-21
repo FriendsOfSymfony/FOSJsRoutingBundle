@@ -33,6 +33,7 @@ before_install:
 
 install:
   - composer install
+  - npm install google-closure-library
 
 script:
   - phpunit --coverage-text
