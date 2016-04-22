@@ -17,7 +17,7 @@ For documentation, see:
     Resources/doc/
 
 [Read the
-documentation](Resources/doc)
+documentations](Resources/doc)
 
 Contributing
 ------------
