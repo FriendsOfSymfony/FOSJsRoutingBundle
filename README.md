@@ -17,7 +17,7 @@ For documentation, see:
     Resources/doc/
 
 [Read the
-documentations](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc)
+documentation](Resources/doc)
 
 Contributing
 ------------
