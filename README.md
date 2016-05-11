@@ -14,10 +14,7 @@ Documentation
 
 For documentation, see:
 
-    Resources/doc/
-
-[Read the
-documentation](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc/index.md)
+    http://symfony.com/doc/master/bundles/FOSJsRoutingBundle/index.html
 
 Contributing
 ------------
