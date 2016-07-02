@@ -6,5 +6,7 @@ var externs = {
     tokens: '',
     defaults: '',
     requirements: '',
-    hosttokens: ''
+    hosttokens: '',
+    schemes: '',
+    methods: ''
 };

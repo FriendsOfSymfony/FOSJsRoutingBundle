@@ -56,6 +56,8 @@ class RoutesResponse
                 'defaults'     => $defaults,
                 'requirements' => $route->getRequirements(),
                 'hosttokens'   => method_exists($compiledRoute, 'getHostTokens') ? $compiledRoute->getHostTokens() : array(),
+                'methods'      => $route->getMethods(),
+                'schemes'      => $route->getSchemes(),
             );
         }
 
