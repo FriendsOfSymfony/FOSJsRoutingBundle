@@ -2,4 +2,4 @@
 /composer.lock
 /composer.phar
 /vendor/
-/node_modules/
+node_modules
