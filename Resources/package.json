@@ -23,6 +23,7 @@
   ],
   "files": [
     "js/router.js",
+    "public/js/router.js",
     "public/js/router.min.js",
     "ts/router.d.ts"
   ],

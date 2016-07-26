@@ -1,9 +1,36 @@
-describe('Router', () => {
-    let Router = require('./router');
+'use strict';
 
-    describe('generate', () => {
+/**
+ * @fileoverview This file is the entry point for the Router tests.
+ *
+ * You can run these tests by running the following command from the Resources folder:
+ *
+ *    npm test
+ */
 
-        it('generates a url', () => {
+const Router = require('./router').Router;
+
+describe(Router.prototype.constructor.name, () => {
+
+    describe('baseUrl()', () => {
+
+        it('gets the base url', () => {
+            let router = new Router({base_url: '/foo'}, {
+                homepage: {
+                    tokens: [['text', '/bar']],
+                    defaults: {},
+                    requirements: {}
+                }
+            });
+
+            expect(router.getBaseUrl()).toBe('/foo');
+        });
+
+    });
+
+    describe('generate()', () => {
+
+        it('generates a path', () => {
             let router = new Router({base_url: ''}, {
                 literal: {
                     tokens: [['text', '/homepage']],
@@ -16,7 +43,7 @@ describe('Router', () => {
             expect(router.generate('literal')).toBe('/homepage');
         });
 
-        it('generates a url with the given values for the respective parameters', () => {
+        it('generates a path with the given values for the respective parameters', () => {
             let router = new Router({base_url: ''}, {
                 blog_post: {
                     tokens: [['variable', '/', '[^/]+?', 'slug'], ['text', '/blog-post']],
@@ -29,7 +56,7 @@ describe('Router', () => {
             expect(router.generate('blog_post', {slug: 'foo'})).toBe('/blog-post/foo');
         });
 
-        it('generates a url with the base url as prefix', () => {
+        it('generates a path with the base url as prefix', () => {
             let router = new Router({base_url: '/foo'}, {
                 homepage: {
                     tokens: [['text', '/bar']],
@@ -42,7 +69,7 @@ describe('Router', () => {
             expect(router.generate('homepage')).toBe('/foo/bar');
         });
 
-        it('generates a url with the specified requirements', () => {
+        it('generates a path with the specified requirements', () => {
             let router = new Router({base_url: '/foo', host: "localhost"}, {
                 homepage: {
                     tokens: [['text', '/bar']],
@@ -55,7 +82,7 @@ describe('Router', () => {
             expect(router.generate('homepage')).toBe('https://localhost/foo/bar');
         });
 
-        it('generates a url for the specified host', () => {
+        it('generates a path for the specified host', () => {
             let router = new Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
                 homepage: {
                     tokens: [['text', '/bar']],
@@ -68,7 +95,7 @@ describe('Router', () => {
             expect(router.generate('homepage')).toBe('http://otherhost/foo/bar');
         });
 
-        xit('', () => {
+        it('uses host when the same scheme requirement is given', () => {
             let router = new Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
                 homepage: {
                     tokens: [['text', '/bar']],
@@ -78,10 +105,10 @@ describe('Router', () => {
                 }
             });
 
-            assertEquals('http://otherhost/foo/bar', router.generate('homepage'));
+            expect(router.generate('homepage')).toBe('http://otherhost/foo/bar');
         });
 
-        xit('', () => {
+        it('uses host when another scheme requirement is given', () => {
             let router = new Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
                 homepage: {
                     tokens: [['text', '/bar']],
@@ -91,10 +118,10 @@ describe('Router', () => {
                 }
             });
 
-            assertEquals('https://otherhost/foo/bar', router.generate('homepage'));
+            expect(router.generate('homepage')).toBe('https://otherhost/foo/bar');
         });
 
-        xit('', () => {
+        it('supports host placeholders', () => {
             let router = new Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
                 homepage: {
                     tokens: [['text', '/bar']],
@@ -107,10 +134,10 @@ describe('Router', () => {
                 }
             });
 
-            assertEquals('http://api.localhost/foo/bar', router.generate('homepage', {subdomain: 'api'}));
+            expect(router.generate('homepage', {subdomain: 'api'})).toBe('http://api.localhost/foo/bar');
         });
 
-        xit('', () => {
+        it('supports host placeholders defaults', () => {
             let router = new Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
                 homepage: {
                     tokens: [['text', '/bar']],
@@ -123,10 +150,10 @@ describe('Router', () => {
                 }
             });
 
-            assertEquals('http://api.localhost/foo/bar', router.generate('homepage'));
+            expect(router.generate('homepage')).toBe('http://api.localhost/foo/bar');
         });
 
-        xit('', () => {
+        it('generates a relative path when the same host is given', () => {
             let router = new Router({base_url: '/foo', host: "api.localhost", scheme: "http"}, {
                 homepage: {
                     tokens: [['text', '/bar']],
@@ -139,10 +166,10 @@ describe('Router', () => {
                 }
             });
 
-            assertEquals('/foo/bar', router.generate('homepage', {subdomain: 'api'}));
+            expect(router.generate('homepage', {subdomain: 'api'})).toBe('/foo/bar');
         });
 
-        xit('', () => {
+        it('generates absolute path when scheme is given', () => {
             let router = new Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
                 homepage: {
                     tokens: [['text', '/bar']],
@@ -152,11 +179,11 @@ describe('Router', () => {
                 }
             });
 
-            assertEquals('http://localhost/foo/bar', router.generate('homepage', [], true));
+            expect(router.generate('homepage', [], true)).toBe('http://localhost/foo/bar');
         });
 
-        xit('', () => {
-            let router = new Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
+        it('generates absolute path when scheme requirement given', () => {
+            let router = new Router({base_url: '/foo', host: "localhost"}, {
                 homepage: {
                     tokens: [['text', '/bar']],
                     defaults: {},
@@ -165,10 +192,10 @@ describe('Router', () => {
                 }
             });
 
-            assertEquals('http://localhost/foo/bar', router.generate('homepage', [], true));
+            expect(router.generate('homepage', [], true)).toBe('http://localhost/foo/bar');
         });
 
-        xit('', () => {
+        it('supports optional trailing parameters', () => {
             let router = new Router({base_url: ''}, {
                 posts: {
                     tokens: [['variable', '.', '', '_format'], ['text', '/posts']],
@@ -178,11 +205,11 @@ describe('Router', () => {
                 }
             });
 
-            assertEquals('/posts', router.generate('posts'));
-            assertEquals('/posts.json', router.generate('posts', {'_format': 'json'}));
+            expect(router.generate('posts')).toBe('/posts');
+            expect(router.generate('posts', {'_format': 'json'})).toBe('/posts.json');
         });
 
-        xit('', () => {
+        it('ignores parameters when the given value is the default value', () => {
             let router = new Router({base_url: ''}, {
                 posts: {
                     tokens: [['variable', '/', '[1-9]+[0-9]*', 'page'], ['text', '/blog-posts']],
@@ -192,10 +219,10 @@ describe('Router', () => {
                 }
             });
 
-            assertEquals('/blog-posts?extra=1', router.generate('posts', {page: 1, extra: 1}));
+            expect(router.generate('posts', {page: 1, extra: 1})).toBe('/blog-posts?extra=1');
         });
 
-        xit('', () => {
+        it('allows slashes in the parameters', () => {
             let router = new Router({base_url: ''}, {
                 posts: {
                     tokens: [['variable', '/', '.+', 'id'], ['text', '/blog-post']],
@@ -205,10 +232,10 @@ describe('Router', () => {
                 }
             });
 
-            assertEquals('/blog-post/foo/bar', router.generate('posts', {id: 'foo/bar'}));
+            expect(router.generate('posts', {id: 'foo/bar'})).toBe('/blog-post/foo/bar');
         });
 
-        xit('', () => {
+        it('adds unrecognised parameters to the search query', () => {
             let router = new Router(undefined, {
                 foo: {
                     tokens: [['variable', '/', '', 'bar']],
@@ -218,13 +245,13 @@ describe('Router', () => {
                 }
             });
 
-            assertEquals('/baz?foo=bar', router.generate('foo', {
+            expect(router.generate('foo', {
                 bar: 'baz',
                 foo: 'bar'
-            }));
+            })).toBe('/baz?foo=bar');
         });
 
-        xit('', () => {
+        it('supports nested search parameters', () => {
             let router = new Router(undefined, {
                 foo: {
                     tokens: [['variable', '/', '', 'bar']],
@@ -234,7 +261,7 @@ describe('Router', () => {
                 }
             });
 
-            assertEquals('/baz?foo%5B%5D=1&foo%5B1%5D%5B%5D=1&foo%5B1%5D%5B%5D=2&foo%5B1%5D%5B%5D=3&foo%5B1%5D%5B%5D=foo&foo%5B%5D=3&foo%5B%5D=4&foo%5B%5D=bar&foo%5B5%5D%5B%5D=1&foo%5B5%5D%5B%5D=2&foo%5B5%5D%5B%5D=3&foo%5B5%5D%5B%5D=baz&baz%5Bfoo%5D=bar+foo&baz%5Bbar%5D=baz&bob=cat', router.generate('foo', {
+            expect(router.generate('foo', {
                 bar: 'baz', // valid param, not included in the query string
                 foo: [1, [1, 2, 3, 'foo'], 3, 4, 'bar', [1, 2, 3, 'baz']],
                 baz: {
@@ -242,48 +269,10 @@ describe('Router', () => {
                     bar : 'baz'
                 },
                 bob: 'cat'
-            }));
+            })).toBe('/baz?foo%5B%5D=1&foo%5B1%5D%5B%5D=1&foo%5B1%5D%5B%5D=2&foo%5B1%5D%5B%5D=3&foo%5B1%5D%5B%5D=foo&foo%5B%5D=3&foo%5B%5D=4&foo%5B%5D=bar&foo%5B5%5D%5B%5D=1&foo%5B5%5D%5B%5D=2&foo%5B5%5D%5B%5D=3&foo%5B5%5D%5B%5D=baz&baz%5Bfoo%5D=bar+foo&baz%5Bbar%5D=baz&bob=cat');
         });
 
-        xit('', () => {
-            let router = new Router({base_url: ''}, {
-                foo: {
-                    tokens: [['text', '/moo'], ['variable', '/', '', 'bar']],
-                    defaults: {},
-                    requirements: {}
-                }
-            });
-
-            try {
-                router.generate('foo');
-                fail('generate() was expected to throw an error, but has not.');
-            } catch (e) {
-                assertEquals('The route "foo" requires the parameter "bar".', e.message);
-            }
-        });
-
-        xit('', () => {
-            let router = new Router({base_url: ''}, {});
-
-            try {
-                router.generate('foo');
-                fail('generate() was expected to throw an error, but has not.');
-            } catch (e) { }
-        });
-
-        xit('', () => {
-            let router = new Router({base_url: '/foo'}, {
-                homepage: {
-                    tokens: [['text', '/bar']],
-                    defaults: {},
-                    requirements: {}
-                }
-            });
-
-            assertEquals('/foo', router.getBaseUrl());
-        });
-
-        xit('', () => {
+        it('supports i18n', () => {
             let router = new Router({base_url: '/foo', prefix: 'en__RG__'}, {
                 en__RG__homepage: {
                     tokens: [['text', '/bar']],
@@ -305,14 +294,53 @@ describe('Router', () => {
                 }
             });
 
-            assertEquals('/foo/bar', router.generate('homepage'));
-            assertEquals('/foo/admin', router.generate('_admin'));
+            expect(router.generate('homepage')).toBe('/foo/bar');
+            expect(router.generate('_admin')).toBe('/foo/admin');
 
             router.setPrefix('es__RG__');
-            assertEquals('/foo/es/bar', router.generate('homepage'));
+            expect(router.generate('homepage')).toBe('/foo/es/bar');
         });
 
-        xit('', () => {
+        it('treats null values as empty', () => {
+            let router = new Router({base_url: ''}, {
+                posts: {
+                    tokens: [
+                        ['variable', '/', '.+', 'id'],
+                        ['variable', '/', '.+', 'page'],
+                        ['text', '/blog-post']
+                    ],
+                    defaults: {},
+                    requirements: {},
+                    hosttokens: []
+                }
+            });
+
+            expect(router.generate('posts', { page: null, id: 10 })).toBe('/blog-post//10');
+        });
+
+        it('throws error when require parameter is not given', () => {
+            let router = new Router({base_url: ''}, {
+                foo: {
+                    tokens: [['text', '/moo'], ['variable', '/', '', 'bar']],
+                    defaults: {},
+                    requirements: {}
+                }
+            });
+
+            expect(() => router.generate('foo')).toThrowError('The route "foo" requires the parameter "bar".');
+        });
+
+        it('throws error for non existing route', () => {
+            let router = new Router({base_url: ''}, {});
+
+            expect(() => router.generate('foo')).toThrowError();
+        });
+
+    });
+
+    describe('getRoute()', () => {
+
+        it('gets the specified route', () => {
             let router = new Router({base_url: ''}, {
                 blog_post: {
                     tokens: [['variable', '/', '[^/]+?', 'slug'], ['text', '/blog-post']],
@@ -330,116 +358,27 @@ describe('Router', () => {
                 'requirements': {"_scheme": "http"}
             };
 
-            assertObjectEquals(expected, router.getRoute('blog_post'));
+            expect(router.getRoute('blog_post')).toEqual(expected);
         });
 
-        xit('', () => {
+    });
+
+    describe('getRoutes()', () => {
+
+        it('gets the list of routes', () => {
             let router = new Router({base_url: ''}, {
                 blog_post: 'test',
                 blog: 'test'
             });
 
-            let expected = new goog.structs.Map({
+            let expected = {
                 blog_post: 'test',
                 blog: 'test'
-            });
+            };
 
-            assertObjectEquals(expected, router.getRoutes());
-        });
-
-        xit('', () => {
-            let router = new Router({base_url: ''}, {
-                posts: {
-                    tokens: [
-                        ['variable', '/', '.+', 'id'],
-                        ['variable', '/', '.+', 'page'],
-                        ['text', '/blog-post']
-                    ],
-                    defaults: {},
-                    requirements: {},
-                    hosttokens: []
-                }
-            });
-
-            assertEquals('/blog-post//10', router.generate('posts', { page: null, id: 10 }));
+            expect(router.getRoutes()).toEqual(expected);
         });
 
     });
 
 });
-
-function testGenerateUsesHostWhenTheSameSchemeRequirementGiven() {
-
-}
-
-function testGenerateUsesHostWhenAnotherSchemeRequirementGiven() {
-
-}
-
-function testGenerateSupportsHostPlaceholders() {
-
-}
-
-function testGenerateSupportsHostPlaceholdersDefaults() {
-
-}
-
-function testGenerateGeneratesRelativePathWhenTheSameHostGiven() {
-
-}
-
-function testGenerateUsesAbsoluteUrl() {
-
-}
-
-function testGenerateUsesAbsoluteUrlWhenSchemeRequirementGiven() {
-
-}
-
-function testGenerateWithOptionalTrailingParam() {
-
-}
-
-function testGenerateQueryStringWithoutDefaults() {
-
-}
-
-function testAllowSlashes() {
-
-}
-
-function testGenerateWithExtraParams() {
-
-}
-
-function testGenerateWithExtraParamsDeep() {
-
-}
-
-function testGenerateThrowsErrorWhenRequiredParameterWasNotGiven() {
-
-}
-
-function testGenerateThrowsErrorForNonExistentRoute() {
-
-}
-
-function testGetBaseUrl() {
-
-}
-
-function testGeti18n() {
-
-}
-
-function testGetRoute() {
-
-}
-
-function testGetRoutes() {
-
-}
-
-function testGenerateWithNullValue() {
-
-}
