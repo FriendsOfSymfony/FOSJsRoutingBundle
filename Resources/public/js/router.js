@@ -1,6 +1,14 @@
 'use strict';
 
 /**
+ * @fileoverview This file defines the Router class.
+ *
+ * You can compile this file by running the following command from the Resources folder:
+ *
+ *    npm run build
+ */
+
+/**
  * Router singleton.
  * @type {null|Router}
  */
@@ -360,18 +368,25 @@ Router.Route;
  */
 Router.Context;
 
-// Export the Router object via AMD
-if (typeof window.define === 'function' && window.define.amd) {
-    window.define('Router', [], function () {
-        return Router;
-    });
-}
+// Create singleton
+Router.getInstance();
 
 // Export the Router object for Node.js
-else if (typeof exports !== 'undefined') {
-        if (typeof module !== 'undefined' && module.exports) {
-            module.exports = Router;
-        }
+if (typeof exports !== 'undefined') {
+    if (typeof module !== 'undefined' && module.exports) {
+        module.exports = instance;
+        module.exports.Router = Router;
+    }
+}
+
+// Export the Router object via AMD
+else if (typeof window.define === 'function' && window.define.amd) {
+        window.define('Router', [], function () {
+            return Router;
+        });
+        window.define('Routing', [], function () {
+            return instance;
+        });
     }
 
     // Export the Router object as global var
@@ -381,4 +396,5 @@ else if (typeof exports !== 'undefined') {
             }
 
             window.fos.Router = Router;
+            window.Routing = instance;
         }
