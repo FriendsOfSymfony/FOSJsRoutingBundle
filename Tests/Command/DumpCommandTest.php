@@ -22,7 +22,7 @@ class DumpCommandTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $this->container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
         $this->extractor = $this->getMockBuilder('FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor')
             ->disableOriginalConstructor()
@@ -94,6 +94,39 @@ class DumpCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('[file+] /tmp/dump-command-test', $tester->getDisplay());
 
         $this->assertEquals('test({"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""});', file_get_contents('/tmp/dump-command-test'));
+    }
+
+    public function testExecuteFormatOption()
+    {
+        $json = '{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""}';
+
+        $this->container->expects($this->at(0))
+            ->method('get')
+            ->with('fos_js_routing.extractor')
+            ->will($this->returnValue($this->extractor));
+
+        $this->serializer->expects($this->once())
+            ->method('serialize')
+            ->will($this->returnValue($json));
+
+        $this->container->expects($this->at(1))
+            ->method('get')
+            ->with('fos_js_routing.serializer')
+            ->will($this->returnValue($this->serializer));
+
+        $command = new DumpCommand();
+        $command->setContainer($this->container);
+
+        $tester = new CommandTester($command);
+        $tester->execute(array(
+            '--target' => '/tmp/dump-command-test',
+            '--format' => 'json',
+        ));
+
+        $this->assertContains('Dumping exposed routes.', $tester->getDisplay());
+        $this->assertContains('[file+] /tmp/dump-command-test', $tester->getDisplay());
+
+        $this->assertEquals($json, file_get_contents('/tmp/dump-command-test'));
     }
 
     /**
