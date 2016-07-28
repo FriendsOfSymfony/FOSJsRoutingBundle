@@ -27,15 +27,16 @@
     "public/js/router.min.js",
     "ts/router.d.ts"
   ],
-  "main": "js/router.js",
+  "main": "public/js/router.js",
   "devDependencies": {
     "babel-cli": "^6.11.4",
+    "babel-plugin-transform-remove-strict-mode": "0.0.2",
     "babel-preset-es2015": "^6.9.0",
     "jasmine": "^2.4.1",
     "uglify-js": "^2.7.0"
   },
   "scripts": {
-    "build": "babel js/router.js --out-file public/js/router.js && uglifyjs public/js/router.js -o=public/js/router.min.js",
+    "build": "babel js/router.js --out-file public/js/router.js && uglifyjs public/js/router.js -o=public/js/router.min.js -c -m",
     "test": "jasmine js/router.test.js"
   }
 }
