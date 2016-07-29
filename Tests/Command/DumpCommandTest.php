@@ -22,7 +22,7 @@ class DumpCommandTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $this->container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
         $this->extractor = $this->getMockBuilder('FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor')
             ->disableOriginalConstructor()
