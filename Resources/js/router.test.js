@@ -8,7 +8,7 @@
  *    npm test
  */
 
-const Router = require('..').Router;
+import { Router } from '..';
 
 describe(Router.prototype.constructor.name, () => {
 
