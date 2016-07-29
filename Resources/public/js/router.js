@@ -1,8 +1,23 @@
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['fos'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        module.exports = factory();
+    } else {
+        var result = factory();
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+        // Browser globals (root is window)
+        root.Routing = result.Routing;
+        root.fos = {
+            Router: result.Router,
+        };
+  }
+}(this, function () {
+    'use strict';
 
 /**
  * @fileoverview This file defines the Router class.
@@ -12,396 +27,367 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *    npm run build
  */
 
-var _ref = function () {
-    'use strict';
+/**
+ * Class Router
+ */
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Router = function () {
 
     /**
-     * Class Router
+     * @constructor
+     * @param {Router.Context=} context
+     * @param {Object.<string, Router.Route>=} routes
+     */
+    function Router(context, routes) {
+        _classCallCheck(this, Router);
+
+        this.context_ = context || { base_url: '', prefix: '', host: '', scheme: '' };
+        this.setRoutes(routes || {});
+    }
+
+    /**
+     * Returns the current instance.
+     * @returns {Router}
      */
 
-    var Router = function () {
+
+    _createClass(Router, [{
+        key: 'setRoutes',
+
 
         /**
-         * @constructor
-         * @param {Router.Context=} context
-         * @param {Object.<string, Router.Route>=} routes
+         * @param {Object.<string, Router.Route>} routes
          */
-        function Router(context, routes) {
-            _classCallCheck(this, Router);
-
-            this.context_ = context || { base_url: '', prefix: '', host: '', scheme: '' };
-            this.setRoutes(routes || {});
+        value: function setRoutes(routes) {
+            this.routes_ = Object.freeze(routes);
         }
 
         /**
-         * Returns the current instance.
-         * @returns {Router}
+         * @return {Object.<string, Router.Route>} routes
          */
 
+    }, {
+        key: 'getRoutes',
+        value: function getRoutes() {
+            return this.routes_;
+        }
 
-        _createClass(Router, [{
-            key: 'setRoutes',
+        /**
+         * @param {string} baseUrl
+         */
 
+    }, {
+        key: 'setBaseUrl',
+        value: function setBaseUrl(baseUrl) {
+            this.context_.base_url = baseUrl;
+        }
 
-            /**
-             * @param {Object.<string, Router.Route>} routes
-             */
-            value: function setRoutes(routes) {
-                this.routes_ = Object.freeze(routes);
-            }
+        /**
+         * @return {string}
+         */
 
-            /**
-             * @return {Object.<string, Router.Route>} routes
-             */
+    }, {
+        key: 'getBaseUrl',
+        value: function getBaseUrl() {
+            return this.context_.base_url;
+        }
 
-        }, {
-            key: 'getRoutes',
-            value: function getRoutes() {
-                return this.routes_;
-            }
+        /**
+         * @param {string} prefix
+         */
 
-            /**
-             * @param {string} baseUrl
-             */
+    }, {
+        key: 'setPrefix',
+        value: function setPrefix(prefix) {
+            this.context_.prefix = prefix;
+        }
 
-        }, {
-            key: 'setBaseUrl',
-            value: function setBaseUrl(baseUrl) {
-                this.context_.base_url = baseUrl;
-            }
+        /**
+         * @param {string} scheme
+         */
 
-            /**
-             * @return {string}
-             */
+    }, {
+        key: 'setScheme',
+        value: function setScheme(scheme) {
+            this.context_.scheme = scheme;
+        }
 
-        }, {
-            key: 'getBaseUrl',
-            value: function getBaseUrl() {
-                return this.context_.base_url;
-            }
+        /**
+         * @return {string}
+         */
 
-            /**
-             * @param {string} prefix
-             */
+    }, {
+        key: 'getScheme',
+        value: function getScheme() {
+            return this.context_.scheme;
+        }
 
-        }, {
-            key: 'setPrefix',
-            value: function setPrefix(prefix) {
-                this.context_.prefix = prefix;
-            }
+        /**
+         * @param {string} host
+         */
 
-            /**
-             * @param {string} scheme
-             */
+    }, {
+        key: 'setHost',
+        value: function setHost(host) {
+            this.context_.host = host;
+        }
 
-        }, {
-            key: 'setScheme',
-            value: function setScheme(scheme) {
-                this.context_.scheme = scheme;
-            }
+        /**
+         * @return {string}
+         */
 
-            /**
-             * @return {string}
-             */
+    }, {
+        key: 'getHost',
+        value: function getHost() {
+            return this.context_.host;
+        }
 
-        }, {
-            key: 'getScheme',
-            value: function getScheme() {
-                return this.context_.scheme;
-            }
+        /**
+         * Builds query string params added to a URL.
+         * Port of jQuery's $.param() function, so credit is due there.
+         *
+         * @param {string} prefix
+         * @param {Array|Object|string} params
+         * @param {Function} add
+         */
 
-            /**
-             * @param {string} host
-             */
+    }, {
+        key: 'buildQueryParams',
+        value: function buildQueryParams(prefix, params, add) {
+            var _this = this;
 
-        }, {
-            key: 'setHost',
-            value: function setHost(host) {
-                this.context_.host = host;
-            }
+            var name = void 0;
+            var rbracket = new RegExp(/\[\]$/);
 
-            /**
-             * @return {string}
-             */
-
-        }, {
-            key: 'getHost',
-            value: function getHost() {
-                return this.context_.host;
-            }
-
-            /**
-             * Builds query string params added to a URL.
-             * Port of jQuery's $.param() function, so credit is due there.
-             *
-             * @param {string} prefix
-             * @param {Array|Object|string} params
-             * @param {Function} add
-             */
-
-        }, {
-            key: 'buildQueryParams',
-            value: function buildQueryParams(prefix, params, add) {
-                var _this = this;
-
-                var name = void 0;
-                var rbracket = new RegExp(/\[\]$/);
-
-                if (params instanceof Array) {
-                    params.forEach(function (val, i) {
-                        if (rbracket.test(prefix)) {
-                            add(prefix, val);
-                        } else {
-                            _this.buildQueryParams(prefix + '[' + ((typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object' ? i : '') + ']', val, add);
-                        }
-                    });
-                } else if ((typeof params === 'undefined' ? 'undefined' : _typeof(params)) === 'object') {
-                    for (name in params) {
-                        this.buildQueryParams(prefix + '[' + name + ']', params[name], add);
+            if (params instanceof Array) {
+                params.forEach(function (val, i) {
+                    if (rbracket.test(prefix)) {
+                        add(prefix, val);
+                    } else {
+                        _this.buildQueryParams(prefix + '[' + ((typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object' ? i : '') + ']', val, add);
                     }
-                } else {
-                    add(prefix, params);
-                }
-            }
-
-            /**
-             * Returns a raw route object.
-             *
-             * @param {string} name
-             * @return {Router.Route}
-             */
-
-        }, {
-            key: 'getRoute',
-            value: function getRoute(name) {
-                var prefixedName = this.context_.prefix + name;
-
-                if (!(prefixedName in this.routes_)) {
-                    // Check first for default route before failing
-                    if (!(name in this.routes_)) {
-                        throw new Error('The route "' + name + '" does not exist.');
-                    }
-                } else {
-                    name = prefixedName;
-                }
-
-                return this.routes_[name];
-            }
-
-            /**
-             * Generates the URL for a route.
-             *
-             * @param {string} name
-             * @param {Object.<string, string>} opt_params
-             * @param {boolean} absolute
-             * @return {string}
-             */
-
-        }, {
-            key: 'generate',
-            value: function generate(name, opt_params, absolute) {
-                var _this2 = this;
-
-                var route = this.getRoute(name),
-                    params = opt_params || {},
-                    unusedParams = Object.assign({}, params),
-                    url = '',
-                    optional = true,
-                    host = '';
-
-                route.tokens.forEach(function (token) {
-                    if ('text' === token[0]) {
-                        url = token[1] + url;
-                        optional = false;
-
-                        return;
-                    }
-
-                    if ('variable' === token[0]) {
-                        var hasDefault = route.defaults && token[3] in route.defaults;
-                        if (false === optional || !hasDefault || token[3] in params && params[token[3]] != route.defaults[token[3]]) {
-                            var value = void 0;
-
-                            if (token[3] in params) {
-                                value = params[token[3]];
-                                delete unusedParams[token[3]];
-                            } else if (hasDefault) {
-                                value = route.defaults[token[3]];
-                            } else if (optional) {
-                                return;
-                            } else {
-                                throw new Error('The route "' + name + '" requires the parameter "' + token[3] + '".');
-                            }
-
-                            var empty = true === value || false === value || '' === value;
-
-                            if (!empty || !optional) {
-                                var encodedValue = encodeURIComponent(value).replace(/%2F/g, '/');
-
-                                if ('null' === encodedValue && null === value) {
-                                    encodedValue = '';
-                                }
-
-                                url = token[1] + encodedValue + url;
-                            }
-
-                            optional = false;
-                        } else if (hasDefault && token[3] in unusedParams) {
-                            delete unusedParams[token[3]];
-                        }
-
-                        return;
-                    }
-
-                    throw new Error('The token type "' + token[0] + '" is not supported.');
                 });
+            } else if ((typeof params === 'undefined' ? 'undefined' : _typeof(params)) === 'object') {
+                for (name in params) {
+                    this.buildQueryParams(prefix + '[' + name + ']', params[name], add);
+                }
+            } else {
+                add(prefix, params);
+            }
+        }
 
-                if (url === '') {
-                    url = '/';
+        /**
+         * Returns a raw route object.
+         *
+         * @param {string} name
+         * @return {Router.Route}
+         */
+
+    }, {
+        key: 'getRoute',
+        value: function getRoute(name) {
+            var prefixedName = this.context_.prefix + name;
+
+            if (!(prefixedName in this.routes_)) {
+                // Check first for default route before failing
+                if (!(name in this.routes_)) {
+                    throw new Error('The route "' + name + '" does not exist.');
+                }
+            } else {
+                name = prefixedName;
+            }
+
+            return this.routes_[name];
+        }
+
+        /**
+         * Generates the URL for a route.
+         *
+         * @param {string} name
+         * @param {Object.<string, string>} opt_params
+         * @param {boolean} absolute
+         * @return {string}
+         */
+
+    }, {
+        key: 'generate',
+        value: function generate(name, opt_params, absolute) {
+            var _this2 = this;
+
+            var route = this.getRoute(name),
+                params = opt_params || {},
+                unusedParams = Object.assign({}, params),
+                url = '',
+                optional = true,
+                host = '';
+
+            route.tokens.forEach(function (token) {
+                if ('text' === token[0]) {
+                    url = token[1] + url;
+                    optional = false;
+
+                    return;
                 }
 
-                route.hosttokens.forEach(function (token) {
-                    var value = void 0;
+                if ('variable' === token[0]) {
+                    var hasDefault = route.defaults && token[3] in route.defaults;
+                    if (false === optional || !hasDefault || token[3] in params && params[token[3]] != route.defaults[token[3]]) {
+                        var value = void 0;
 
-                    if ('text' === token[0]) {
-                        host = token[1] + host;
-
-                        return;
-                    }
-
-                    if ('variable' === token[0]) {
                         if (token[3] in params) {
                             value = params[token[3]];
                             delete unusedParams[token[3]];
-                        } else if (route.defaults && token[3] in route.defaults) {
+                        } else if (hasDefault) {
                             value = route.defaults[token[3]];
+                        } else if (optional) {
+                            return;
+                        } else {
+                            throw new Error('The route "' + name + '" requires the parameter "' + token[3] + '".');
                         }
 
-                        host = token[1] + value + host;
+                        var empty = true === value || false === value || '' === value;
+
+                        if (!empty || !optional) {
+                            var encodedValue = encodeURIComponent(value).replace(/%2F/g, '/');
+
+                            if ('null' === encodedValue && null === value) {
+                                encodedValue = '';
+                            }
+
+                            url = token[1] + encodedValue + url;
+                        }
+
+                        optional = false;
+                    } else if (hasDefault && token[3] in unusedParams) {
+                        delete unusedParams[token[3]];
                     }
-                });
 
-                url = this.context_.base_url + url;
-                if (route.requirements && "_scheme" in route.requirements && this.getScheme() != route.requirements["_scheme"]) {
-                    url = route.requirements["_scheme"] + "://" + (host || this.getHost()) + url;
-                } else if (host && this.getHost() !== host) {
-                    url = this.getScheme() + "://" + host + url;
-                } else if (absolute === true) {
-                    url = this.getScheme() + "://" + this.getHost() + url;
+                    return;
                 }
 
-                if (Object.keys(unusedParams).length > 0) {
-                    (function () {
-                        var prefix = void 0;
-                        var queryParams = [];
-                        var add = function add(key, value) {
-                            // if value is a function then call it and assign it's return value as value
-                            value = typeof value === 'function' ? value() : value;
+                throw new Error('The token type "' + token[0] + '" is not supported.');
+            });
 
-                            // change null to empty string
-                            value = value === null ? '' : value;
+            if (url === '') {
+                url = '/';
+            }
 
-                            queryParams.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
-                        };
+            route.hosttokens.forEach(function (token) {
+                var value = void 0;
 
-                        for (prefix in unusedParams) {
-                            _this2.buildQueryParams(prefix, unusedParams[prefix], add);
-                        }
+                if ('text' === token[0]) {
+                    host = token[1] + host;
 
-                        url = url + '?' + queryParams.join('&').replace(/%20/g, '+');
-                    })();
+                    return;
                 }
 
-                return url;
-            }
-        }], [{
-            key: 'getInstance',
-            value: function getInstance() {
-                return Routing;
-            }
+                if ('variable' === token[0]) {
+                    if (token[3] in params) {
+                        value = params[token[3]];
+                        delete unusedParams[token[3]];
+                    } else if (route.defaults && token[3] in route.defaults) {
+                        value = route.defaults[token[3]];
+                    }
 
-            /**
-             * Configures the current Router instance with the provided data.
-             * @param {Object} data
-             */
-
-        }, {
-            key: 'setData',
-            value: function setData(data) {
-                var router = Router.getInstance();
-
-                router.setBaseUrl(data['base_url']);
-                router.setRoutes(data['routes']);
-
-                if ('prefix' in data) {
-                    router.setPrefix(data['prefix']);
+                    host = token[1] + value + host;
                 }
+            });
 
-                router.setHost(data['host']);
-                router.setScheme(data['scheme']);
+            url = this.context_.base_url + url;
+            if (route.requirements && "_scheme" in route.requirements && this.getScheme() != route.requirements["_scheme"]) {
+                url = route.requirements["_scheme"] + "://" + (host || this.getHost()) + url;
+            } else if (host && this.getHost() !== host) {
+                url = this.getScheme() + "://" + host + url;
+            } else if (absolute === true) {
+                url = this.getScheme() + "://" + this.getHost() + url;
             }
-        }]);
 
-        return Router;
-    }();
+            if (Object.keys(unusedParams).length > 0) {
+                (function () {
+                    var prefix = void 0;
+                    var queryParams = [];
+                    var add = function add(key, value) {
+                        // if value is a function then call it and assign it's return value as value
+                        value = typeof value === 'function' ? value() : value;
 
-    /**
-     * @typedef {{
-     *     tokens: (Array.<Array.<string>>),
-     *     defaults: (Object.<string, string>),
-     *     requirements: Object,
-     *     hosttokens: (Array.<string>)
-     * }}
-     */
+                        // change null to empty string
+                        value = value === null ? '' : value;
 
+                        queryParams.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+                    };
 
-    Router.Route;
+                    for (prefix in unusedParams) {
+                        _this2.buildQueryParams(prefix, unusedParams[prefix], add);
+                    }
 
-    /**
-     * @typedef {{
-     *     base_url: (string)
-     * }}
-     */
-    Router.Context;
+                    url = url + '?' + queryParams.join('&').replace(/%20/g, '+');
+                })();
+            }
 
-    /**
-     * Router singleton.
-     * @const
-     * @type {Router}
-     */
-    var Routing = new Router();
+            return url;
+        }
+    }], [{
+        key: 'getInstance',
+        value: function getInstance() {
+            return Routing;
+        }
 
-    return { Router: Router, Routing: Routing };
+        /**
+         * Configures the current Router instance with the provided data.
+         * @param {Object} data
+         */
+
+    }, {
+        key: 'setData',
+        value: function setData(data) {
+            var router = Router.getInstance();
+
+            router.setBaseUrl(data['base_url']);
+            router.setRoutes(data['routes']);
+
+            if ('prefix' in data) {
+                router.setPrefix(data['prefix']);
+            }
+
+            router.setHost(data['host']);
+            router.setScheme(data['scheme']);
+        }
+    }]);
+
+    return Router;
 }();
 
-var Router = _ref.Router;
-var Routing = _ref.Routing;
+/**
+ * @typedef {{
+ *     tokens: (Array.<Array.<string>>),
+ *     defaults: (Object.<string, string>),
+ *     requirements: Object,
+ *     hosttokens: (Array.<string>)
+ * }}
+ */
 
-// Export the Router object for Node.js
 
-if (typeof exports !== 'undefined') {
-    if (typeof module !== 'undefined' && module.exports) {
-        module.exports = Routing;
-        module.exports.Router = Router;
-    }
-}
+Router.Route;
 
-// Export the Router object via AMD
-else if (typeof window.define === 'function' && window.define.amd) {
-        window.define('Router', [], function () {
-            return Router;
-        });
-        window.define('Routing', [], function () {
-            return Routing;
-        });
-    }
+/**
+ * @typedef {{
+ *     base_url: (string)
+ * }}
+ */
+Router.Context;
 
-    // Export the Router object as global var
-    else {
-            if (typeof window.fos === 'undefined') {
-                window.fos = {};
-            }
+/**
+ * Router singleton.
+ * @const
+ * @type {Router}
+ */
+var Routing = new Router();
 
-            window.fos.Router = Router;
-            window.Routing = Routing;
-        }
+    return { Router: Router, Routing: Routing };
+}));
