@@ -8,6 +8,7 @@
  *    npm test
  */
 
+import polyfill from 'babel-polyfill';
 import { Router } from '..';
 
 describe(Router.prototype.constructor.name, () => {
