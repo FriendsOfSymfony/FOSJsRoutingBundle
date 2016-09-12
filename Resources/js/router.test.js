@@ -242,6 +242,27 @@ function testGenerateWithExtraParamsDeep() {
     }));
 }
 
+function testGenerateWithExtraParamsFilter() {
+  var router = new fos.Router(undefined, {
+      foo: {
+          tokens: [['variable', '/', '', 'bar']],
+          defaults: {},
+          requirements: {},
+          hosttokens: []
+      }
+  });
+
+  assertEquals('/baz', router.generate('foo', {
+      bar: 'baz', // valid param, not included in the query string
+      foo: [1, [1, 2, 3, 'foo'], 3, 4, 'bar', [1, 2, 3, 'baz']],
+      baz: {
+          foo : 'bar foo',
+          bar : 'baz'
+      },
+      bob: 'cat'
+  }, false, true));
+}
+
 function testGenerateThrowsErrorWhenRequiredParameterWasNotGiven() {
     var router = new fos.Router({base_url: ''}, {
         foo: {

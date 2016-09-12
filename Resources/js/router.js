@@ -154,9 +154,10 @@ fos.Router.prototype.getRoute = function(name) {
  * @param {string} name
  * @param {Object.<string, string>} opt_params
  * @param {boolean} absolute
+ * @param {boolean} no_query_string
  * @return {string}
  */
-fos.Router.prototype.generate = function(name, opt_params, absolute) {
+fos.Router.prototype.generate = function(name, opt_params, absolute, no_query_string) {
     var route = (this.getRoute(name)),
         params = opt_params || {},
         unusedParams = goog.object.clone(params),
@@ -245,7 +246,7 @@ fos.Router.prototype.generate = function(name, opt_params, absolute) {
         url = this.getScheme() + "://" + this.getHost() + url;
     }
 
-    if (goog.object.getCount(unusedParams) > 0) {
+    if (!no_query_string && goog.object.getCount(unusedParams) > 0) {
         var prefix;
         var queryParams = [];
         var add = function(key, value) {
