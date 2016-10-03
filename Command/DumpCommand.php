@@ -25,6 +25,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class DumpCommand extends ContainerAwareCommand
 {
     private $targetPath;
+    private $targetPathExport;
 
     protected function configure()
     {
@@ -37,6 +38,13 @@ class DumpCommand extends ContainerAwareCommand
                 InputOption::VALUE_REQUIRED,
                 'Callback function to pass the routes as an argument.',
                 'fos.Router.setData'
+            )
+            ->addOption(
+                'callbackExport',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Callback function to pass the routes as an argument.',
+                'module.exports = '
             )
             ->addOption(
                 'target',
@@ -60,6 +68,9 @@ class DumpCommand extends ContainerAwareCommand
 
         $this->targetPath = $input->getOption('target') ?:
             sprintf('%s/../web/js/fos_js_routes.js', $this->getContainer()->getParameter('kernel.root_dir'));
+
+        $this->targetPathExport = $input->getOption('target') ?:
+            sprintf('%s/../web/js/fos_js_routes_export.js', $this->getContainer()->getParameter('kernel.root_dir'));
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -121,8 +132,13 @@ class DumpCommand extends ContainerAwareCommand
 
         $content = sprintf("%s(%s);", $input->getOption('callback'), $content);
 
+        $contentExport = sprintf("%s %s;", $input->getOption('callbackExport'), $content);
+
         if (false === @file_put_contents($this->targetPath, $content)) {
             throw new \RuntimeException('Unable to write file ' . $this->targetPath);
+        }
+        if (false === @file_put_contents($this->targetPathExport, $contentExport)) {
+            throw new \RuntimeException('Unable to write file ' . $this->targetPathExport);
         }
     }
 }
