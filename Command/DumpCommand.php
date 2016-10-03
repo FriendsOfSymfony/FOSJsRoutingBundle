@@ -130,11 +130,11 @@ class DumpCommand extends ContainerAwareCommand
             'json'
         );
 
-        $content = sprintf("%s(%s);", $input->getOption('callback'), $content);
+        $contentFos = sprintf("%s(%s);", $input->getOption('callback'), $content);
 
         $contentExport = sprintf("%s %s;", $input->getOption('callbackExport'), $content);
 
-        if (false === @file_put_contents($this->targetPath, $content)) {
+        if (false === @file_put_contents($this->targetPath, $contentFos)) {
             throw new \RuntimeException('Unable to write file ' . $this->targetPath);
         }
         if (false === @file_put_contents($this->targetPathExport, $contentExport)) {
