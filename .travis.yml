@@ -3,9 +3,13 @@ language: php
 php:
   - 5.3
   - 5.4
-  - 5.5
   - 5.6
+  - 7.0
   - hhvm
+
+cache:
+    directories:
+        - $HOME/.composer/cache/files
 
 matrix:
   include:
@@ -13,6 +17,10 @@ matrix:
       env: SYMFONY_VERSION='2.3.*'
     - php: 5.6
       env: SYMFONY_VERSION='2.5.*'
+    - php: 5.6
+      env: SYMFONY_VERSION='2.8.*'
+    - php: 5.6
+      env: SYMFONY_VERSION='3.0.*'
 
 sudo: false
 
@@ -25,11 +33,8 @@ before_install:
 
 install:
   - composer install
+  - npm install google-closure-library
 
 script:
   - phpunit --coverage-text
   - phantomjs Resources/js/run_jsunit.js Resources/js/router_test.html
-
-notifications:
-  email:
-    - friendsofsymfony-dev@googlegroups.com

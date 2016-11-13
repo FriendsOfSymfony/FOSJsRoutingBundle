@@ -58,11 +58,17 @@ class DumpCommand extends ContainerAwareCommand
                 'Override the target directory to dump routes in.'
             )
             ->addOption(
-               'locale',
+                'locale',
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Set locale to be used with JMSI18nRoutingBundle.',
                 ''
+            )
+            ->addOption(
+                'pretty-print',
+                'p',
+                InputOption::VALUE_NONE,
+                'Pretty print the JSON.'
             )
         ;
     }
@@ -108,6 +114,12 @@ class DumpCommand extends ContainerAwareCommand
             $this->extractor->getBaseUrl()
         ;
 
+        if ($input->getOption('pretty-print')) {
+            $params = array('json_encode_options' => JSON_PRETTY_PRINT);
+        } else {
+            $params = array();
+        }
+
         $content = $this->serializer->serialize(
             new RoutesResponse(
                 $baseUrl,
@@ -117,7 +129,8 @@ class DumpCommand extends ContainerAwareCommand
                 $this->extractor->getPortExtension(),
                 $this->extractor->getScheme()
             ),
-            'json'
+            'json',
+            $params
         );
 
         $content = sprintf("%s(%s);", $input->getOption('callback'), $content);
