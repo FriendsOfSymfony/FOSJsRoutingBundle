@@ -123,7 +123,8 @@ You can prevent to expose a route by configuring it as below:
         options:
             expose: false
 
-### Router service
+Router service
+--------------
 
 By default, this bundle exports routes from the default service `router`. You
 can configure a different router service if needed:
