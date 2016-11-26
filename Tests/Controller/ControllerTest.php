@@ -48,7 +48,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
 
         $response = $controller->indexAction($this->getRequest('/'), 'json');
 
-        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","portextension":null,"scheme":""}', $response->getContent());
     }
 
     public function testIndexActionWithLocalizedRoutes()
@@ -64,7 +64,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
 
         $response = $controller->indexAction($this->getRequest('/'), 'json');
 
-        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","_locale"],["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":{"_locale":"en"},"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","_locale"],["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":{"_locale":"en"},"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","portextension":null,"scheme":""}', $response->getContent());
     }
 
     public function testConfigCache()
@@ -78,11 +78,11 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         );
 
         $response = $controller->indexAction($this->getRequest('/'), 'json');
-        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]}},"prefix":"","host":"","scheme":""}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]}},"prefix":"","host":"","portextension":null,"scheme":""}', $response->getContent());
 
         // second call should serve the cached content
         $response = $controller->indexAction($this->getRequest('/'), 'json');
-        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]}},"prefix":"","host":"","scheme":""}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]}},"prefix":"","host":"","portextension":null,"scheme":""}', $response->getContent());
     }
 
     /**
@@ -94,7 +94,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $response   = $controller->indexAction($this->getRequest('/', 'GET', array('callback' => $callback)), 'json');
 
         $this->assertEquals(
-            sprintf('/**/%s({"base_url":"","routes":[],"prefix":"","host":"","scheme":""});', $callback),
+            sprintf('/**/%s({"base_url":"","routes":[],"prefix":"","host":"","portextension":null,"scheme":""});', $callback),
             $response->getContent()
         );
     }
@@ -121,7 +121,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $controller = new Controller($this->getSerializer(), $this->getExtractor(), array(), sys_get_temp_dir());
         $response   = $controller->indexAction($this->getRequest('/'), 'json');
 
-        $this->assertEquals('{"base_url":"","routes":[],"prefix":"","host":"","scheme":""}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":[],"prefix":"","host":"","portextension":null,"scheme":""}', $response->getContent());
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('application/json', $response->headers->get('Content-Type'));
 

@@ -126,6 +126,7 @@ class DumpCommand extends ContainerAwareCommand
                 $this->extractor->getRoutes(),
                 $this->extractor->getPrefix($input->getOption('locale')),
                 $this->extractor->getHost(),
+                $this->extractor->getPortExtension(),
                 $this->extractor->getScheme()
             ),
             'json',
