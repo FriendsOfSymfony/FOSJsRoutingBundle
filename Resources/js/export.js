@@ -17,6 +17,7 @@ goog.exportSymbol('fos.Router.setData', function(data) {
         router.setPrefix(/** @type {string} */ (data['prefix']));
     }
     router.setHost(/** @type {string} */ (data['host']));
+    router.setPortExtension(/** @type {string} */ (data['portextension']));
     router.setScheme(/** @type {string} */ (data['scheme']));
 });
 goog.exportProperty(fos.Router, 'getInstance', fos.Router.getInstance);
