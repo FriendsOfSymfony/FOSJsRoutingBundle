@@ -56,7 +56,7 @@ declare module FOS {
         /**
          * Generates the URL for a route.
          */
-        generate(name:string,opt_params?:RouteParams,absolute?:boolean):string;
+        generate(name:string,opt_params?:RouteParams,absolute?:boolean,no_query_string?:boolean):string;
     }
 }
 

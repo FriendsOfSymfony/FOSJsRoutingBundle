@@ -86,6 +86,9 @@ You can use the ``generate()`` method that way:
     Routing.generate('my_route_to_expose', { id: 10, foo: "bar" });
     // will result in /foo/10/bar?foo=bar
 
+    Routing.generate('my_route_to_expose', { id: 10, foo: "bar" }, false, true);
+    // will result in /foo/10/bar
+
     $.get(Routing.generate('my_route_to_expose', { id: 10, foo: "bar" }));
     // will call /foo/10/bar?foo=bar
 
