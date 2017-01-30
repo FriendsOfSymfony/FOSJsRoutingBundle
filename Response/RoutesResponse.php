@@ -53,6 +53,7 @@ class RoutesResponse
 
             $exposedRoutes[$name] = array(
                 'tokens'       => $compiledRoute->getTokens(),
+                'regexpr'      => $compiledRoute->getRegex(),
                 'defaults'     => $defaults,
                 'requirements' => $route->getRequirements(),
                 'hosttokens'   => method_exists($compiledRoute, 'getHostTokens') ? $compiledRoute->getHostTokens() : array(),
