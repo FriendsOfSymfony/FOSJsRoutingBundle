@@ -53,6 +53,10 @@ This command lists all exposed routes:
 
 .. code-block:: bash
 
+    # for symfony 2.X
     $ php app/console fos:js-routing:debug [name]
+    
+    # for symfony 3.X
+    $ php bin/console fos:js-routing:debug [name]
 
 .. _`Configuring The Request Context Globally`: http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally
