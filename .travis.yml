@@ -33,8 +33,8 @@ before_install:
 
 install:
   - composer install
-  - npm install google-closure-library
+  - cd Resources && npm install && cd ..
 
 script:
   - phpunit --coverage-text
-  - phantomjs Resources/js/run_jsunit.js Resources/js/router_test.html
+  - cd Resources && npm test && cd ..
