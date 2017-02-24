@@ -4,7 +4,6 @@ namespace FOS\JsRoutingBundle\Tests\DependencyInjection;
 use FOS\JsRoutingBundle\DependencyInjection\FOSJsRoutingExtension;
 use FOS\JsRoutingBundle\DependencyInjection\SerializerCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * Class SerializerCompilerPassTest
@@ -22,7 +21,7 @@ class SerializerCompilerPassTest extends \PHPUnit_Framework_TestCase
 
     public function testSerializerInConfig()
     {
-        $container = $this->load([['serializer' => 'test.serializer.service']]);
+        $container = $this->load(array(array('serializer' => 'test.serializer.service')));
 
         $compilerPass = new SerializerCompilerPass();
         $compilerPass->process($container);
@@ -32,9 +31,9 @@ class SerializerCompilerPassTest extends \PHPUnit_Framework_TestCase
 
     public function testSerializerDefined()
     {
-        $container = $this->load([]);
+        $container = $this->load(array());
 
-        $container->register('serializer', Serializer::class);
+        $container->register('serializer', 'Symfony\Component\Serializer\Serializer');
 
         $compilerPass = new SerializerCompilerPass();
         $compilerPass->process($container);
@@ -44,7 +43,7 @@ class SerializerCompilerPassTest extends \PHPUnit_Framework_TestCase
 
     public function testSerializerNotDefined()
     {
-        $container = $this->load([]);
+        $container = $this->load(array());
 
         $compilerPass = new SerializerCompilerPass();
         $compilerPass->process($container);
