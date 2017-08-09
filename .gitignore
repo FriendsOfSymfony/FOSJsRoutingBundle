@@ -3,3 +3,4 @@
 /composer.phar
 /vendor/
 /node_modules/
+/.phpunit/

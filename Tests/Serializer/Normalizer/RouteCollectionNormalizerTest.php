@@ -12,13 +12,14 @@
 namespace FOS\JsRoutingBundle\Tests\Serializer\Normalizer;
 
 use FOS\JsRoutingBundle\Serializer\Normalizer\RouteCollectionNormalizer;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route;
 
 /**
  * Class RouteCollectionNormalizerTest
  */
-class RouteCollectionNormalizerTest extends \PHPUnit_Framework_TestCase
+class RouteCollectionNormalizerTest extends TestCase
 {
     public function testSupportsNormalization()
     {

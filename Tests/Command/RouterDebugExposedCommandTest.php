@@ -12,11 +12,12 @@
 namespace FOS\JsRoutingBundle\Tests\Command;
 
 use FOS\JsRoutingBundle\Command\RouterDebugExposedCommand;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-class RouterDebugExposedCommandTest extends \PHPUnit_Framework_TestCase
+class RouterDebugExposedCommandTest extends TestCase
 {
     protected $container;
     protected $extractor;
@@ -24,7 +25,7 @@ class RouterDebugExposedCommandTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $this->container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')->getMock();
 
         $this->extractor = $this->getMockBuilder('FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor')
             ->disableOriginalConstructor()
