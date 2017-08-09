@@ -21,7 +21,9 @@ goog.addSingletonGetter(fos.Router);
  *     tokens: (Array.<Array.<string>>),
  *     defaults: (Object.<string, string>),
  *     requirements: Object,
- *     hosttokens: (Array.<string>)
+ *     hosttokens: (Array.<string>),
+ *     schemes: (Array.<string>),
+ *     methods: (Array.<string>)
  * }}
  */
 fos.Router.Route;
@@ -239,6 +241,8 @@ fos.Router.prototype.generate = function(name, opt_params, absolute) {
     url = this.context_.base_url + url;
     if (goog.object.containsKey(route.requirements, "_scheme") && this.getScheme() != route.requirements["_scheme"]) {
         url = route.requirements["_scheme"] + "://" + (host || this.getHost()) + url;
+    } else if (goog.object.containsKey(route, "schemes") && this.getScheme() != route.schemes[0]) {
+        url = route.schemes[0] + "://" + (host || this.getHost()) + url;
     } else if (host && this.getHost() !== host) {
         url = this.getScheme() + "://" + host + url;
     } else if (absolute === true) {
