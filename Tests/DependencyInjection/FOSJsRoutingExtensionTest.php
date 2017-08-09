@@ -12,6 +12,7 @@
 namespace FOS\JsRoutingBundle\Tests\DependencyInjection;
 
 use FOS\JsRoutingBundle\DependencyInjection\FOSJsRoutingExtension;
+use FOS\JsRoutingBundle\DependencyInjection\SerializerCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class FOSJsRoutingExtensionTest extends \PHPUnit_Framework_TestCase
@@ -59,6 +60,9 @@ class FOSJsRoutingExtensionTest extends \PHPUnit_Framework_TestCase
 
         $extension = new FOSJsRoutingExtension();
         $extension->load($configs, $container);
+
+        $compilerPass = new SerializerCompilerPass();
+        $compilerPass->process($container);
 
         return $container;
     }

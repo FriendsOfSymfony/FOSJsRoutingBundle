@@ -11,6 +11,8 @@
 
 namespace FOS\JsRoutingBundle;
 
+use FOS\JsRoutingBundle\DependencyInjection\SerializerCompilerPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -20,4 +22,12 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class FOSJsRoutingBundle extends Bundle
 {
+    /**
+     * @param ContainerBuilder $container
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+        $container->addCompilerPass(new SerializerCompilerPass());
+    }
 }
