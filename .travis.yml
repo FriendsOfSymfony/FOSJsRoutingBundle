@@ -14,8 +14,6 @@ matrix:
       env: SYMFONY_VERSION='2.8.*'
     - php: 7.1
       env: SYMFONY_VERSION='3.3.*'
-    - php: hhvm
-      dist: trusty
 
 sudo: false
 
