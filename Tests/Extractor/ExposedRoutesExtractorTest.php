@@ -13,6 +13,7 @@ namespace FOS\JsRoutingBundle\Tests\Extractor;
 
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor;
 use FOS\JsRoutingBundle\Extractor\ExtractedRoute;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpKernel\Kernel;
@@ -22,7 +23,7 @@ use Symfony\Component\HttpKernel\Kernel;
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class ExposedRoutesExtractorTest extends \PHPUnit_Framework_TestCase
+class ExposedRoutesExtractorTest extends TestCase
 {
     private $cacheDir;
 
@@ -100,7 +101,9 @@ class ExposedRoutesExtractorTest extends \PHPUnit_Framework_TestCase
 
     public function testGetCachePath()
     {
-        $router = $this->getMock('Symfony\\Component\\Routing\\Router', array(), array(), '', false);
+        $router = $this->getMockBuilder('Symfony\\Component\\Routing\\Router')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $extractor = new ExposedRoutesExtractor($router, array(), $this->cacheDir, array());
         $this->assertEquals($this->cacheDir . DIRECTORY_SEPARATOR . 'fosJsRouting' . DIRECTORY_SEPARATOR . 'data.json', $extractor->getCachePath(''));
@@ -113,7 +116,9 @@ class ExposedRoutesExtractorTest extends \PHPUnit_Framework_TestCase
     {
         $requestContext = new RequestContext('/app_dev.php', 'GET', $host, 'http', $httpPort);
 
-        $router = $this->getMock('Symfony\\Component\\Routing\\Router', array(), array(), '', false);
+        $router = $this->getMockBuilder('Symfony\\Component\\Routing\\Router')
+            ->disableOriginalConstructor()
+            ->getMock();
         $router->expects($this->atLeastOnce())
             ->method('getContext')
             ->will($this->returnValue($requestContext));
@@ -137,7 +142,9 @@ class ExposedRoutesExtractorTest extends \PHPUnit_Framework_TestCase
     {
         $requestContext = new RequestContext('/app_dev.php', 'GET', $host, 'https', 80, $httpsPort);
 
-        $router = $this->getMock('Symfony\\Component\\Routing\\Router', array(), array(), '', false);
+        $router = $this->getMockBuilder('Symfony\\Component\\Routing\\Router')
+            ->disableOriginalConstructor()
+            ->getMock();
         $router->expects($this->atLeastOnce())
             ->method('getContext')
             ->will($this->returnValue($requestContext));
@@ -160,13 +167,17 @@ class ExposedRoutesExtractorTest extends \PHPUnit_Framework_TestCase
      */
     private function getRouter(array $routes)
     {
-        $routeCollection = $this->getMock('Symfony\\Component\\Routing\\RouteCollection', array(), array(), '', false);
+        $routeCollection = $this->getMockBuilder('Symfony\\Component\\Routing\\RouteCollection')
+            ->disableOriginalConstructor()
+            ->getMock();
         $routeCollection
             ->expects($this->atLeastOnce())
             ->method('all')
             ->will($this->returnValue($routes));
 
-        $router = $this->getMock('Symfony\\Component\\Routing\\Router', array(), array(), '', false);
+        $router = $this->getMockBuilder('Symfony\\Component\\Routing\\Router')
+            ->disableOriginalConstructor()
+            ->getMock();
         $router
             ->expects($this->atLeastOnce())
             ->method('getRouteCollection')

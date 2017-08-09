@@ -35,13 +35,13 @@ Before running the test suite, execute the following Composer command to install
 the dependencies used by the bundle:
 
 ```bash
-$ composer install --dev
+$ composer update
 ```
 
 Then, execute the tests executing:
 
 ```bash
-$ phpunit
+$ ./phpunit
 ```
 
 ### JavaScript Test Suite
