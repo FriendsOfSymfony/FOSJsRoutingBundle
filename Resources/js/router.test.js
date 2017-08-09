@@ -6,7 +6,9 @@ function testGenerate() {
             tokens: [['text', '/homepage']],
             defaults: {},
             requirements: {},
-            hosttokens: []
+            hosttokens: [],
+            schemes: [],
+            methods: []
         }
     });
 
@@ -19,7 +21,9 @@ function testGenerateWithParams() {
             tokens: [['variable', '/', '[^/]+?', 'slug'], ['text', '/blog-post']],
             defaults: {},
             requirements: {},
-            hosttokens: []
+            hosttokens: [],
+            schemes: [],
+            methods: []
         }
     });
 
@@ -32,7 +36,9 @@ function testGenerateUsesBaseUrl() {
             tokens: [['text', '/bar']],
             defaults: {},
             requirements: {},
-            hosttokens: []
+            hosttokens: [],
+            schemes: [],
+            methods: []
         }
     });
 
@@ -45,7 +51,9 @@ function testGenerateUsesSchemeRequirements() {
             tokens: [['text', '/bar']],
             defaults: {},
             requirements: {"_scheme": "https"},
-            hosttokens: []
+            hosttokens: [],
+            schemes: [],
+            methods: []
         }
     });
 
@@ -58,7 +66,9 @@ function testGenerateUsesHost() {
             tokens: [['text', '/bar']],
             defaults: {},
             requirements: {},
-            hosttokens: [['text', 'otherhost']]
+            hosttokens: [['text', 'otherhost']],
+            schemes: [],
+            methods: []
         }
     });
 
@@ -71,24 +81,58 @@ function testGenerateUsesHostWhenTheSameSchemeRequirementGiven() {
             tokens: [['text', '/bar']],
             defaults: {},
             requirements: {"_scheme": "http"},
-            hosttokens: [['text', 'otherhost']]
+            hosttokens: [['text', 'otherhost']],
+            schemes: [],
+            methods: []
         }
     });
 
     assertEquals('http://otherhost/foo/bar', router.generate('homepage'));
 }
 
-function testGenerateUsesHostWhenAnotherSchemeRequirementGiven() {
-    var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
-        homepage: {
-            tokens: [['text', '/bar']],
-            defaults: {},
-            requirements: {"_scheme": "https"},
-            hosttokens: [['text', 'otherhost']]
-        }
-    });
+function testGenerateUsesHostWhenTheSameSchemeGiven() {
+  var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
+    homepage: {
+      tokens: [['text', '/bar']],
+      defaults: {},
+      requirements: {},
+      hosttokens: [['text', 'otherhost']],
+      schemes: ['http'],
+      methods: []
+    }
+  });
 
-    assertEquals('https://otherhost/foo/bar', router.generate('homepage'));
+  assertEquals('http://otherhost/foo/bar', router.generate('homepage'));
+}
+
+function testGenerateUsesHostWhenAnotherSchemeRequirementGiven() {
+  var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
+    homepage: {
+      tokens: [['text', '/bar']],
+      defaults: {},
+      requirements: {"_scheme": "https"},
+      hosttokens: [['text', 'otherhost']],
+      schemes: [],
+      methods: []
+    }
+  });
+
+  assertEquals('https://otherhost/foo/bar', router.generate('homepage'));
+}
+
+function testGenerateUsesHostWhenAnotherSchemeGiven() {
+  var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
+    homepage: {
+      tokens: [['text', '/bar']],
+      defaults: {},
+      requirements: {},
+      hosttokens: [['text', 'otherhost']],
+      schemes: ['https'],
+      methods: []
+    }
+  });
+
+  assertEquals('https://otherhost/foo/bar', router.generate('homepage'));
 }
 
 function testGenerateSupportsHostPlaceholders() {
@@ -100,7 +144,9 @@ function testGenerateSupportsHostPlaceholders() {
             hosttokens: [
                 ['text', '.localhost'],
                 ['variable', '', '', 'subdomain']
-            ]
+            ],
+            schemes: [],
+            methods: []
         }
     });
 
@@ -116,7 +162,9 @@ function testGenerateSupportsHostPlaceholdersDefaults() {
             hosttokens: [
                 ['text', '.localhost'],
                 ['variable', '', '', 'subdomain']
-            ]
+            ],
+            schemes: [],
+            methods: []
         }
     });
 
@@ -132,7 +180,9 @@ function testGenerateGeneratesRelativePathWhenTheSameHostGiven() {
             hosttokens: [
                 ['text', '.localhost'],
                 ['variable', '', '', 'subdomain']
-            ]
+            ],
+            schemes: [],
+            methods: []
         }
     });
 
@@ -145,7 +195,9 @@ function testGenerateUsesAbsoluteUrl() {
             tokens: [['text', '/bar']],
             defaults: {},
             requirements: {},
-            hosttokens: []
+            hosttokens: [],
+            schemes: [],
+            methods: []
         }
     });
 
@@ -158,11 +210,28 @@ function testGenerateUsesAbsoluteUrlWhenSchemeRequirementGiven() {
             tokens: [['text', '/bar']],
             defaults: {},
             requirements: {"_scheme": "http"},
-            hosttokens: []
+            hosttokens: [],
+            schemes: [],
+            methods: []
         }
     });
 
     assertEquals('http://localhost/foo/bar', router.generate('homepage', [], true));
+}
+
+function testGenerateUsesAbsoluteUrlWhenSchemeGiven() {
+  var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
+    homepage: {
+      tokens: [['text', '/bar']],
+      defaults: {},
+      requirements: {},
+      hosttokens: [],
+      schemes: ['http'],
+      methods: []
+    }
+  });
+
+  assertEquals('http://localhost/foo/bar', router.generate('homepage', [], true));
 }
 
 function testGenerateWithOptionalTrailingParam() {
@@ -171,7 +240,9 @@ function testGenerateWithOptionalTrailingParam() {
             tokens: [['variable', '.', '', '_format'], ['text', '/posts']],
             defaults: {},
             requirements: {},
-            hosttokens: []
+            hosttokens: [],
+            schemes: [],
+            methods: []
         }
     });
 
@@ -185,7 +256,9 @@ function testGenerateQueryStringWithoutDefaults() {
             tokens: [['variable', '/', '[1-9]+[0-9]*', 'page'], ['text', '/blog-posts']],
             defaults: {'page' : 1},
             requirements: {},
-            hosttokens: []
+            hosttokens: [],
+            schemes: [],
+            methods: []
         }
     });
 
@@ -198,7 +271,9 @@ function testAllowSlashes() {
             tokens: [['variable', '/', '.+', 'id'], ['text', '/blog-post']],
             defaults: {},
             requirements: {},
-            hosttokens: []
+            hosttokens: [],
+            schemes: [],
+            methods: []
         }
     });
 
@@ -211,7 +286,9 @@ function testGenerateWithExtraParams() {
             tokens: [['variable', '/', '', 'bar']],
             defaults: {},
             requirements: {},
-            hosttokens: []
+            hosttokens: [],
+            schemes: [],
+            methods: []
         }
     });
 
@@ -227,7 +304,9 @@ function testGenerateWithExtraParamsDeep() {
             tokens: [['variable', '/', '', 'bar']],
             defaults: {},
             requirements: {},
-            hosttokens: []
+            hosttokens: [],
+            schemes: [],
+            methods: []
         }
     });
 
@@ -247,7 +326,9 @@ function testGenerateThrowsErrorWhenRequiredParameterWasNotGiven() {
         foo: {
             tokens: [['text', '/moo'], ['variable', '/', '', 'bar']],
             defaults: {},
-            requirements: {}
+            requirements: {},
+            schemes: [],
+            methods: []
         }
     });
 
@@ -273,7 +354,9 @@ function testGetBaseUrl() {
         homepage: {
             tokens: [['text', '/bar']],
             defaults: {},
-            requirements: {}
+            requirements: {},
+            schemes: [],
+            methods: []
         }
     });
 
@@ -286,19 +369,25 @@ function testGeti18n() {
             tokens: [['text', '/bar']],
             defaults: {},
             requirements: {},
-            hosttokens: []
+            hosttokens: [],
+            schemes: [],
+            methods: []
         },
         es__RG__homepage: {
             tokens: [['text', '/es/bar']],
             defaults: {},
             requirements: {},
-            hosttokens: []
+            hosttokens: [],
+            schemes: [],
+            methods: []
         },
         _admin: {
             tokens: [['text', '/admin']],
             defaults: {},
             requirements: {},
-            hosttokens: []
+            hosttokens: [],
+            schemes: [],
+            methods: []
         }
     });
 
@@ -314,7 +403,9 @@ function testGetRoute() {
         blog_post: {
             tokens: [['variable', '/', '[^/]+?', 'slug'], ['text', '/blog-post']],
             defaults: {},
-            requirements: {"_scheme": "http"}
+            requirements: {"_scheme": "http"},
+            schemes: ['http'],
+            methods: []
         }
     });
 
@@ -324,7 +415,9 @@ function testGetRoute() {
             ['variable', '/', '[^/]+?', 'slug'],
             ['text', '/blog-post']
         ],
-        'requirements': {"_scheme": "http"}
+        'requirements': {"_scheme": "http"},
+        'schemes': ['http'],
+        'methods': []
     };
 
     assertObjectEquals(expected, router.getRoute('blog_post'));
@@ -354,7 +447,9 @@ function testGenerateWithNullValue() {
             ],
             defaults: {},
             requirements: {},
-            hosttokens: []
+            hosttokens: [],
+            schemes: [],
+            methods: []
         }
     });
 
