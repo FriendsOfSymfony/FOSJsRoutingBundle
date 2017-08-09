@@ -35,18 +35,25 @@ Before running the test suite, execute the following Composer command to install
 the dependencies used by the bundle:
 
 ```bash
-$ composer install --dev
+$ composer update
 ```
 
 Then, execute the tests executing:
 
 ```bash
-$ phpunit
+$ ./phpunit
 ```
 
 ### JavaScript Test Suite
 
-First, install [PhantomJS](http://phantomjs.org/) and then, execute this command:
+First, install [PhantomJS](http://phantomjs.org/) and [Google Closure
+Library](https://github.com/google/closure-library):
+
+```bash
+$ npm install google-closure-library
+```
+
+Run the JS test suite with:
 
 ```bash
 $ phantomjs Resources/js/run_jsunit.js Resources/js/router_test.html
