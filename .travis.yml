@@ -4,6 +4,7 @@ matrix:
   include:
     - php: 5.3
       env: COMPOSER_FLAGS="--prefer-lowest" SYMFONY_DEPRECATIONS_HELPER=weak
+      dist: precise
     - php: 7.1
     - php: 7.1
       env: SYMFONY_VERSION='2.8.*'
