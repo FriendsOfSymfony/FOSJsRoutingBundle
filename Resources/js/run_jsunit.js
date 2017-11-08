@@ -41,7 +41,7 @@ if (system.args.length <= 1) {
                 });
             }, function() {
                 var exitCode = page.evaluate(function() {
-                    return G_testRunner.isSuccess() ? 0 : 1;
+                    return G_testRunner.testCase.isSuccess() ? 0 : 1;
                 });
                 phantom.exit(exitCode);
             });
