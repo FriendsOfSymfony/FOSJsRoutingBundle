@@ -12,9 +12,12 @@
 namespace FOS\JsRoutingBundle\Command;
 
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Bundle\FrameworkBundle\Command\RouterDebugCommand;
 use Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Routing\Route;
 
@@ -23,18 +26,23 @@ use Symfony\Component\Routing\Route;
  *
  * @author      William DURAND <william.durand1@gmail.com>
  */
-class RouterDebugExposedCommand extends RouterDebugCommand
+class RouterDebugExposedCommand extends ContainerAwareCommand
 {
+    protected static $defaultName = 'fos:js-routing:debug';
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
-        parent::configure();
-
         $this
+            ->setDefinition(array(
+                new InputArgument('name', InputArgument::OPTIONAL, 'A route name'),
+                new InputOption('show-controllers', null, InputOption::VALUE_NONE, 'Show assigned controllers in overview'),
+                new InputOption('format', null, InputOption::VALUE_REQUIRED, 'The output format (txt, xml, json, or md)', 'txt'),
+                new InputOption('raw', null, InputOption::VALUE_NONE, 'To output raw route(s)'),
+            ))
             ->setName('fos:js-routing:debug')
-            ->setAliases(array()) // reset the aliases used by the parent command in Symfony 2.6+
             ->setDescription('Displays currently exposed routes for an application')
             ->setHelp(<<<EOF
 The <info>fos:js-routing:debug</info> command displays an application's routes which will be available via JavaScript.
@@ -70,29 +78,19 @@ EOF
                 throw new \InvalidArgumentException(sprintf('The route "%s" was found, but it is not an exposed route.', $name));
             }
 
-            if (!class_exists('Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper')) {
-                // BC layer for Symfony 2.3
-                $this->outputRoute($output, $name);
-            } else {
-                $helper = new DescriptorHelper();
-                $helper->describe($output, $route, array(
-                    'format'           => $input->getOption('format'),
-                    'raw_text'         => $input->getOption('raw'),
-                    'show_controllers' => $input->getOption('show-controllers'),
-                ));
-            }
+            $helper = new DescriptorHelper();
+            $helper->describe($output, $route, array(
+                'format'           => $input->getOption('format'),
+                'raw_text'         => $input->getOption('raw'),
+                'show_controllers' => $input->getOption('show-controllers'),
+            ));
         } else {
-            if (!class_exists('Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper')) {
-                // BC layer for Symfony 2.3
-                $this->outputRoutes($output, $extractor->getRoutes());
-            } else {
-                $helper = new DescriptorHelper();
-                $helper->describe($output, $extractor->getRoutes(), array(
-                    'format'           => $input->getOption('format'),
-                    'raw_text'         => $input->getOption('raw'),
-                    'show_controllers' => $input->getOption('show-controllers'),
-                ));
-            }
+            $helper = new DescriptorHelper();
+            $helper->describe($output, $extractor->getRoutes(), array(
+                'format'           => $input->getOption('format'),
+                'raw_text'         => $input->getOption('raw'),
+                'show_controllers' => $input->getOption('show-controllers'),
+            ));
         }
     }
 }

@@ -38,10 +38,6 @@ class RouterDebugExposedCommandTest extends TestCase
 
     public function testExecute()
     {
-        if (!class_exists('Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper')) {
-            $this->markTestSkipped('2.3 BC is not tested');
-        }
-
         $routes = new RouteCollection();
         $routes->add('literal', new Route('/literal'));
         $routes->add('blog_post', new Route('/blog-post/{slug}'));
@@ -105,10 +101,6 @@ class RouterDebugExposedCommandTest extends TestCase
      */
     public function testExecuteWithNameNotExposed()
     {
-        if (!class_exists('Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper')) {
-            $this->markTestSkipped('2.3 BC is not tested');
-        }
-
         $routes = new RouteCollection();
         $routes->add('literal', new Route('/literal'));
         $routes->add('blog_post', new Route('/blog-post/{slug}'));
@@ -137,10 +129,6 @@ class RouterDebugExposedCommandTest extends TestCase
 
     public function testExecuteWithName()
     {
-        if (!class_exists('Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper')) {
-            $this->markTestSkipped('2.3 BC is not tested');
-        }
-
         $routes = new RouteCollection();
         $routes->add('literal', new Route('/literal', array(), array(), array('exposed' => true)));
         $routes->add('blog_post', new Route('/blog-post/{slug}'));
