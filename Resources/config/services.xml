@@ -8,7 +8,7 @@
     </parameters>
 
     <services>
-        <service id="fos_js_routing.extractor" class="%fos_js_routing.extractor.class%">
+        <service id="fos_js_routing.extractor" class="%fos_js_routing.extractor.class%" public="true">
             <argument type="service" id="fos_js_routing.router" />
             <argument></argument>
             <argument>%kernel.cache_dir%</argument>
