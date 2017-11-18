@@ -70,6 +70,13 @@ class DumpCommand extends ContainerAwareCommand
                 InputOption::VALUE_NONE,
                 'Pretty print the JSON.'
             )
+            ->addOption(
+                'format',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Specify the output format (js or json). If json, the callback option is ignored.',
+                'js'
+            )
         ;
     }
 
@@ -77,8 +84,10 @@ class DumpCommand extends ContainerAwareCommand
     {
         parent::initialize($input, $output);
 
+        $ext = $input->getOption('format');
+
         $this->targetPath = $input->getOption('target') ?:
-            sprintf('%s/../web/js/fos_js_routes.js', $this->getContainer()->getParameter('kernel.root_dir'));
+            sprintf('%s/../web/js/fos_js_routes.'.$ext, $this->getContainer()->getParameter('kernel.root_dir'));
 
         $this->extractor = $this->getContainer()->get('fos_js_routing.extractor');
         $this->serializer = $this->getContainer()->get('fos_js_routing.serializer');
@@ -100,6 +109,8 @@ class DumpCommand extends ContainerAwareCommand
      */
     private function doDump(InputInterface $input, OutputInterface $output)
     {
+        $format = $input->getOption('format');
+
         if (!is_dir($dir = dirname($this->targetPath))) {
             $output->writeln('<info>[dir+]</info>  ' . $dir);
             if (false === @mkdir($dir, 0777, true)) {
@@ -132,7 +143,9 @@ class DumpCommand extends ContainerAwareCommand
             $params
         );
 
-        $content = sprintf("%s(%s);", $input->getOption('callback'), $content);
+        if ($format === 'js') {
+            $content = sprintf("%s(%s);", $input->getOption('callback'), $content);
+        }
 
         if (false === @file_put_contents($this->targetPath, $content)) {
             throw new \RuntimeException('Unable to write file ' . $this->targetPath);
