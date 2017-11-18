@@ -56,6 +56,12 @@ class DumpCommand extends ContainerAwareCommand
                 'Set locale to be used with JMSI18nRoutingBundle.',
                 ''
             )
+            ->addOption(
+                'pretty-print',
+                'p',
+                InputOption::VALUE_NONE,
+                'Pretty print the JSON.'
+            )
         ;
     }
 
@@ -78,22 +84,6 @@ class DumpCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return \FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface
-     */
-    protected function getExposedRoutesExtractor()
-    {
-        return $this->getContainer()->get('fos_js_routing.extractor');
-    }
-
-    /**
-     * @return \Symfony\Component\Serializer\Serializer
-     */
-    protected function getSerializer()
-    {
-        return $this->getContainer()->get('fos_js_routing.serializer');
-    }
-
-    /**
      * Performs the routes dump.
      *
      * @param InputInterface  $input  The command input
@@ -101,13 +91,15 @@ class DumpCommand extends ContainerAwareCommand
      */
     private function doDump(InputInterface $input, OutputInterface $output)
     {
+        $extractor = $this->getContainer()->get('fos_js_routing.extractor');
+        $serializer = $this->getContainer()->get('fos_js_routing.serializer');
         $targetPath = $input->getOption('target') ?:
             sprintf(
                 '%s/../web/js/fos_js_routes.%s',
                 $this->getContainer()->getParameter('kernel.root_dir'),
                 $input->getOption('format')
             );
-
+        
         if (!is_dir($dir = dirname($targetPath))) {
             $output->writeln('<info>[dir+]</info>  ' . $dir);
             if (false === @mkdir($dir, 0777, true)) {
@@ -119,18 +111,25 @@ class DumpCommand extends ContainerAwareCommand
 
         $baseUrl = $this->getContainer()->hasParameter('fos_js_routing.request_context_base_url') ?
             $this->getContainer()->getParameter('fos_js_routing.request_context_base_url') :
-            $this->getExposedRoutesExtractor()->getBaseUrl()
+            $extractor->getBaseUrl()
         ;
 
-        $content = $this->getSerializer()->serialize(
+        if ($input->getOption('pretty-print')) {
+            $params = array('json_encode_options' => JSON_PRETTY_PRINT);
+        } else {
+            $params = array();
+        }
+
+        $content = $serializer->serialize(
             new RoutesResponse(
                 $baseUrl,
-                $this->getExposedRoutesExtractor()->getRoutes(),
-                $input->getOption('locale'),
-                $this->getExposedRoutesExtractor()->getHost(),
-                $this->getExposedRoutesExtractor()->getScheme()
+                $extractor->getRoutes(),
+                $extractor->getPrefix($input->getOption('locale')),
+                $extractor->getHost(),
+                $extractor->getScheme()
             ),
-            'json'
+            'json',
+            $params
         );
 
         if('js' == $input->getOption('format')) {
