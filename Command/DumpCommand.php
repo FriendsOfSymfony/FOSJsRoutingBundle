@@ -67,7 +67,7 @@ class DumpCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if(!in_array($input->getOption('format'), ['js', 'json'])) {
+        if(!in_array($input->getOption('format'), array('js', 'json'))) {
             $output->writeln('<error>Invalid format specified. Use js or json.</error>');
             return 1;
         }
