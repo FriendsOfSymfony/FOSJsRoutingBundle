@@ -50,14 +50,17 @@ First, install [PhantomJS](http://phantomjs.org/) and [Google Closure
 Library](https://github.com/google/closure-library):
 
 ```bash
-$ npm install google-closure-library
+$ cd Resources
+$ npm install google-closure-library phantomjs
 ```
 
 Run the JS test suite with:
 
 ```bash
-$ phantomjs Resources/js/run_jsunit.js Resources/js/router_test.html
+$ phantomjs js/run_jsunit.js js/router_test.html
 ```
+
+Alternatively you can open `Resources/js/router_test.html` in your browser.
 
 Compiling the JavaScript files
 ------------------------------
@@ -67,19 +70,23 @@ Compiling the JavaScript files
 > We already provide a compiled version of the JavaScript; this section is only
 > relevant if you want to make changes to this script.
 
-In order to re-compile the JavaScript source files that we ship with this
-bundle, you need the Google Closure Tools. You need the
-[plovr](http://plovr.com/download.html) tool, which is a Java ARchive, so you
-also need a working Java environment. You can re-compile the JavaScript with the
-following command:
+This project is using [Gulp](https://gulpjs.com/) to compile JavaScript files.
+In order to use Gulp you must install both [node](https://nodejs.org/en/) and 
+[npm](https://www.npmjs.com/). 
+
+If you are not familiar with using Gulp, it is recommended that you review this 
+[An Introduction to Gulp.js](https://www.sitepoint.com/introduction-gulp-js/)
+tutorial which will guide you through the process of getting node and npm installed.
+
+Once you have node and npm installed:
 
 ```bash
-$ java -jar plovr.jar build Resources/config/plovr/compile.js
+$ cd Resources
+$ npm install
 ```
 
-Alternatively, you can use the JMSGoogleClosureBundle. If you install this
-bundle, you can re-compile the JavaScript with the following command:
+Then to perform a build
 
 ```bash
-$ php app/console plovr:build @FOSJsRoutingBundle/compile.js
+$ npm run build
 ```
