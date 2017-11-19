@@ -22,7 +22,7 @@ before_install:
 
 install:
   - composer update $COMPOSER_FLAGS --prefer-dist
-  - npm install google-closure-library
+  - cd Resources && npm install google-closure-library && cd ../
 
 script:
   - ./phpunit

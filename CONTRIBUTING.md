@@ -52,7 +52,7 @@ Library](https://github.com/google/closure-library) using:
 
 ```bash
 $ cd Resources
-$ npm install google-closure-library phantomjs
+$ npm install google-closure-library
 ```
 
 Run the JS test suite with:
