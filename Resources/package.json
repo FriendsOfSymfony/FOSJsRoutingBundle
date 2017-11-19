@@ -29,6 +29,7 @@
   ],
   "main": "public/js/router.js",
   "devDependencies": {
+    "babel-plugin-transform-object-assign": "^6.22.0",
     "babel-polyfill": "^6.9.1",
     "babel-preset-es2015": "^6.9.0",
     "babel-register": "^6.11.6",

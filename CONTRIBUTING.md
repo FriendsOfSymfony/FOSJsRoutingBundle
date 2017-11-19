@@ -46,8 +46,9 @@ $ ./phpunit
 
 ### JavaScript Test Suite
 
-First, install [PhantomJS](http://phantomjs.org/) and [Google Closure
-Library](https://github.com/google/closure-library):
+First, install [PhantomJS](http://phantomjs.org/) (see the website for further 
+details or simply use your favourite package manager) and the [Google Closure
+Library](https://github.com/google/closure-library) using:
 
 ```bash
 $ cd Resources
@@ -60,7 +61,8 @@ Run the JS test suite with:
 $ phantomjs js/run_jsunit.js js/router_test.html
 ```
 
-Alternatively you can open `Resources/js/router_test.html` in your browser.
+Alternatively you can open `Resources/js/router_test.html` in your browser which
+runs the same test suite with a graphical output.
 
 Compiling the JavaScript files
 ------------------------------

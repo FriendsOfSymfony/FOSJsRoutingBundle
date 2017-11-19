@@ -1,10 +1,6 @@
 goog.require('goog.testing.jsunit');
 goog.require('goog.structs.Map');
 
-var fos = {
-    Router: Router
-};
-
 function testGenerate() {
     var router = new fos.Router({base_url: ''}, {
         literal: {
