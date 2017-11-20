@@ -1,7 +1,7 @@
 Usage
 =====
 
-Add these two lines in your layout:
+In applications not using WebPack add these two lines in your layout:
 
 .. configuration-block::
 
@@ -15,10 +15,27 @@ Add these two lines in your layout:
         <script src="<?php echo $view['assets']->getUrl('bundles/fosjsrouting/js/router.js') ?>"></script>
         <script src="<?php echo $view['router']->generate('fos_js_routing_js', array('callback' => 'fos.Router.setData')) ?>"></script>
 
-.. note::
-
-    If you are not using Twig, then it is no problem. What you need is to add
+.. note:: If you are not using Twig, then it is no problem. What you need is to add
     the two JavaScript files above loaded at some point in your web page.
+
+
+If you are using WebPack and Encore to package your assets you will need to use the dump command
+and export your routes to json:
+
+.. code-block:: bash
+
+    bin/console fos:js-routing:dump --format=json
+
+Then within your JavaScript development you can use:
+
+.. code-block:: javascript
+
+    const routes = require('../../web/js/fos_js_routes.json');
+    import {Router, Routing} from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js';
+
+    Router.setData(routes);
+    Routing.generate('rep_log_list');
+
 
 Generating URIs
 ---------------
