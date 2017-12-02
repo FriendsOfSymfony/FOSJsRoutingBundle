@@ -19,14 +19,11 @@ use Symfony\Component\Routing\RouteCollection;
 
 class RouterDebugExposedCommandTest extends TestCase
 {
-    protected $container;
     protected $extractor;
     protected $router;
 
     public function setUp()
     {
-        $this->container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')->getMock();
-
         $this->extractor = $this->getMockBuilder('FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor')
             ->disableOriginalConstructor()
             ->getMock();
@@ -43,17 +40,11 @@ class RouterDebugExposedCommandTest extends TestCase
         $routes->add('blog_post', new Route('/blog-post/{slug}'));
         $routes->add('list', new Route('/literal'));
 
-        $this->container->expects($this->once())
-            ->method('get')
-            ->with('fos_js_routing.extractor')
-            ->will($this->returnValue($this->extractor));
-
         $this->extractor->expects($this->once())
             ->method('getRoutes')
             ->will($this->returnValue($routes));
 
-        $command = new RouterDebugExposedCommand();
-        $command->setContainer($this->container);
+        $command = new RouterDebugExposedCommand($this->extractor, $this->router);
 
         $tester = new CommandTester($command);
         $tester->execute(array());
@@ -78,18 +69,7 @@ class RouterDebugExposedCommandTest extends TestCase
             ->method('getRouteCollection')
             ->will($this->returnValue($routes));
 
-        $this->container->expects($this->at(0))
-            ->method('get')
-            ->with('fos_js_routing.extractor')
-            ->will($this->returnValue($this->extractor));
-
-        $this->container->expects($this->at(1))
-            ->method('get')
-            ->with('router')
-            ->will($this->returnValue($this->router));
-
-        $command = new RouterDebugExposedCommand();
-        $command->setContainer($this->container);
+        $command = new RouterDebugExposedCommand($this->extractor, $this->router);
 
         $tester = new CommandTester($command);
         $tester->execute(array('name' => 'foobar'));
@@ -110,18 +90,7 @@ class RouterDebugExposedCommandTest extends TestCase
             ->method('getRouteCollection')
             ->will($this->returnValue($routes));
 
-        $this->container->expects($this->at(0))
-            ->method('get')
-            ->with('fos_js_routing.extractor')
-            ->will($this->returnValue($this->extractor));
-
-        $this->container->expects($this->at(1))
-            ->method('get')
-            ->with('router')
-            ->will($this->returnValue($this->router));
-
-        $command = new RouterDebugExposedCommand();
-        $command->setContainer($this->container);
+        $command = new RouterDebugExposedCommand($this->extractor, $this->router);
 
         $tester = new CommandTester($command);
         $tester->execute(array('name' => 'literal'));
@@ -142,18 +111,7 @@ class RouterDebugExposedCommandTest extends TestCase
             ->method('isRouteExposed')
             ->will($this->returnValue(true));
 
-        $this->container->expects($this->at(0))
-            ->method('get')
-            ->with('fos_js_routing.extractor')
-            ->will($this->returnValue($this->extractor));
-
-        $this->container->expects($this->at(1))
-            ->method('get')
-            ->with('router')
-            ->will($this->returnValue($this->router));
-
-        $command = new RouterDebugExposedCommand();
-        $command->setContainer($this->container);
+        $command = new RouterDebugExposedCommand($this->extractor, $this->router);
 
         $tester = new CommandTester($command);
         $tester->execute(array('name' => 'literal'));
