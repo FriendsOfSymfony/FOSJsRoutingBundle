@@ -6,8 +6,11 @@ matrix:
       env: COMPOSER_FLAGS="--prefer-lowest" SYMFONY_DEPRECATIONS_HELPER=weak
       dist: precise
     - php: 7.1
+    - php: 7.2
     - php: 7.1
       env: SYMFONY_VERSION='2.8.*'
+    - php: 7.1
+      env: SYMFONY_VERSION='3.4.*'
     - php: 7.1
       env: DEPENDENCIES=beta
 
