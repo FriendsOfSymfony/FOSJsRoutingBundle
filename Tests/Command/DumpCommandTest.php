@@ -77,22 +77,11 @@ class DumpCommandTest extends TestCase
     {
         $json = '{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""}';
 
-        $this->container->expects($this->at(0))
-            ->method('get')
-            ->with('fos_js_routing.extractor')
-            ->will($this->returnValue($this->extractor));
-
         $this->serializer->expects($this->once())
             ->method('serialize')
             ->will($this->returnValue($json));
 
-        $this->container->expects($this->at(1))
-            ->method('get')
-            ->with('fos_js_routing.serializer')
-            ->will($this->returnValue($this->serializer));
-
-        $command = new DumpCommand();
-        $command->setContainer($this->container);
+        $command = new DumpCommand($this->extractor, $this->serializer, '/root/dir');
 
         $tester = new CommandTester($command);
         $tester->execute(array(
