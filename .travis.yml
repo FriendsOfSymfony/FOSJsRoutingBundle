@@ -31,5 +31,5 @@ install:
   - npm install google-closure-library
 
 script:
-  - ./vendor/bin/simple-phpunit
+  - ./phpunit
   - phantomjs Resources/js/run_jsunit.js Resources/js/router_test.html
