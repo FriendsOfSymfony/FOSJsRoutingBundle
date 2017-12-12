@@ -57,25 +57,25 @@ class ExposedRoutesExtractorTest extends TestCase
         $router = $this->getRouter($expected);
 
         $extractor = new ExposedRoutesExtractor($router, array('hello_.*'), $this->cacheDir, array());
-        $this->assertEquals(3, count($extractor->getRoutes()), '3 routes match the pattern: "hello_.*"');
+        $this->assertCount(3, $extractor->getRoutes(), '3 routes match the pattern: "hello_.*"');
 
         $extractor = new ExposedRoutesExtractor($router, array('hello_[0-9]{3}'), $this->cacheDir, array());
-        $this->assertEquals(1, count($extractor->getRoutes()), '1 routes match the pattern: "hello_[0-9]{3}"');
+        $this->assertCount(1, $extractor->getRoutes(), '1 routes match the pattern: "hello_[0-9]{3}"');
 
         $extractor = new ExposedRoutesExtractor($router, array('hello_[0-9]{4}'), $this->cacheDir, array());
-        $this->assertEquals(0, count($extractor->getRoutes()), '1 routes match the pattern: "hello_[0-9]{4}"');
+        $this->assertCount(0, $extractor->getRoutes(), '1 routes match the pattern: "hello_[0-9]{4}"');
 
         $extractor = new ExposedRoutesExtractor($router, array('hello_.+o.+'), $this->cacheDir, array());
-        $this->assertEquals(2, count($extractor->getRoutes()), '2 routes match the pattern: "hello_.+o.+"');
+        $this->assertCount(2, $extractor->getRoutes(), '2 routes match the pattern: "hello_.+o.+"');
 
         $extractor = new ExposedRoutesExtractor($router, array('hello_.+o.+', 'hello_123'), $this->cacheDir, array());
-        $this->assertEquals(3, count($extractor->getRoutes()), '3 routes match patterns: "hello_.+o.+" and "hello_123"');
+        $this->assertCount(3, $extractor->getRoutes(), '3 routes match patterns: "hello_.+o.+" and "hello_123"');
 
         $extractor = new ExposedRoutesExtractor($router, array('hello_.+o.+', 'hello_$'), $this->cacheDir, array());
-        $this->assertEquals(2, count($extractor->getRoutes()), '2 routes match patterns: "hello_.+o.+" and "hello_"');
+        $this->assertCount(2, $extractor->getRoutes(), '2 routes match patterns: "hello_.+o.+" and "hello_"');
 
         $extractor = new ExposedRoutesExtractor($router, array(), $this->cacheDir, array());
-        $this->assertEquals(0, count($extractor->getRoutes()), 'No patterns so no matched routes');
+        $this->assertCount(0, $extractor->getRoutes(), 'No patterns so no matched routes');
     }
 
     public function testGetCachePath()
