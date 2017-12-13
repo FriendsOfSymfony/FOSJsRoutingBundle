@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.1.1 - 2017-12-13
+- Fix SF <4 compatibility ([#306](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/issues/306))
+
 ## v2.1.0 - 2017-12-13
 - Add Symfony 4 compatibility ([#300](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/300))
 - Add JSON dump functionality ([#302](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/302))
