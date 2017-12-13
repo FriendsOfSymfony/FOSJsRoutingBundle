@@ -11,19 +11,58 @@
 
 namespace FOS\JsRoutingBundle\Command;
 
+use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
 use FOS\JsRoutingBundle\Response\RoutesResponse;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Dumps routes to the filesystem.
  *
  * @author Benjamin Dulau <benjamin.dulau@anonymation.com>
  */
-class DumpCommand extends ContainerAwareCommand
+class DumpCommand extends Command
 {
+    protected static $defaultName = 'fos:js-routing:dump';
+
+    /**
+     * @var string
+     */
+    private $targetPath;
+
+    /**
+     * @var ExposedRoutesExtractorInterface
+     */
+    private $extractor;
+
+    /**
+     * @var SerializerInterface
+     */
+    private $serializer;
+
+    /**
+     * @var string
+     */
+    private $rootDir;
+
+    /**
+     * @var string
+     */
+    private $requestContextBaseUrl;
+
+    public function __construct(ExposedRoutesExtractorInterface $extractor, SerializerInterface $serializer, $rootDir, $requestContextBaseUrl = null)
+    {
+        $this->extractor = $extractor;
+        $this->serializer = $serializer;
+        $this->rootDir = $rootDir;
+        $this->requestContextBaseUrl = $requestContextBaseUrl;
+
+        parent::__construct();
+    }
+
     protected function configure()
     {
         $this
@@ -93,12 +132,12 @@ class DumpCommand extends ContainerAwareCommand
      */
     private function doDump(InputInterface $input, OutputInterface $output)
     {
-        $extractor = $this->getContainer()->get('fos_js_routing.extractor');
-        $serializer = $this->getContainer()->get('fos_js_routing.serializer');
+        $extractor = $this->extractor;
+        $serializer = $this->serializer;
         $targetPath = $input->getOption('target') ?:
             sprintf(
                 '%s/../web/js/fos_js_routes.%s',
-                $this->getContainer()->getParameter('kernel.root_dir'),
+                $this->rootDir,
                 $input->getOption('format')
             );
         
@@ -111,9 +150,9 @@ class DumpCommand extends ContainerAwareCommand
 
         $output->writeln('<info>[file+]</info> ' . $targetPath);
 
-        $baseUrl = $this->getContainer()->hasParameter('fos_js_routing.request_context_base_url') ?
-            $this->getContainer()->getParameter('fos_js_routing.request_context_base_url') :
-            $extractor->getBaseUrl()
+        $baseUrl = null !== $this->requestContextBaseUrl ?
+            $this->requestContextBaseUrl :
+            $this->extractor->getBaseUrl()
         ;
 
         if ($input->getOption('pretty-print')) {
