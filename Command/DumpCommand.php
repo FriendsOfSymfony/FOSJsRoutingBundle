@@ -34,12 +34,12 @@ class DumpCommand extends Command
     private $targetPath;
 
     /**
-     * @var \FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface
+     * @var ExposedRoutesExtractorInterface
      */
     private $extractor;
 
     /**
-     * @var \Symfony\Component\Serializer\SerializerInterface
+     * @var SerializerInterface
      */
     private $serializer;
 
