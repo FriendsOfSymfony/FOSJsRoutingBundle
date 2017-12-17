@@ -4,6 +4,8 @@ FOSJsRoutingBundle
 [![Build
 Status](https://secure.travis-ci.org/FriendsOfSymfony/FOSJsRoutingBundle.png?branch=master)](http://travis-ci.org/FriendsOfSymfony/FOSJsRoutingBundle)
 
+[![Join the chat at https://gitter.im/FOSJsRoutingBundle/Lobby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/FOSJsRoutingBundle/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This bundle allows you to expose your routing in your JavaScript code.
 That means you'll be able to generate URL with given parameters like you can do with the Router component provided in the Symfony2 core.
 
