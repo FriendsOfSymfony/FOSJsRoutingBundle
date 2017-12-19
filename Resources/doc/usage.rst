@@ -19,7 +19,7 @@ In applications not using WebPack add these two lines in your layout:
     the two JavaScript files above loaded at some point in your web page.
 
 
-If you are using WebPack and Encore to package your assets you will need to use the dump command
+If you are using webpack and Encore to package your assets you will need to use the dump command
 and export your routes to json:
 
 .. code-block:: bash
