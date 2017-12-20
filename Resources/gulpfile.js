@@ -9,9 +9,7 @@ gulp.task('js', function() {
         .pipe(babel())
         .pipe(wrap({ src: 'js/router.template.js' }))
         .pipe(gulp.dest('public/js'))
-        .pipe(rename((path) => {
-            path.extname = '.min.js';
-        }))
+        .pipe(rename({ extname: '.min.js' }))
         .pipe(uglify())
         .pipe(gulp.dest('public/js'));
 });
