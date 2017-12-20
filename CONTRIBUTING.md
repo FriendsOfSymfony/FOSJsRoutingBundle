@@ -54,13 +54,15 @@ $ cd Resources
 $ npm install
 ```
 
-Run the JS test suite with:
+then run the JS test suite with:
 
 ```bash
 $ npm run test
 ```
 
-or explicitly with
+Because the current test suite runs agains the built javascript a build is automatically
+run first (see 'Compiling the JavaScript files' below for further details). You can 
+explicitly run only the test suite with:
 
 ```bash
 $ phantomjs js/run_jsunit.js js/router_test.html
