@@ -38,15 +38,23 @@ class Router {
     static setData(data) {
         let router = Router.getInstance();
 
-        router.setBaseUrl(data['base_url']);
-        router.setRoutes(data['routes']);
+        router.setRoutingData(data);
+    }
+
+    /**
+     * Sets data for the current instance
+     * @param {Object} data
+     */
+    setRoutingData(data) {
+        this.setBaseUrl(data['base_url']);
+        this.setRoutes(data['routes']);
 
         if ('prefix' in data) {
-            router.setPrefix(data['prefix']);
+            this.setPrefix(data['prefix']);
         }
 
-        router.setHost(data['host']);
-        router.setScheme(data['scheme']);
+        this.setHost(data['host']);
+        this.setScheme(data['scheme']);
     }
 
     /**

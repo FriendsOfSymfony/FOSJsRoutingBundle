@@ -1,21 +1,20 @@
 (function (root, factory) {
+    var routing = factory();
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
-        define([], factory);
+        define([], routing.Routing);
     } else if (typeof module === 'object' && module.exports) {
         // Node. Does not work with strict CommonJS, but
         // only CommonJS-like environments that support module.exports,
         // like Node.
-        module.exports = factory();
+        module.exports = routing.Routing;
     } else {
-        var result = factory();
-
         // Browser globals (root is window)
-        root.Routing = result.Routing;
+        root.Routing = routing.Routing;
         root.fos = {
-            Router: result.Router,
+            Router: routing.Router,
         };
-  }
+    }
 }(this, function () {
     'use strict';
 
@@ -60,12 +59,31 @@ var Router = function () {
 
 
     _createClass(Router, [{
-        key: 'setRoutes',
+        key: 'setRoutingData',
 
+
+        /**
+         * Sets data for the current instance
+         * @param {Object} data
+         */
+        value: function setRoutingData(data) {
+            this.setBaseUrl(data['base_url']);
+            this.setRoutes(data['routes']);
+
+            if ('prefix' in data) {
+                this.setPrefix(data['prefix']);
+            }
+
+            this.setHost(data['host']);
+            this.setScheme(data['scheme']);
+        }
 
         /**
          * @param {Object.<string, Router.Route>} routes
          */
+
+    }, {
+        key: 'setRoutes',
         value: function setRoutes(routes) {
             this.routes_ = Object.freeze(routes);
         }
@@ -348,15 +366,7 @@ var Router = function () {
         value: function setData(data) {
             var router = Router.getInstance();
 
-            router.setBaseUrl(data['base_url']);
-            router.setRoutes(data['routes']);
-
-            if ('prefix' in data) {
-                router.setPrefix(data['prefix']);
-            }
-
-            router.setHost(data['host']);
-            router.setScheme(data['scheme']);
+            router.setRoutingData(data);
         }
     }]);
 
