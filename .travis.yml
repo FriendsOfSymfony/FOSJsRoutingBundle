@@ -22,8 +22,8 @@ before_install:
 
 install:
   - composer update $COMPOSER_FLAGS --prefer-dist
-  - cd Resources && npm install google-closure-library && cd ../
+  - cd Resources && npm install && cd ../
 
 script:
   - ./phpunit
-  - phantomjs Resources/js/run_jsunit.js Resources/js/router_test.html
+  - cd Resources && npm run test

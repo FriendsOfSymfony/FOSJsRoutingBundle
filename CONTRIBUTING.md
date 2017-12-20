@@ -60,7 +60,7 @@ then run the JS test suite with:
 $ npm run test
 ```
 
-Because the current test suite runs agains the built javascript a build is automatically
+Because the current test suite runs against the built javascript a build is automatically
 run first (see 'Compiling the JavaScript files' below for further details). You can 
 explicitly run only the test suite with:
 
