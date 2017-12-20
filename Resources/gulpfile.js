@@ -4,7 +4,7 @@ const rename = require('gulp-rename');
 const uglify = require('gulp-uglify');
 const wrap = require('gulp-wrap');
 
-gulp.task('js', () => {
+gulp.task('js', function() {
     return gulp.src('js/router.js')
         .pipe(babel())
         .pipe(wrap({ src: 'js/router.template.js' }))
@@ -16,6 +16,6 @@ gulp.task('js', () => {
         .pipe(gulp.dest('public/js'));
 });
 
-gulp.task('default', () => {
+gulp.task('default', function() {
     return gulp.start(['js']);
 });
