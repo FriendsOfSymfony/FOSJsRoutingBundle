@@ -15,7 +15,9 @@ In applications not using WebPack add these two lines in your layout:
         <script src="<?php echo $view['assets']->getUrl('bundles/fosjsrouting/js/router.js') ?>"></script>
         <script src="<?php echo $view['router']->generate('fos_js_routing_js', array('callback' => 'fos.Router.setData')) ?>"></script>
 
-.. note:: If you are not using Twig, then it is no problem. What you need is to add
+.. note::
+
+    If you are not using Twig, then it is no problem. What you need is to add
     the two JavaScript files above loaded at some point in your web page.
 
 
