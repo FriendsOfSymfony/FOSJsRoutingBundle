@@ -1,7 +1,7 @@
 Usage
 =====
 
-In applications not using WebPack add these two lines in your layout:
+In applications not using webpack add these two lines in your layout:
 
 .. configuration-block::
 
