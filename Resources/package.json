@@ -22,7 +22,6 @@
     }
   ],
   "files": [
-    "js/router.js",
     "public/js/router.js",
     "public/js/router.min.js",
     "ts/router.d.ts"
@@ -38,10 +37,11 @@
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.5.4",
     "gulp-wrap": "^0.13.0",
-    "jasmine": "^2.4.1"
+    "jasmine": "^2.4.1",
+    "google-closure-library": "^20171203.0.0"
   },
   "scripts": {
-    "build": "gulp"
-  },
-  "dependencies": {}
+    "build": "gulp",
+    "test": "phantomjs js/run_jsunit.js js/router_test.html"
+  }
 }
