@@ -6,7 +6,10 @@ const wrap = require('gulp-wrap');
 
 gulp.task('js', function() {
     return gulp.src('js/router.js')
-        .pipe(babel())
+        .pipe(babel({
+            presets: ["es2015"],
+            plugins: ["transform-object-assign"]
+        }))
         .pipe(wrap({ src: 'js/router.template.js' }))
         .pipe(gulp.dest('public/js'))
         .pipe(rename({ extname: '.min.js' }))
