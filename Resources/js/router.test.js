@@ -1,4 +1,5 @@
 goog.require('goog.testing.jsunit');
+goog.require('goog.structs.Map');
 
 function testGenerate() {
     var router = new fos.Router({base_url: ''}, {
@@ -386,7 +387,7 @@ function testGetRoutes() {
         blog: 'test'
     });
 
-    assertObjectEquals(expected, router.getRoutes());
+    assertObjectEquals(expected.toObject(), router.getRoutes());
 }
 
 function testGenerateWithNullValue() {
