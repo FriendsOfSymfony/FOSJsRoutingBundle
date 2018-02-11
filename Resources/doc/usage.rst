@@ -22,11 +22,20 @@ In applications not using webpack add these two lines in your layout:
 
 
 If you are using webpack and Encore to package your assets you will need to use the dump command
-and export your routes to json:
+and export your routes to json, this command will create a json file into the ``web/js`` folder:
 
 .. code-block:: bash
 
+    # Symfony 3
     bin/console fos:js-routing:dump --format=json
+
+If you are using Flex, probably you want to dump your routes into the ``public`` folder
+instead of ``web``, to achieve this you can set the ``target`` parameter:
+
+.. code-block:: bash
+
+    # Symfony Flex
+    bin/console fos:js-routing:dump --target=public/js/fos_js_routes.json
 
 Then within your JavaScript development you can use:
 
