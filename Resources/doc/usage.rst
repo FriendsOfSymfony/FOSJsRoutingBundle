@@ -35,7 +35,7 @@ instead of ``web``, to achieve this you can set the ``target`` parameter:
 .. code-block:: bash
 
     # Symfony Flex
-    bin/console fos:js-routing:dump --target=public/js/fos_js_routes.json
+    bin/console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json
 
 Then within your JavaScript development you can use:
 
