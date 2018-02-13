@@ -41,12 +41,29 @@ Then within your JavaScript development you can use:
 
 .. code-block:: javascript
 
-    const routes = require('../../web/js/fos_js_routes.json');
+    const routes = require('../../public/js/fos_js_routes.json');
     import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
 
     Routing.setRoutingData(routes);
     Routing.generate('rep_log_list');
 
+If you would like to use Routing with webpack:
+
+.. code-block:: javascript
+
+    //assets/js/Routing.js
+    const routes = require('../../public/js/fos_js_routes.json');
+    import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
+    Routing.setRoutingData(routes);
+    export default Routing;
+    
+Then you can import Routing in any modue (eg. Vue):
+    
+ .. code-block:: javascript
+ 
+    //assets/some_js_file.js
+    import Routing from './Routing';
+    Routing.generate('homepage');
 
 Generating URIs
 ---------------
