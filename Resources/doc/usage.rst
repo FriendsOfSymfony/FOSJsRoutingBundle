@@ -37,6 +37,16 @@ instead of ``web``, to achieve this you can set the ``target`` parameter:
     # Symfony Flex
     bin/console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json
 
+When you dump the routes from a command, the Request Context (e.g. host and base_url) are not known. To generate correct routes for each environment with console commands, add the following (see `How to Generate URLs from the Console`):
+
+.. code-block:: yaml
+
+    # app/config/config_dev.yml (Symfony 3)
+    parameters:
+        router.request_context.host: "yourhost" 
+        router.request_context.scheme: "http"
+        router.request_context.base_url: "/app_dev.php" 
+
 Then within your JavaScript development you can use:
 
 .. code-block:: javascript
