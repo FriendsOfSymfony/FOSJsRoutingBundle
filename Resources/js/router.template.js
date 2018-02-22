@@ -12,7 +12,7 @@
         // Browser globals (root is window)
         root.Routing = routing.Routing;
         root.fos = {
-            Router: routing.Router,
+            Router: routing.Router
         };
     }
 }(this, function () {
