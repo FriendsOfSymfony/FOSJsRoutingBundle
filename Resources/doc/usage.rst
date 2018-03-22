@@ -24,6 +24,10 @@ In applications not using webpack add these two lines in your layout:
 If you are using webpack and Encore to package your assets you will need to use the dump command
 and export your routes to json, this command will create a json file into the ``web/js`` folder:
 
+.. note::
+
+    If you are using annotations for routing you have to expose your routes before running this command
+    
 .. code-block:: bash
 
     # Symfony 3
