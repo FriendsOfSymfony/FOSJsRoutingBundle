@@ -52,6 +52,9 @@ class Router {
         if ('prefix' in data) {
             this.setPrefix(data['prefix']);
         }
+        if ('portextension' in data) {
+          this.setPortExtension(data['portextension']);
+        }
 
         this.setHost(data['host']);
         this.setScheme(data['scheme']);
