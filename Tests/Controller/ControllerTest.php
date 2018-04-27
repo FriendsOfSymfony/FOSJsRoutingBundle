@@ -122,7 +122,7 @@ class ControllerTest extends TestCase
         $controller = new Controller($this->getSerializer(), $this->getExtractor(), array(), sys_get_temp_dir());
         $response   = $controller->indexAction($this->getRequest('/'), 'json');
 
-        $this->assertEquals('{"base_url":"","routes":[],"prefix":"","host":"","scheme":""}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":[],"prefix":"","host":"","portextension":null,"scheme":""}', $response->getContent());
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('application/json', $response->headers->get('Content-Type'));
 
