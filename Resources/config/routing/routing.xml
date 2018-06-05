@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="fos_js_routing_js" path="/js/routing.{_format}" methods="GET">
-        <default key="_controller">fos_js_routing.controller:indexAction</default>
+        <default key="_controller">fos_js_routing.controller::indexAction</default>
         <default key="_format">js</default>
         <requirement key="_format">js|json</requirement>
     </route>
