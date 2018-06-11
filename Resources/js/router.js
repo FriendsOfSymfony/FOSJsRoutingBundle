@@ -195,7 +195,7 @@ class Router {
      * @param {boolean} absolute
      * @return {string}
      */
-    generate(name, opt_params, absolute) {
+    generate(name, opt_params, absolute = false) {
         let route = (this.getRoute(name)),
             params = opt_params || {},
             unusedParams = Object.assign({}, params),

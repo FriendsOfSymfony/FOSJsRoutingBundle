@@ -260,7 +260,9 @@ var Router = function () {
 
     }, {
         key: 'generate',
-        value: function generate(name, opt_params, absolute) {
+        value: function generate(name, opt_params) {
+            var absolute = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
             var route = this.getRoute(name),
                 params = opt_params || {},
                 unusedParams = _extends({}, params),
