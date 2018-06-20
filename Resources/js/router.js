@@ -282,7 +282,7 @@ class Router {
         } else if ("undefined" !== typeof route.schemes && "undefined" !== typeof route.schemes[0] && this.getScheme() !== route.schemes[0]) {
             url = route.schemes[0] + "://" + (host || this.getHost()) + url;
         } else if (host && "undefined" !== typeof portextension && this.getHost() !== host + portextension) {
-          url = this.getScheme() + "://" + host + portextension + url;
+          url = this.getScheme() + "://" + host + ":" + portextension + url;
         } else if (host && this.getHost() !== host) {
             url = this.getScheme() + "://" + host + url;
         } else if (absolute === true) {
