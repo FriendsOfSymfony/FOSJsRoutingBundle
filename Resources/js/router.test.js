@@ -406,3 +406,19 @@ function testGenerateWithNullValue() {
 
     assertEquals('/blog-post//10', router.generate('posts', { page: null, id: 10 }));
 }
+
+function testGenerateWithPortExtension() {
+  var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http", portextension: 443}, {
+    homepage: {
+      tokens: [['text', '/bar']],
+      defaults: {subdomain: 'api'},
+      requirements: {},
+      hosttokens: [
+        ['text', '.localhost'],
+        ['variable', '', '', 'subdomain']
+      ]
+    }
+  });
+
+  assertEquals('http://api.localhost:443/foo/bar', router.generate('homepage'));
+}
