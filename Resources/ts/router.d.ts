@@ -30,8 +30,17 @@ declare module FOS {
         base_url:string;
     }
 
+    export interface RoutingData {
+        base_url:string;
+        routes:RoutesMap;
+        prefix?:string;
+        host:string;
+        scheme:string;
+    }
+
     export interface Router {
         new(opt_context?:Context, opt_routes?:RoutesMap):Router;
+        setRoutingData(data:RoutingData):void;
         setRoutes(routes:RoutesMap):void;
         getRoutes():RoutesMap;
         setBaseUrl(base_url:string):void;
