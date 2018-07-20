@@ -57,7 +57,7 @@ If you would like to use Routing with webpack:
     Routing.setRoutingData(routes);
     export default Routing;
     
-Then you can import Routing in any modue (eg. Vue):
+Then you can import Routing in any module (eg. Vue):
     
  .. code-block:: javascript
  
