@@ -269,7 +269,7 @@ var Router = function () {
                 url = '',
                 optional = true,
                 host = '',
-                portextension = this.getPortExtension();
+                portextension = typeof this.getPortExtension() == "undefined" || this.getPortExtension() === null ? '' : this.getPortExtension();
 
             route.tokens.forEach(function (token) {
                 if ('text' === token[0]) {
@@ -348,10 +348,8 @@ var Router = function () {
                 url = route.requirements["_scheme"] + "://" + (host || this.getHost()) + url;
             } else if ("undefined" !== typeof route.schemes && "undefined" !== typeof route.schemes[0] && this.getScheme() !== route.schemes[0]) {
                 url = route.schemes[0] + "://" + (host || this.getHost()) + url;
-            } else if (host && "undefined" !== typeof portextension && this.getHost() !== host + portextension) {
-                url = this.getScheme() + "://" + host + ":" + portextension + url;
-            } else if (host && this.getHost() !== host) {
-                url = this.getScheme() + "://" + host + url;
+            } else if (host && this.getHost() !== host + portextension) {
+                url = this.getScheme() + "://" + host + portextension + url;
             } else if (absolute === true) {
                 url = this.getScheme() + "://" + this.getHost() + url;
             }
