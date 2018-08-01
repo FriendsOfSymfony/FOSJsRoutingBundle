@@ -281,8 +281,8 @@ class Router {
             url = route.requirements["_scheme"] + "://" + (host || this.getHost()) + url;
         } else if ("undefined" !== typeof route.schemes && "undefined" !== typeof route.schemes[0] && this.getScheme() !== route.schemes[0]) {
             url = route.schemes[0] + "://" + (host || this.getHost()) + url;
-        } else if (host && this.getHost() !== host + portextension) {
-          url = this.getScheme() + "://" + host + portextension + url;
+        } else if (host && this.getHost() !== host + ('' === portextension ? '' : ':' + portextension)) {
+          url = this.getScheme() + "://" + host + ('' === portextension ? '' : ':' + portextension) + url;
         } else if (absolute === true) {
             url = this.getScheme() + "://" + this.getHost() + url;
         }
