@@ -19,19 +19,19 @@ class RoutesResponse
     private $routes;
     private $prefix;
     private $host;
-    private $portextension;
+    private $port;
     private $scheme;
     private $locale;
 
-    public function __construct($baseUrl, RouteCollection $routes = null, $prefix = null, $host = null, $portextension = null, $scheme = null, $locale = null)
+    public function __construct($baseUrl, RouteCollection $routes = null, $prefix = null, $host = null, $port = null, $scheme = null, $locale = null)
     {
-        $this->baseUrl          = $baseUrl;
-        $this->routes           = $routes ?: new RouteCollection();
-        $this->prefix           = $prefix;
-        $this->host             = $host;
-        $this->portextension    = $portextension;
-        $this->scheme           = $scheme;
-        $this->locale           = $locale;
+        $this->baseUrl = $baseUrl;
+        $this->routes  = $routes ?: new RouteCollection();
+        $this->prefix  = $prefix;
+        $this->host    = $host;
+        $this->port    = $port;
+        $this->scheme  = $scheme;
+        $this->locale  = $locale;
     }
 
     public function getBaseUrl()
@@ -76,9 +76,9 @@ class RoutesResponse
         return $this->host;
     }
 
-    public function getPortExtension()
+    public function getPort()
     {
-        return $this->portextension;
+        return $this->port;
     }
 
     public function getScheme()

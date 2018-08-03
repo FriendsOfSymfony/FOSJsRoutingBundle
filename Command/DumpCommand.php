@@ -167,7 +167,7 @@ class DumpCommand extends Command
                 $extractor->getRoutes(),
                 $extractor->getPrefix($input->getOption('locale')),
                 $extractor->getHost(),
-                $extractor->getPortExtension(),
+                $extractor->getPort(),
                 $extractor->getScheme()
             ),
             'json',

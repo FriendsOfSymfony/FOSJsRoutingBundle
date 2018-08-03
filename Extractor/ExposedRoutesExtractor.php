@@ -105,7 +105,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
         $requestContext = $this->router->getContext();
 
         $host = $requestContext->getHost() .
-            ('' === $this->getPortExtension() ? $this->getPortExtension() : ':' . $this->getPortExtension());
+            ('' === $this->getPort() ? $this->getPort() : ':' . $this->getPort());
 
         return $host;
     }
@@ -113,7 +113,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function getPortExtension()
+    public function getPort()
     {
         $requestContext = $this->router->getContext();
 

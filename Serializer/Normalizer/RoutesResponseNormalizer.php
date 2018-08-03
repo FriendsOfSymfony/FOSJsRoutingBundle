@@ -25,12 +25,12 @@ class RoutesResponseNormalizer implements NormalizerInterface
     public function normalize($data, $format = null, array $context = array())
     {
         return array(
-            'base_url'          => $data->getBaseUrl(),
-            'routes'            => $data->getRoutes(),
-            'prefix'            => $data->getPrefix(),
-            'host'              => $data->getHost(),
-            'portextension'     => $data->getPortExtension(),
-            'scheme'            => $data->getScheme(),
+            'base_url' => $data->getBaseUrl(),
+            'routes'   => $data->getRoutes(),
+            'prefix'   => $data->getPrefix(),
+            'host'     => $data->getHost(),
+            'port'     => $data->getPort(),
+            'scheme'   => $data->getScheme(),
         );
     }
 

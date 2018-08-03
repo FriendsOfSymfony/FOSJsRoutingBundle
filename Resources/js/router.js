@@ -19,7 +19,7 @@ class Router {
      * @param {Object.<string, Router.Route>=} routes
      */
     constructor(context, routes) {
-        this.context_ = context || {base_url: '', prefix: '', host: '', portextension: '', scheme: ''};
+        this.context_ = context || {base_url: '', prefix: '', host: '', port: '', scheme: ''};
         this.setRoutes(routes || {});
     }
 
@@ -52,8 +52,8 @@ class Router {
         if ('prefix' in data) {
             this.setPrefix(data['prefix']);
         }
-        if ('portextension' in data) {
-          this.setPortExtension(data['portextension']);
+        if ('port' in data) {
+          this.setPort(data['port']);
         }
 
         this.setHost(data['host']);
@@ -124,17 +124,17 @@ class Router {
     }
 
     /**
-     * @param {string} portextension
+     * @param {string} port
     */
-    setPortExtension(portextension) {
-      this.context_.portextension = portextension;
+    setPort(port) {
+      this.context_.port = port;
     }
 
     /**
      * @return {string}
      */
-    getPortExtension() {
-      return this.context_.portextension;
+    getPort() {
+      return this.context_.port;
     };
 
     /**
@@ -202,7 +202,7 @@ class Router {
             url = '',
             optional = true,
             host = '',
-          portextension = (typeof this.getPortExtension() == "undefined" || this.getPortExtension() === null) ? '' : this.getPortExtension();
+            port = (typeof this.getPort() == "undefined" || this.getPort() === null) ? '' : this.getPort();
 
         route.tokens.forEach((token) => {
             if ('text' === token[0]) {
@@ -281,8 +281,8 @@ class Router {
             url = route.requirements["_scheme"] + "://" + (host || this.getHost()) + url;
         } else if ("undefined" !== typeof route.schemes && "undefined" !== typeof route.schemes[0] && this.getScheme() !== route.schemes[0]) {
             url = route.schemes[0] + "://" + (host || this.getHost()) + url;
-        } else if (host && this.getHost() !== host + ('' === portextension ? '' : ':' + portextension)) {
-          url = this.getScheme() + "://" + host + ('' === portextension ? '' : ':' + portextension) + url;
+        } else if (host && this.getHost() !== host + ('' === port ? '' : ':' + port)) {
+          url = this.getScheme() + "://" + host + ('' === port ? '' : ':' + port) + url;
         } else if (absolute === true) {
             url = this.getScheme() + "://" + this.getHost() + url;
         }

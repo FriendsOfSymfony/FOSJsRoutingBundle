@@ -407,8 +407,8 @@ function testGenerateWithNullValue() {
     assertEquals('/blog-post//10', router.generate('posts', { page: null, id: 10 }));
 }
 
-function testGenerateWithPortExtension() {
-  var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http", portextension: 443}, {
+function testGenerateWithPort() {
+  var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http", port: 443}, {
     homepage: {
       tokens: [['text', '/bar']],
       defaults: {subdomain: 'api'},
