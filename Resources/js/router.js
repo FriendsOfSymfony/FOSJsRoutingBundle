@@ -19,7 +19,7 @@ class Router {
      * @param {Object.<string, Router.Route>=} routes
      */
     constructor(context, routes) {
-        this.context_ = context || {base_url: '', prefix: '', host: '', scheme: ''};
+        this.context_ = context || {base_url: '', prefix: '', host: '', port: '', scheme: ''};
         this.setRoutes(routes || {});
     }
 
@@ -51,6 +51,9 @@ class Router {
 
         if ('prefix' in data) {
             this.setPrefix(data['prefix']);
+        }
+        if ('port' in data) {
+          this.setPort(data['port']);
         }
 
         this.setHost(data['host']);
@@ -121,6 +124,20 @@ class Router {
     }
 
     /**
+     * @param {string} port
+    */
+    setPort(port) {
+      this.context_.port = port;
+    }
+
+    /**
+     * @return {string}
+     */
+    getPort() {
+      return this.context_.port;
+    };
+
+    /**
      * Builds query string params added to a URL.
      * Port of jQuery's $.param() function, so credit is due there.
      *
@@ -184,7 +201,8 @@ class Router {
             unusedParams = Object.assign({}, params),
             url = '',
             optional = true,
-            host = '';
+            host = '',
+            port = (typeof this.getPort() == "undefined" || this.getPort() === null) ? '' : this.getPort();
 
         route.tokens.forEach((token) => {
             if ('text' === token[0]) {
@@ -263,8 +281,8 @@ class Router {
             url = route.requirements["_scheme"] + "://" + (host || this.getHost()) + url;
         } else if ("undefined" !== typeof route.schemes && "undefined" !== typeof route.schemes[0] && this.getScheme() !== route.schemes[0]) {
             url = route.schemes[0] + "://" + (host || this.getHost()) + url;
-        } else if (host && this.getHost() !== host) {
-            url = this.getScheme() + "://" + host + url;
+        } else if (host && this.getHost() !== host + ('' === port ? '' : ':' + port)) {
+          url = this.getScheme() + "://" + host + ('' === port ? '' : ':' + port) + url;
         } else if (absolute === true) {
             url = this.getScheme() + "://" + this.getHost() + url;
         }

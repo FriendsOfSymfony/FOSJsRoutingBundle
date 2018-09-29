@@ -96,6 +96,7 @@ class Controller
             $exposedRoutes,
             $this->exposedRoutesExtractor->getPrefix($request->getLocale()),
             $this->exposedRoutesExtractor->getHost(),
+            $this->exposedRoutesExtractor->getPort(),
             $this->exposedRoutesExtractor->getScheme(),
             $request->getLocale()
         );

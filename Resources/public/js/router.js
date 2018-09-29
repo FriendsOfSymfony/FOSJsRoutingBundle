@@ -48,7 +48,7 @@ var Router = function () {
     function Router(context, routes) {
         _classCallCheck(this, Router);
 
-        this.context_ = context || { base_url: '', prefix: '', host: '', scheme: '' };
+        this.context_ = context || { base_url: '', prefix: '', host: '', port: '', scheme: '' };
         this.setRoutes(routes || {});
     }
 
@@ -72,6 +72,9 @@ var Router = function () {
 
             if ('prefix' in data) {
                 this.setPrefix(data['prefix']);
+            }
+            if ('port' in data) {
+                this.setPort(data['port']);
             }
 
             this.setHost(data['host']);
@@ -169,6 +172,29 @@ var Router = function () {
         }
 
         /**
+         * @param {string} port
+        */
+
+    }, {
+        key: 'setPort',
+        value: function setPort(port) {
+            this.context_.port = port;
+        }
+
+        /**
+         * @return {string}
+         */
+
+    }, {
+        key: 'getPort',
+        value: function getPort() {
+            return this.context_.port;
+        }
+    }, {
+        key: 'buildQueryParams',
+
+
+        /**
          * Builds query string params added to a URL.
          * Port of jQuery's $.param() function, so credit is due there.
          *
@@ -176,9 +202,6 @@ var Router = function () {
          * @param {Array|Object|string} params
          * @param {Function} add
          */
-
-    }, {
-        key: 'buildQueryParams',
         value: function buildQueryParams(prefix, params, add) {
             var _this = this;
 
@@ -245,7 +268,8 @@ var Router = function () {
                 unusedParams = _extends({}, params),
                 url = '',
                 optional = true,
-                host = '';
+                host = '',
+                port = typeof this.getPort() == "undefined" || this.getPort() === null ? '' : this.getPort();
 
             route.tokens.forEach(function (token) {
                 if ('text' === token[0]) {
@@ -324,8 +348,8 @@ var Router = function () {
                 url = route.requirements["_scheme"] + "://" + (host || this.getHost()) + url;
             } else if ("undefined" !== typeof route.schemes && "undefined" !== typeof route.schemes[0] && this.getScheme() !== route.schemes[0]) {
                 url = route.schemes[0] + "://" + (host || this.getHost()) + url;
-            } else if (host && this.getHost() !== host) {
-                url = this.getScheme() + "://" + host + url;
+            } else if (host && this.getHost() !== host + ('' === port ? '' : ':' + port)) {
+                url = this.getScheme() + "://" + host + ('' === port ? '' : ':' + port) + url;
             } else if (absolute === true) {
                 url = this.getScheme() + "://" + this.getHost() + url;
             }

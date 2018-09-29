@@ -60,6 +60,7 @@ class RoutesResponseNormalizerTest extends TestCase
             'routes'   => array(),
             'prefix'   => 'prefix',
             'host'     => 'host',
+            'port'     => null,
             'scheme'   => 'scheme',
         );
 
