@@ -105,4 +105,9 @@ class RoutesResponse
     {
         return $this->scheme;
     }
+
+    public function getLocale()
+    {
+        return $this->locale;
+    }
 }

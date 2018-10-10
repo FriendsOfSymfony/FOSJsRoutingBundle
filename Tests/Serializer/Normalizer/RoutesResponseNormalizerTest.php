@@ -55,6 +55,10 @@ class RoutesResponseNormalizerTest extends TestCase
             ->method('getScheme')
             ->will($this->returnValue('scheme'));
 
+        $response->expects($this->once())
+            ->method('getLocale')
+            ->will($this->returnValue('locale'));
+
         $expected = array(
             'base_url' => 'baseUrl',
             'routes'   => array(),
@@ -62,6 +66,7 @@ class RoutesResponseNormalizerTest extends TestCase
             'host'     => 'host',
             'port'     => null,
             'scheme'   => 'scheme',
+            'locale'   => 'locale',
         );
 
         $this->assertSame($expected, $normalizer->normalize($response));
