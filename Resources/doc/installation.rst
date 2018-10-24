@@ -61,10 +61,6 @@ Execute the following command to publish the assets required by the bundle:
 
 .. code-block:: bash
 
-    # Symfony 2
-    $ php app/console assets:install --symlink web
-
-    # Symfony 3
-    $ php bin/console assets:install --symlink web
+    bin/console assets:install --symlink web
 
 .. _`installation chapter`: https://getcomposer.org/doc/00-intro.md
