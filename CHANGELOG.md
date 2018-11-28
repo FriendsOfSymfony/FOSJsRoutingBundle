@@ -2,6 +2,7 @@
 
 ## v2.2.2 - 2018-11-28
 - Fix Symfony 4.2 deprecation
+- Add setRoutingData to typescript definition
 
 ## v2.2.1 - 2018-09-29
 - Add support for a different port
