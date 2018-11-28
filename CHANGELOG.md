@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.2.2 - 2018-11-28
+- Fix Symfony 4.2 deprecation
+
+## v2.2.1 - 2018-09-29
+- Add support for a different port
+
+## v2.2.0 - 2018-02-07
+- Refactor JavaScript code to improve webpack compatibility
+
 ## v2.1.1 - 2017-12-13
 - Fix SF <4 compatibility ([#306](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/issues/306))
 
