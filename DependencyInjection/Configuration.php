@@ -28,9 +28,15 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $builder = new TreeBuilder();
+        $builder = new TreeBuilder('fos_js_routing');
+        if (\method_exists($builder, 'getRootNode')) {
+            $rootNode = $builder->getRootNode();
+        } else {
+            // BC layer for symfony/config 4.1 and older
+            $rootNode = $builder->root('fos_js_routing');
+        }
 
-        $builder->root('fos_js_routing')
+        $rootNode
             ->children()
                 ->scalarNode('serializer')->cannotBeEmpty()->end()
                 ->arrayNode('routes_to_expose')
