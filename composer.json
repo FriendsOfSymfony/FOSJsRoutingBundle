@@ -27,7 +27,10 @@
         "symfony/phpunit-bridge": "^3.3|^4.0"
     },
     "autoload": {
-        "psr-4": { "FOS\\JsRoutingBundle\\": "" }
+        "psr-4": { "FOS\\JsRoutingBundle\\": "" },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
     },
     "extra": {
         "branch-alias": {
