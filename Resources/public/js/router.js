@@ -1,12 +1,429 @@
+(function (root, factory) {
+    var routing = factory();
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define([], routing.Routing);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        module.exports = routing.Routing;
+    } else {
+        // Browser globals (root is window)
+        root.Routing = routing.Routing;
+        root.fos = {
+            Router: routing.Router
+        };
+    }
+}(this, function () {
+    'use strict';
+
 /**
- * Portions of this code are from the Google Closure Library,
- * received from the Closure Authors under the Apache 2.0 license.
+ * @fileoverview This file defines the Router class.
  *
- * All other code is (C) FriendsOfSymfony and subject to the MIT license.
+ * You can compile this file by running the following command from the Resources folder:
+ *
+ *    npm install && npm run build
  */
-(function() {var f=!1,i,k=this;function l(a,c){var b=a.split("."),d=k;!(b[0]in d)&&d.execScript&&d.execScript("var "+b[0]);for(var e;b.length&&(e=b.shift());)!b.length&&void 0!==c?d[e]=c:d=d[e]?d[e]:d[e]={}};var m=Array.prototype,n=m.forEach?function(a,c,b){m.forEach.call(a,c,b)}:function(a,c,b){for(var d=a.length,e="string"==typeof a?a.split(""):a,g=0;g<d;g++)g in e&&c.call(b,e[g],g,a)};function q(a,c){this.c={};this.a=[];var b=arguments.length;if(1<b){if(b%2)throw Error("Uneven number of arguments");for(var d=0;d<b;d+=2)this.set(arguments[d],arguments[d+1])}else if(a){var e;if(a instanceof q){r(a);d=a.a.concat();r(a);e=[];for(b=0;b<a.a.length;b++)e.push(a.c[a.a[b]])}else{var b=[],g=0;for(d in a)b[g++]=d;d=b;b=[];g=0;for(e in a)b[g++]=a[e];e=b}for(b=0;b<d.length;b++)this.set(d[b],e[b])}}q.prototype.f=0;q.prototype.p=0;
-function r(a){if(a.f!=a.a.length){for(var c=0,b=0;c<a.a.length;){var d=a.a[c];t(a.c,d)&&(a.a[b++]=d);c++}a.a.length=b}if(a.f!=a.a.length){for(var e={},b=c=0;c<a.a.length;)d=a.a[c],t(e,d)||(a.a[b++]=d,e[d]=1),c++;a.a.length=b}}q.prototype.get=function(a,c){return t(this.c,a)?this.c[a]:c};q.prototype.set=function(a,c){t(this.c,a)||(this.f++,this.a.push(a),this.p++);this.c[a]=c};function t(a,c){return Object.prototype.hasOwnProperty.call(a,c)};var u,v,w,x;function y(){return k.navigator?k.navigator.userAgent:null}x=w=v=u=f;var C;if(C=y()){var D=k.navigator;u=0==C.indexOf("Opera");v=!u&&-1!=C.indexOf("MSIE");w=!u&&-1!=C.indexOf("WebKit");x=!u&&!w&&"Gecko"==D.product}var E=v,F=x,G=w;var I;if(u&&k.opera){var J=k.opera.version;"function"==typeof J&&J()}else F?I=/rv\:([^\);]+)(\)|;)/:E?I=/MSIE\s+([^\);]+)(\)|;)/:G&&(I=/WebKit\/(\S+)/),I&&I.exec(y());function K(a,c){this.b=a||{e:"",prefix:"",host:"",scheme:""};this.h(c||{})}K.g=function(){return K.j?K.j:K.j=new K};i=K.prototype;i.h=function(a){this.d=new q(a)};i.o=function(){return this.d};i.k=function(a){this.b.e=a};i.n=function(){return this.b.e};i.l=function(a){this.b.prefix=a};
-function L(a,c,b,d){var e,g=RegExp(/\[\]$/);if(b instanceof Array)n(b,function(b,e){g.test(c)?d(c,b):L(a,c+"["+("object"===typeof b?e:"")+"]",b,d)});else if("object"===typeof b)for(e in b)L(a,c+"["+e+"]",b[e],d);else d(c,b)}i.i=function(a){var c=this.b.prefix+a;if(t(this.d.c,c))a=c;else if(!t(this.d.c,a))throw Error('The route "'+a+'" does not exist.');return this.d.get(a)};
-i.m=function(a,c,b){var d=this.i(a),e=c||{},g={},z;for(z in e)g[z]=e[z];var h="",s=!0,j="";n(d.tokens,function(b){if("text"===b[0])h=b[1]+h,s=f;else if("variable"===b[0]){var c=b[3]in d.defaults;if(f===s||!c||b[3]in e&&e[b[3]]!=d.defaults[b[3]]){if(b[3]in e){var c=e[b[3]],p=b[3];p in g&&delete g[p]}else if(c)c=d.defaults[b[3]];else{if(s)return;throw Error('The route "'+a+'" requires the parameter "'+b[3]+'".');}if(!(!0===c||f===c||""===c)||!s)p=encodeURIComponent(c).replace(/%2F/g,"/"),"null"===p&&
-null===c&&(p=""),h=b[1]+p+h;s=f}else c&&(b=b[3],b in g&&delete g[b])}else throw Error('The token type "'+b[0]+'" is not supported.');});""===h&&(h="/");n(d.hosttokens,function(a){var b;if("text"===a[0])j=a[1]+j;else if("variable"===a[0]){if(a[3]in e){b=e[a[3]];var c=a[3];c in g&&delete g[c]}else a[3]in d.defaults&&(b=d.defaults[a[3]]);j=a[1]+b+j}});h=this.b.e+h;"_scheme"in d.requirements&&this.b.scheme!=d.requirements._scheme?h=d.requirements._scheme+"://"+(j||this.b.host)+h:j&&this.b.host!==j?h=
-this.b.scheme+"://"+j+h:!0===b&&(h=this.b.scheme+"://"+this.b.host+h);var c=0,A;for(A in g)c++;if(0<c){var B,H=[];A=function(a,b){b="function"===typeof b?b():b;H.push(encodeURIComponent(a)+"="+encodeURIComponent(null===b?"":b))};for(B in g)L(this,B,g[B],A);h=h+"?"+H.join("&").replace(/%20/g,"+")}return h};l("fos.Router",K);l("fos.Router.setData",function(a){var c=K.g();c.k(a.base_url);c.h(a.routes);"prefix"in a&&c.l(a.prefix);c.b.host=a.host;c.b.scheme=a.scheme});K.getInstance=K.g;K.prototype.setRoutes=K.prototype.h;K.prototype.getRoutes=K.prototype.o;K.prototype.setBaseUrl=K.prototype.k;K.prototype.getBaseUrl=K.prototype.n;K.prototype.generate=K.prototype.m;K.prototype.setPrefix=K.prototype.l;K.prototype.getRoute=K.prototype.i;window.Routing=K.g();})();
+
+/**
+ * Class Router
+ */
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Router = function () {
+
+    /**
+     * @constructor
+     * @param {Router.Context=} context
+     * @param {Object.<string, Router.Route>=} routes
+     */
+    function Router(context, routes) {
+        _classCallCheck(this, Router);
+
+        this.context_ = context || { base_url: '', prefix: '', host: '', port: '', scheme: '' };
+        this.setRoutes(routes || {});
+    }
+
+    /**
+     * Returns the current instance.
+     * @returns {Router}
+     */
+
+
+    _createClass(Router, [{
+        key: 'setRoutingData',
+
+
+        /**
+         * Sets data for the current instance
+         * @param {Object} data
+         */
+        value: function setRoutingData(data) {
+            this.setBaseUrl(data['base_url']);
+            this.setRoutes(data['routes']);
+
+            if ('prefix' in data) {
+                this.setPrefix(data['prefix']);
+            }
+            if ('port' in data) {
+                this.setPort(data['port']);
+            }
+
+            this.setHost(data['host']);
+            this.setScheme(data['scheme']);
+        }
+
+        /**
+         * @param {Object.<string, Router.Route>} routes
+         */
+
+    }, {
+        key: 'setRoutes',
+        value: function setRoutes(routes) {
+            this.routes_ = Object.freeze(routes);
+        }
+
+        /**
+         * @return {Object.<string, Router.Route>} routes
+         */
+
+    }, {
+        key: 'getRoutes',
+        value: function getRoutes() {
+            return this.routes_;
+        }
+
+        /**
+         * @param {string} baseUrl
+         */
+
+    }, {
+        key: 'setBaseUrl',
+        value: function setBaseUrl(baseUrl) {
+            this.context_.base_url = baseUrl;
+        }
+
+        /**
+         * @return {string}
+         */
+
+    }, {
+        key: 'getBaseUrl',
+        value: function getBaseUrl() {
+            return this.context_.base_url;
+        }
+
+        /**
+         * @param {string} prefix
+         */
+
+    }, {
+        key: 'setPrefix',
+        value: function setPrefix(prefix) {
+            this.context_.prefix = prefix;
+        }
+
+        /**
+         * @param {string} scheme
+         */
+
+    }, {
+        key: 'setScheme',
+        value: function setScheme(scheme) {
+            this.context_.scheme = scheme;
+        }
+
+        /**
+         * @return {string}
+         */
+
+    }, {
+        key: 'getScheme',
+        value: function getScheme() {
+            return this.context_.scheme;
+        }
+
+        /**
+         * @param {string} host
+         */
+
+    }, {
+        key: 'setHost',
+        value: function setHost(host) {
+            this.context_.host = host;
+        }
+
+        /**
+         * @return {string}
+         */
+
+    }, {
+        key: 'getHost',
+        value: function getHost() {
+            return this.context_.host;
+        }
+
+        /**
+         * @param {string} port
+        */
+
+    }, {
+        key: 'setPort',
+        value: function setPort(port) {
+            this.context_.port = port;
+        }
+
+        /**
+         * @return {string}
+         */
+
+    }, {
+        key: 'getPort',
+        value: function getPort() {
+            return this.context_.port;
+        }
+    }, {
+        key: 'buildQueryParams',
+
+
+        /**
+         * Builds query string params added to a URL.
+         * Port of jQuery's $.param() function, so credit is due there.
+         *
+         * @param {string} prefix
+         * @param {Array|Object|string} params
+         * @param {Function} add
+         */
+        value: function buildQueryParams(prefix, params, add) {
+            var _this = this;
+
+            var name = void 0;
+            var rbracket = new RegExp(/\[\]$/);
+
+            if (params instanceof Array) {
+                params.forEach(function (val, i) {
+                    if (rbracket.test(prefix)) {
+                        add(prefix, val);
+                    } else {
+                        _this.buildQueryParams(prefix + '[' + ((typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object' ? i : '') + ']', val, add);
+                    }
+                });
+            } else if ((typeof params === 'undefined' ? 'undefined' : _typeof(params)) === 'object') {
+                for (name in params) {
+                    this.buildQueryParams(prefix + '[' + name + ']', params[name], add);
+                }
+            } else {
+                add(prefix, params);
+            }
+        }
+
+        /**
+         * Returns a raw route object.
+         *
+         * @param {string} name
+         * @return {Router.Route}
+         */
+
+    }, {
+        key: 'getRoute',
+        value: function getRoute(name) {
+            var prefixedName = this.context_.prefix + name;
+
+            if (!(prefixedName in this.routes_)) {
+                // Check first for default route before failing
+                if (!(name in this.routes_)) {
+                    throw new Error('The route "' + name + '" does not exist.');
+                }
+            } else {
+                name = prefixedName;
+            }
+
+            return this.routes_[name];
+        }
+
+        /**
+         * Generates the URL for a route.
+         *
+         * @param {string} name
+         * @param {Object.<string, string>} opt_params
+         * @param {boolean} absolute
+         * @return {string}
+         */
+
+    }, {
+        key: 'generate',
+        value: function generate(name, opt_params) {
+            var absolute = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+            var route = this.getRoute(name),
+                params = opt_params || {},
+                unusedParams = _extends({}, params),
+                url = '',
+                optional = true,
+                host = '',
+                port = typeof this.getPort() == "undefined" || this.getPort() === null ? '' : this.getPort();
+
+            route.tokens.forEach(function (token) {
+                if ('text' === token[0]) {
+                    url = token[1] + url;
+                    optional = false;
+
+                    return;
+                }
+
+                if ('variable' === token[0]) {
+                    var hasDefault = route.defaults && token[3] in route.defaults;
+                    if (false === optional || !hasDefault || token[3] in params && params[token[3]] != route.defaults[token[3]]) {
+                        var value = void 0;
+
+                        if (token[3] in params) {
+                            value = params[token[3]];
+                            delete unusedParams[token[3]];
+                        } else if (hasDefault) {
+                            value = route.defaults[token[3]];
+                        } else if (optional) {
+                            return;
+                        } else {
+                            throw new Error('The route "' + name + '" requires the parameter "' + token[3] + '".');
+                        }
+
+                        var empty = true === value || false === value || '' === value;
+
+                        if (!empty || !optional) {
+                            var encodedValue = encodeURIComponent(value).replace(/%2F/g, '/');
+
+                            if ('null' === encodedValue && null === value) {
+                                encodedValue = '';
+                            }
+
+                            url = token[1] + encodedValue + url;
+                        }
+
+                        optional = false;
+                    } else if (hasDefault && token[3] in unusedParams) {
+                        delete unusedParams[token[3]];
+                    }
+
+                    return;
+                }
+
+                throw new Error('The token type "' + token[0] + '" is not supported.');
+            });
+
+            if (url === '') {
+                url = '/';
+            }
+
+            route.hosttokens.forEach(function (token) {
+                var value = void 0;
+
+                if ('text' === token[0]) {
+                    host = token[1] + host;
+
+                    return;
+                }
+
+                if ('variable' === token[0]) {
+                    if (token[3] in params) {
+                        value = params[token[3]];
+                        delete unusedParams[token[3]];
+                    } else if (route.defaults && token[3] in route.defaults) {
+                        value = route.defaults[token[3]];
+                    }
+
+                    host = token[1] + value + host;
+                }
+            });
+            // Foo-bar!
+            url = this.context_.base_url + url;
+            if (route.requirements && "_scheme" in route.requirements && this.getScheme() != route.requirements["_scheme"]) {
+                url = route.requirements["_scheme"] + "://" + (host || this.getHost()) + url;
+            } else if ("undefined" !== typeof route.schemes && "undefined" !== typeof route.schemes[0] && this.getScheme() !== route.schemes[0]) {
+                url = route.schemes[0] + "://" + (host || this.getHost()) + url;
+            } else if (host && this.getHost() !== host + ('' === port ? '' : ':' + port)) {
+                url = this.getScheme() + "://" + host + ('' === port ? '' : ':' + port) + url;
+            } else if (absolute === true) {
+                url = this.getScheme() + "://" + this.getHost() + url;
+            }
+
+            if (Object.keys(unusedParams).length > 0) {
+                var prefix = void 0;
+                var queryParams = [];
+                var add = function add(key, value) {
+                    // if value is a function then call it and assign it's return value as value
+                    value = typeof value === 'function' ? value() : value;
+
+                    // change null to empty string
+                    value = value === null ? '' : value;
+
+                    queryParams.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+                };
+
+                for (prefix in unusedParams) {
+                    this.buildQueryParams(prefix, unusedParams[prefix], add);
+                }
+
+                url = url + '?' + queryParams.join('&').replace(/%20/g, '+');
+            }
+
+            return url;
+        }
+    }], [{
+        key: 'getInstance',
+        value: function getInstance() {
+            return Routing;
+        }
+
+        /**
+         * Configures the current Router instance with the provided data.
+         * @param {Object} data
+         */
+
+    }, {
+        key: 'setData',
+        value: function setData(data) {
+            var router = Router.getInstance();
+
+            router.setRoutingData(data);
+        }
+    }]);
+
+    return Router;
+}();
+
+/**
+ * @typedef {{
+ *     tokens: (Array.<Array.<string>>),
+ *     defaults: (Object.<string, string>),
+ *     requirements: Object,
+ *     hosttokens: (Array.<string>)
+ * }}
+ */
+
+
+Router.Route;
+
+/**
+ * @typedef {{
+ *     base_url: (string)
+ * }}
+ */
+Router.Context;
+
+/**
+ * Router singleton.
+ * @const
+ * @type {Router}
+ */
+var Routing = new Router();
+
+    return { Router: Router, Routing: Routing };
+}));

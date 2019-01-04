@@ -12,9 +12,10 @@
 namespace FOS\JsRoutingBundle\Tests\DependencyInjection;
 
 use FOS\JsRoutingBundle\DependencyInjection\FOSJsRoutingExtension;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class FOSJsRoutingExtensionTest extends \PHPUnit_Framework_TestCase
+class FOSJsRoutingExtensionTest extends TestCase
 {
     public function setUp()
     {

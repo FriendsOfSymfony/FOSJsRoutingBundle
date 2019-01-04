@@ -13,8 +13,9 @@ namespace FOS\JsRoutingBundle\Tests\Serializer\Normalizer;
 
 use FOS\JsRoutingBundle\Serializer\Normalizer\RouteCollectionNormalizer;
 use FOS\JsRoutingBundle\Serializer\Normalizer\RoutesResponseNormalizer;
+use PHPUnit\Framework\TestCase;
 
-class RoutesResponseNormalizerTest extends \PHPUnit_Framework_TestCase
+class RoutesResponseNormalizerTest extends TestCase
 {
     public function testSupportsNormalization()
     {
@@ -59,6 +60,7 @@ class RoutesResponseNormalizerTest extends \PHPUnit_Framework_TestCase
             'routes'   => array(),
             'prefix'   => 'prefix',
             'host'     => 'host',
+            'port'     => null,
             'scheme'   => 'scheme',
         );
 

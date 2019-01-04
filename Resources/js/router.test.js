@@ -1,4 +1,5 @@
 goog.require('goog.testing.jsunit');
+goog.require('goog.structs.Map');
 
 function testGenerate() {
     var router = new fos.Router({base_url: ''}, {
@@ -78,6 +79,21 @@ function testGenerateUsesHostWhenTheSameSchemeRequirementGiven() {
     assertEquals('http://otherhost/foo/bar', router.generate('homepage'));
 }
 
+function testGenerateUsesHostWhenTheSameSchemeGiven() {
+    var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
+        homepage: {
+            tokens: [['text', '/bar']],
+            defaults: {},
+            requirements: {},
+            hosttokens: [['text', 'otherhost']],
+            schemes: ['http'],
+            methods: []
+        }
+    });
+
+    assertEquals('http://otherhost/foo/bar', router.generate('homepage'));
+}
+
 function testGenerateUsesHostWhenAnotherSchemeRequirementGiven() {
     var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
         homepage: {
@@ -85,6 +101,21 @@ function testGenerateUsesHostWhenAnotherSchemeRequirementGiven() {
             defaults: {},
             requirements: {"_scheme": "https"},
             hosttokens: [['text', 'otherhost']]
+        }
+    });
+
+    assertEquals('https://otherhost/foo/bar', router.generate('homepage'));
+}
+
+function testGenerateUsesHostWhenAnotherSchemeGiven() {
+    var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
+        homepage: {
+            tokens: [['text', '/bar']],
+            defaults: {},
+            requirements: {},
+            hosttokens: [['text', 'otherhost']],
+            schemes: ['https'],
+            methods: []
         }
     });
 
@@ -159,6 +190,21 @@ function testGenerateUsesAbsoluteUrlWhenSchemeRequirementGiven() {
             defaults: {},
             requirements: {"_scheme": "http"},
             hosttokens: []
+        }
+    });
+
+    assertEquals('http://localhost/foo/bar', router.generate('homepage', [], true));
+}
+
+function testGenerateUsesAbsoluteUrlWhenSchemeGiven() {
+    var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
+        homepage: {
+            tokens: [['text', '/bar']],
+            defaults: {},
+            requirements: {},
+            hosttokens: [],
+            schemes: ['http'],
+            methods: []
         }
     });
 
@@ -341,7 +387,7 @@ function testGetRoutes() {
         blog: 'test'
     });
 
-    assertObjectEquals(expected, router.getRoutes());
+    assertObjectEquals(expected.toObject(), router.getRoutes());
 }
 
 function testGenerateWithNullValue() {
@@ -359,4 +405,20 @@ function testGenerateWithNullValue() {
     });
 
     assertEquals('/blog-post//10', router.generate('posts', { page: null, id: 10 }));
+}
+
+function testGenerateWithPort() {
+  var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http", port: 443}, {
+    homepage: {
+      tokens: [['text', '/bar']],
+      defaults: {subdomain: 'api'},
+      requirements: {},
+      hosttokens: [
+        ['text', '.localhost'],
+        ['variable', '', '', 'subdomain']
+      ]
+    }
+  });
+
+  assertEquals('http://api.localhost:443/foo/bar', router.generate('homepage'));
 }

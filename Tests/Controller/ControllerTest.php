@@ -15,13 +15,14 @@ use FOS\JsRoutingBundle\Controller\Controller;
 use FOS\JsRoutingBundle\Serializer\Denormalizer\RouteCollectionDenormalizer;
 use FOS\JsRoutingBundle\Serializer\Normalizer\RouteCollectionNormalizer;
 use FOS\JsRoutingBundle\Serializer\Normalizer\RoutesResponseNormalizer;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
 
-class ControllerTest extends \PHPUnit_Framework_TestCase
+class ControllerTest extends TestCase
 {
     private $cachePath;
 
@@ -48,7 +49,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
 
         $response = $controller->indexAction($this->getRequest('/'), 'json');
 
-        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":""}', $response->getContent());
     }
 
     public function testIndexActionWithLocalizedRoutes()
@@ -64,7 +65,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
 
         $response = $controller->indexAction($this->getRequest('/'), 'json');
 
-        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","_locale"],["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":{"_locale":"en"},"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"blog":{"tokens":[["variable","\/","[^\/]++","_locale"],["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":{"_locale":"en"},"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":""}', $response->getContent());
     }
 
     public function testIndexActionWithExposedOptions()
@@ -97,11 +98,11 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         );
 
         $response = $controller->indexAction($this->getRequest('/'), 'json');
-        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]}},"prefix":"","host":"","scheme":""}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":""}', $response->getContent());
 
         // second call should serve the cached content
         $response = $controller->indexAction($this->getRequest('/'), 'json');
-        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]}},"prefix":"","host":"","scheme":""}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":""}', $response->getContent());
     }
 
     /**
@@ -113,7 +114,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $response   = $controller->indexAction($this->getRequest('/', 'GET', array('callback' => $callback)), 'json');
 
         $this->assertEquals(
-            sprintf('/**/%s({"base_url":"","routes":[],"prefix":"","host":"","scheme":""});', $callback),
+            sprintf('/**/%s({"base_url":"","routes":[],"prefix":"","host":"","port":null,"scheme":""});', $callback),
             $response->getContent()
         );
     }
@@ -140,7 +141,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $controller = new Controller($this->getSerializer(), $this->getExtractor(), array(), sys_get_temp_dir());
         $response   = $controller->indexAction($this->getRequest('/'), 'json');
 
-        $this->assertEquals('{"base_url":"","routes":[],"prefix":"","host":"","scheme":""}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":[],"prefix":"","host":"","port":null,"scheme":""}', $response->getContent());
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('application/json', $response->headers->get('Content-Type'));
 
@@ -181,7 +182,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
             $exposedRoutes = new RouteCollection();
         }
 
-        $extractor = $this->getMock('FOS\\JsRoutingBundle\\Extractor\\ExposedRoutesExtractorInterface');
+        $extractor = $this->getMockBuilder('FOS\\JsRoutingBundle\\Extractor\\ExposedRoutesExtractorInterface')->getMock();
         $extractor
             ->expects($this->any())
             ->method('getRoutes')

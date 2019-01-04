@@ -12,29 +12,50 @@
 namespace FOS\JsRoutingBundle\Command;
 
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
-use Symfony\Bundle\FrameworkBundle\Command\RouterDebugCommand;
 use Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * A console command for retrieving information about exposed routes.
  *
  * @author      William DURAND <william.durand1@gmail.com>
  */
-class RouterDebugExposedCommand extends RouterDebugCommand
+class RouterDebugExposedCommand extends Command
 {
+    protected static $defaultName = 'fos:js-routing:debug';
+
+    private $extractor;
+
+    private $router;
+
+    public function __construct(ExposedRoutesExtractorInterface $extractor, RouterInterface $router)
+    {
+        $this->extractor = $extractor;
+        $this->router = $router;
+
+        parent::__construct();
+    }
+
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
-        parent::configure();
-
         $this
+            ->setDefinition(array(
+                new InputArgument('name', InputArgument::OPTIONAL, 'A route name'),
+                new InputOption('show-controllers', null, InputOption::VALUE_NONE, 'Show assigned controllers in overview'),
+                new InputOption('format', null, InputOption::VALUE_REQUIRED, 'The output format (txt, xml, json, or md)', 'txt'),
+                new InputOption('raw', null, InputOption::VALUE_NONE, 'To output raw route(s)'),
+            ))
             ->setName('fos:js-routing:debug')
-            ->setAliases(array()) // reset the aliases used by the parent command in Symfony 2.6+
             ->setDescription('Displays currently exposed routes for an application')
             ->setHelp(<<<EOF
 The <info>fos:js-routing:debug</info> command displays an application's routes which will be available via JavaScript.
@@ -55,44 +76,31 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var ExposedRoutesExtractorInterface $extractor */
-        $extractor = $this->getContainer()->get('fos_js_routing.extractor');
-
         if ($name = $input->getArgument('name')) {
             /** @var Route $route */
-            $route = $this->getContainer()->get('router')->getRouteCollection()->get($name);
+            $route = $this->router->getRouteCollection()->get($name);
 
             if (!$route) {
                 throw new \InvalidArgumentException(sprintf('The route "%s" does not exist.', $name));
             }
 
-            if (!$extractor->isRouteExposed($route, $name)) {
+            if (!$this->extractor->isRouteExposed($route, $name)) {
                 throw new \InvalidArgumentException(sprintf('The route "%s" was found, but it is not an exposed route.', $name));
             }
 
-            if (!class_exists('Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper')) {
-                // BC layer for Symfony 2.3
-                $this->outputRoute($output, $name);
-            } else {
-                $helper = new DescriptorHelper();
-                $helper->describe($output, $route, array(
-                    'format'           => $input->getOption('format'),
-                    'raw_text'         => $input->getOption('raw'),
-                    'show_controllers' => $input->getOption('show-controllers'),
-                ));
-            }
+            $helper = new DescriptorHelper();
+            $helper->describe($output, $route, array(
+                'format'           => $input->getOption('format'),
+                'raw_text'         => $input->getOption('raw'),
+                'show_controllers' => $input->getOption('show-controllers'),
+            ));
         } else {
-            if (!class_exists('Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper')) {
-                // BC layer for Symfony 2.3
-                $this->outputRoutes($output, $extractor->getRoutes());
-            } else {
-                $helper = new DescriptorHelper();
-                $helper->describe($output, $extractor->getRoutes(), array(
-                    'format'           => $input->getOption('format'),
-                    'raw_text'         => $input->getOption('raw'),
-                    'show_controllers' => $input->getOption('show-controllers'),
-                ));
-            }
+            $helper = new DescriptorHelper();
+            $helper->describe($output, $this->extractor->getRoutes(), array(
+                'format'           => $input->getOption('format'),
+                'raw_text'         => $input->getOption('raw'),
+                'show_controllers' => $input->getOption('show-controllers'),
+            ));
         }
     }
 }

@@ -21,7 +21,9 @@ function waitFor(testFx, onReady, timeOutMillis) {
         }, 100); //< repeat check every 250ms
 }
 
-if (phantom.args.length === 0) {
+var system = require('system');
+
+if (system.args.length <= 1) {
     console.log('Usage: phantomjs run_jsunit.js <filepath>');
     phantom.exit();
 } else {
@@ -31,7 +33,7 @@ if (phantom.args.length === 0) {
         console.log(msg);
     };
 
-    page.open(phantom.args[0], function(status) {
+    page.open(system.args[1], function(status) {
         if (status === 'success') {
             waitFor(function() {
                 return page.evaluate(function() {
@@ -39,7 +41,7 @@ if (phantom.args.length === 0) {
                 });
             }, function() {
                 var exitCode = page.evaluate(function() {
-                    return G_testRunner.isSuccess() ? 0 : 1;
+                    return G_testRunner.testCase.isSuccess() ? 0 : 1;
                 });
                 phantom.exit(exitCode);
             });

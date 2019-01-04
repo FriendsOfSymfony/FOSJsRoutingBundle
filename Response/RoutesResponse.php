@@ -19,16 +19,18 @@ class RoutesResponse
     private $routes;
     private $prefix;
     private $host;
+    private $port;
     private $scheme;
     private $locale;
     private $exposeRouteOptions;
 
-    public function __construct($baseUrl, RouteCollection $routes = null, $prefix = null, $host = null, $scheme = null, $locale = null, $exposeRouteOptions = false)
+    public function __construct($baseUrl, RouteCollection $routes = null, $prefix = null, $host = null, $port = null, $scheme = null, $locale = null, $exposeRouteOptions = false)
     {
         $this->baseUrl            = $baseUrl;
         $this->routes             = $routes ?: new RouteCollection();
         $this->prefix             = $prefix;
         $this->host               = $host;
+        $this->port    = $port;
         $this->scheme             = $scheme;
         $this->locale             = $locale;
         $this->exposeRouteOptions = $exposeRouteOptions;
@@ -58,6 +60,8 @@ class RoutesResponse
                 'defaults'     => $defaults,
                 'requirements' => $route->getRequirements(),
                 'hosttokens'   => method_exists($compiledRoute, 'getHostTokens') ? $compiledRoute->getHostTokens() : array(),
+                'methods'      => $route->getMethods(),
+                'schemes'      => $route->getSchemes(),
             );
 
             $options = $route->getOptions();
@@ -77,6 +81,11 @@ class RoutesResponse
     public function getHost()
     {
         return $this->host;
+    }
+
+    public function getPort()
+    {
+        return $this->port;
     }
 
     public function getScheme()

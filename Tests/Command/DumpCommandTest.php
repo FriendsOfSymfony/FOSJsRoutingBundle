@@ -12,22 +12,18 @@
 namespace FOS\JsRoutingBundle\Tests\Command;
 
 use FOS\JsRoutingBundle\Command\DumpCommand;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class DumpCommandTest extends \PHPUnit_Framework_TestCase
+class DumpCommandTest extends TestCase
 {
-    /**
-     * @var ContainerInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $container;
     protected $extractor;
     protected $router;
+    private $serializer;
 
     public function setUp()
     {
-        $this->container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-
         $this->extractor = $this->getMockBuilder('FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor')
             ->disableOriginalConstructor()
             ->getMock();
@@ -43,34 +39,11 @@ class DumpCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testExecute()
     {
-        $this->container->expects($this->at(0))
-            ->method('get')
-            ->with('fos_js_routing.extractor')
-            ->will($this->returnValue($this->extractor));
-
         $this->serializer->expects($this->once())
             ->method('serialize')
             ->will($this->returnValue('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""}'));
 
-        $this->container->expects($this->at(1))
-            ->method('get')
-            ->with('fos_js_routing.serializer')
-            ->will($this->returnValue($this->serializer));
-
-        $this->container
-            ->method('hasParameter')
-            ->willReturnMap(array(
-                array('fos_js_routing.request_context_base_url', false),
-                array('fos_js_routing.expose_options', true),
-            ));
-
-        $this->container->expects($this->atLeastOnce())
-            ->method('getParameter')
-            ->with('fos_js_routing.expose_options')
-            ->will($this->returnValue(true));
-
-        $command = new DumpCommand();
-        $command->setContainer($this->container);
+        $command = new DumpCommand($this->extractor, $this->serializer, '/root/dir');
 
         $tester = new CommandTester($command);
         $tester->execute(array('--target' => '/tmp/dump-command-test'));
@@ -83,22 +56,11 @@ class DumpCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteCallbackOption()
     {
-        $this->container->expects($this->at(0))
-            ->method('get')
-            ->with('fos_js_routing.extractor')
-            ->will($this->returnValue($this->extractor));
-
         $this->serializer->expects($this->once())
             ->method('serialize')
             ->will($this->returnValue('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""}'));
 
-        $this->container->expects($this->at(1))
-            ->method('get')
-            ->with('fos_js_routing.serializer')
-            ->will($this->returnValue($this->serializer));
-
-        $command = new DumpCommand();
-        $command->setContainer($this->container);
+        $command = new DumpCommand($this->extractor, $this->serializer, '/root/dir');
 
         $tester = new CommandTester($command);
         $tester->execute(array(
@@ -112,14 +74,35 @@ class DumpCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('test({"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""});', file_get_contents('/tmp/dump-command-test'));
     }
 
+    public function testExecuteFormatOption()
+    {
+        $json = '{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""}';
+
+        $this->serializer->expects($this->once())
+            ->method('serialize')
+            ->will($this->returnValue($json));
+
+        $command = new DumpCommand($this->extractor, $this->serializer, '/root/dir');
+
+        $tester = new CommandTester($command);
+        $tester->execute(array(
+            '--target' => '/tmp/dump-command-test',
+            '--format' => 'json',
+        ));
+
+        $this->assertContains('Dumping exposed routes.', $tester->getDisplay());
+        $this->assertContains('[file+] /tmp/dump-command-test', $tester->getDisplay());
+
+        $this->assertEquals($json, file_get_contents('/tmp/dump-command-test'));
+    }
+
     /**
      * @expectedException \RuntimeException
-     * @expectedExceptionMessage Unable to create directory /../web/js
+     * @expectedExceptionMessage Unable to create directory /root/dir/../web/js
      */
     public function testExecuteUnableToCreateDirectory()
     {
-        $command = new DumpCommand();
-        $command->setContainer($this->container);
+        $command = new DumpCommand($this->extractor, $this->serializer, '/root/dir');
 
         $tester = new CommandTester($command);
         $tester->execute(array());
@@ -131,22 +114,11 @@ class DumpCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecuteUnableToWriteFile()
     {
-        $this->container->expects($this->at(0))
-            ->method('get')
-            ->with('fos_js_routing.extractor')
-            ->will($this->returnValue($this->extractor));
-
         $this->serializer->expects($this->once())
             ->method('serialize')
             ->will($this->returnValue('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""}'));
 
-        $this->container->expects($this->at(1))
-            ->method('get')
-            ->with('fos_js_routing.serializer')
-            ->will($this->returnValue($this->serializer));
-
-        $command = new DumpCommand();
-        $command->setContainer($this->container);
+        $command = new DumpCommand($this->extractor, $this->serializer, '/root/dir');
 
         $tester = new CommandTester($command);
         $tester->execute(array('--target' => '/tmp'));

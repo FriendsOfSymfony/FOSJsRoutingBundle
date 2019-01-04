@@ -12,20 +12,18 @@
 namespace FOS\JsRoutingBundle\Tests\Command;
 
 use FOS\JsRoutingBundle\Command\RouterDebugExposedCommand;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-class RouterDebugExposedCommandTest extends \PHPUnit_Framework_TestCase
+class RouterDebugExposedCommandTest extends TestCase
 {
-    protected $container;
     protected $extractor;
     protected $router;
 
     public function setUp()
     {
-        $this->container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-
         $this->extractor = $this->getMockBuilder('FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor')
             ->disableOriginalConstructor()
             ->getMock();
@@ -37,26 +35,16 @@ class RouterDebugExposedCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testExecute()
     {
-        if (!class_exists('Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper')) {
-            $this->markTestSkipped('2.3 BC is not tested');
-        }
-
         $routes = new RouteCollection();
         $routes->add('literal', new Route('/literal'));
         $routes->add('blog_post', new Route('/blog-post/{slug}'));
         $routes->add('list', new Route('/literal'));
 
-        $this->container->expects($this->once())
-            ->method('get')
-            ->with('fos_js_routing.extractor')
-            ->will($this->returnValue($this->extractor));
-
         $this->extractor->expects($this->once())
             ->method('getRoutes')
             ->will($this->returnValue($routes));
 
-        $command = new RouterDebugExposedCommand();
-        $command->setContainer($this->container);
+        $command = new RouterDebugExposedCommand($this->extractor, $this->router);
 
         $tester = new CommandTester($command);
         $tester->execute(array());
@@ -81,18 +69,7 @@ class RouterDebugExposedCommandTest extends \PHPUnit_Framework_TestCase
             ->method('getRouteCollection')
             ->will($this->returnValue($routes));
 
-        $this->container->expects($this->at(0))
-            ->method('get')
-            ->with('fos_js_routing.extractor')
-            ->will($this->returnValue($this->extractor));
-
-        $this->container->expects($this->at(1))
-            ->method('get')
-            ->with('router')
-            ->will($this->returnValue($this->router));
-
-        $command = new RouterDebugExposedCommand();
-        $command->setContainer($this->container);
+        $command = new RouterDebugExposedCommand($this->extractor, $this->router);
 
         $tester = new CommandTester($command);
         $tester->execute(array('name' => 'foobar'));
@@ -104,10 +81,6 @@ class RouterDebugExposedCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecuteWithNameNotExposed()
     {
-        if (!class_exists('Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper')) {
-            $this->markTestSkipped('2.3 BC is not tested');
-        }
-
         $routes = new RouteCollection();
         $routes->add('literal', new Route('/literal'));
         $routes->add('blog_post', new Route('/blog-post/{slug}'));
@@ -117,18 +90,7 @@ class RouterDebugExposedCommandTest extends \PHPUnit_Framework_TestCase
             ->method('getRouteCollection')
             ->will($this->returnValue($routes));
 
-        $this->container->expects($this->at(0))
-            ->method('get')
-            ->with('fos_js_routing.extractor')
-            ->will($this->returnValue($this->extractor));
-
-        $this->container->expects($this->at(1))
-            ->method('get')
-            ->with('router')
-            ->will($this->returnValue($this->router));
-
-        $command = new RouterDebugExposedCommand();
-        $command->setContainer($this->container);
+        $command = new RouterDebugExposedCommand($this->extractor, $this->router);
 
         $tester = new CommandTester($command);
         $tester->execute(array('name' => 'literal'));
@@ -136,10 +98,6 @@ class RouterDebugExposedCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteWithName()
     {
-        if (!class_exists('Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper')) {
-            $this->markTestSkipped('2.3 BC is not tested');
-        }
-
         $routes = new RouteCollection();
         $routes->add('literal', new Route('/literal', array(), array(), array('exposed' => true)));
         $routes->add('blog_post', new Route('/blog-post/{slug}'));
@@ -153,18 +111,7 @@ class RouterDebugExposedCommandTest extends \PHPUnit_Framework_TestCase
             ->method('isRouteExposed')
             ->will($this->returnValue(true));
 
-        $this->container->expects($this->at(0))
-            ->method('get')
-            ->with('fos_js_routing.extractor')
-            ->will($this->returnValue($this->extractor));
-
-        $this->container->expects($this->at(1))
-            ->method('get')
-            ->with('router')
-            ->will($this->returnValue($this->router));
-
-        $command = new RouterDebugExposedCommand();
-        $command->setContainer($this->container);
+        $command = new RouterDebugExposedCommand($this->extractor, $this->router);
 
         $tester = new CommandTester($command);
         $tester->execute(array('name' => 'literal'));

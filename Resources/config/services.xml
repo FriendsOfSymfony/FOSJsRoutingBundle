@@ -8,11 +8,24 @@
     </parameters>
 
     <services>
-        <service id="fos_js_routing.extractor" class="%fos_js_routing.extractor.class%">
+        <service id="fos_js_routing.extractor" class="%fos_js_routing.extractor.class%" public="true">
             <argument type="service" id="fos_js_routing.router" />
             <argument></argument>
             <argument>%kernel.cache_dir%</argument>
             <argument>%kernel.bundles%</argument>
+        </service>
+
+        <service id="fos_js_routing.dump_command" class="FOS\JsRoutingBundle\Command\DumpCommand">
+            <argument type="service" id="fos_js_routing.extractor" />
+            <argument type="service" id="fos_js_routing.serializer" />
+            <argument>%kernel.root_dir%</argument>
+            <argument>%fos_js_routing.request_context_base_url%</argument>
+            <tag name="console.command" />
+        </service>
+        <service id="fos_js_routing.router_debug_exposed_command" class="FOS\JsRoutingBundle\Command\RouterDebugExposedCommand">
+            <argument type="service" id="fos_js_routing.extractor" />
+            <argument type="service" id="router" />
+            <tag name="console.command" />
         </service>
     </services>
 </container>
