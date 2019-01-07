@@ -20,6 +20,7 @@
             <argument type="service" id="fos_js_routing.serializer" />
             <argument>%kernel.root_dir%</argument>
             <argument>%fos_js_routing.request_context_base_url%</argument>
+            <argument>%fos_js_routing.expose_options%</argument>
             <tag name="console.command" />
         </service>
         <service id="fos_js_routing.router_debug_exposed_command" class="FOS\JsRoutingBundle\Command\RouterDebugExposedCommand">

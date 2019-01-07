@@ -53,12 +53,18 @@ class DumpCommand extends Command
      */
     private $requestContextBaseUrl;
 
-    public function __construct(ExposedRoutesExtractorInterface $extractor, SerializerInterface $serializer, $rootDir, $requestContextBaseUrl = null)
+    /**
+     * @var bool
+     */
+    private $exposeOptions;
+
+    public function __construct(ExposedRoutesExtractorInterface $extractor, SerializerInterface $serializer, $rootDir, $requestContextBaseUrl = null, $exposeOptions = false)
     {
         $this->extractor = $extractor;
         $this->serializer = $serializer;
         $this->rootDir = $rootDir;
         $this->requestContextBaseUrl = $requestContextBaseUrl;
+        $this->exposeOptions = $exposeOptions;
 
         parent::__construct();
     }
@@ -161,10 +167,6 @@ class DumpCommand extends Command
             $params = array();
         }
 
-        $exposeRouteOptions = $this->getContainer()->hasParameter('fos_js_routing.expose_options') ?
-            $this->getContainer()->getParameter('fos_js_routing.expose_options') :
-            false;
-
         $content = $serializer->serialize(
             new RoutesResponse(
                 $baseUrl,
@@ -174,7 +176,7 @@ class DumpCommand extends Command
                 $extractor->getPort(),
                 $extractor->getScheme(),
                 null,
-                $exposeRouteOptions
+                $this->exposeOptions
             ),
             'json',
             $params
