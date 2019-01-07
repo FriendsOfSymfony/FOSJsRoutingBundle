@@ -65,5 +65,6 @@ class FOSJsRoutingExtension extends Extension
         }
 
         $container->setParameter('fos_js_routing.cache_control', $config['cache_control']);
+        $container->setParameter('fos_js_routing.expose_options', $config['expose_options']);
     }
 }

@@ -48,19 +48,26 @@ class Controller
     protected $debug;
 
     /**
+     * @var boolean
+     */
+    private $exposeRouteOptions;
+    
+    /**
      * Default constructor.
      *
      * @param object                          $serializer             Any object with a serialize($data, $format) method
      * @param ExposedRoutesExtractorInterface $exposedRoutesExtractor The extractor service.
      * @param array                           $cacheControl
      * @param boolean                         $debug
+     * @param boolean                         $exposeRouteOptions
      */
-    public function __construct($serializer, ExposedRoutesExtractorInterface $exposedRoutesExtractor, array $cacheControl = array(), $debug = false)
+    public function __construct($serializer, ExposedRoutesExtractorInterface $exposedRoutesExtractor, array $cacheControl = array(), $debug = false, $exposeRouteOptions = false)
     {
         $this->serializer             = $serializer;
         $this->exposedRoutesExtractor = $exposedRoutesExtractor;
         $this->cacheControlConfig     = new CacheControlConfig($cacheControl);
         $this->debug                  = $debug;
+        $this->exposeRouteOptions     = $exposeRouteOptions;
     }
 
     /**
@@ -98,7 +105,8 @@ class Controller
             $this->exposedRoutesExtractor->getHost(),
             $this->exposedRoutesExtractor->getPort(),
             $this->exposedRoutesExtractor->getScheme(),
-            $request->getLocale()
+            $request->getLocale(),
+            $this->exposeRouteOptions
         );
 
         $content = $this->serializer->serialize($routesResponse, 'json');

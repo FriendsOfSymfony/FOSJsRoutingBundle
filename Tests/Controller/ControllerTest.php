@@ -68,6 +68,25 @@ class ControllerTest extends TestCase
         $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"blog":{"tokens":[["variable","\/","[^\/]++","_locale"],["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":{"_locale":"en"},"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":""}', $response->getContent());
     }
 
+    public function testIndexActionWithExposedOptions()
+    {
+        $routes = new RouteCollection();
+        $routes->add('literal', new Route('/homepage'));
+        $routes->add('blog', new Route('/blog-post/{slug}', array(), array(), array('exposed_options' => array('whatever' => false, 'angular_controller' => 'test')), 'localhost'));
+
+        $controller = new Controller(
+            $this->getSerializer(),
+            $this->getExtractor($routes),
+            array(),
+            false,
+            true
+        );
+
+        $response = $controller->indexAction($this->getRequest('/'), 'json');
+
+        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"options":{"whatever":false,"angular_controller":"test"}}},"prefix":"","host":"","scheme":""}', $response->getContent());
+    }
+
     public function testConfigCache()
     {
         $routes = new RouteCollection();

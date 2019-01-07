@@ -53,12 +53,18 @@ class DumpCommand extends Command
      */
     private $requestContextBaseUrl;
 
-    public function __construct(ExposedRoutesExtractorInterface $extractor, SerializerInterface $serializer, $rootDir, $requestContextBaseUrl = null)
+    /**
+     * @var bool
+     */
+    private $exposeOptions;
+
+    public function __construct(ExposedRoutesExtractorInterface $extractor, SerializerInterface $serializer, $rootDir, $requestContextBaseUrl = null, $exposeOptions = false)
     {
         $this->extractor = $extractor;
         $this->serializer = $serializer;
         $this->rootDir = $rootDir;
         $this->requestContextBaseUrl = $requestContextBaseUrl;
+        $this->exposeOptions = $exposeOptions;
 
         parent::__construct();
     }
@@ -140,7 +146,7 @@ class DumpCommand extends Command
                 $this->rootDir,
                 $input->getOption('format')
             );
-        
+
         if (!is_dir($dir = dirname($targetPath))) {
             $output->writeln('<info>[dir+]</info>  ' . $dir);
             if (false === @mkdir($dir, 0777, true)) {
@@ -168,7 +174,9 @@ class DumpCommand extends Command
                 $extractor->getPrefix($input->getOption('locale')),
                 $extractor->getHost(),
                 $extractor->getPort(),
-                $extractor->getScheme()
+                $extractor->getScheme(),
+                null,
+                $this->exposeOptions
             ),
             'json',
             $params

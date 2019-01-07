@@ -22,16 +22,18 @@ class RoutesResponse
     private $port;
     private $scheme;
     private $locale;
+    private $exposeRouteOptions;
 
-    public function __construct($baseUrl, RouteCollection $routes = null, $prefix = null, $host = null, $port = null, $scheme = null, $locale = null)
+    public function __construct($baseUrl, RouteCollection $routes = null, $prefix = null, $host = null, $port = null, $scheme = null, $locale = null, $exposeRouteOptions = false)
     {
-        $this->baseUrl = $baseUrl;
-        $this->routes  = $routes ?: new RouteCollection();
-        $this->prefix  = $prefix;
-        $this->host    = $host;
+        $this->baseUrl            = $baseUrl;
+        $this->routes             = $routes ?: new RouteCollection();
+        $this->prefix             = $prefix;
+        $this->host               = $host;
         $this->port    = $port;
-        $this->scheme  = $scheme;
-        $this->locale  = $locale;
+        $this->scheme             = $scheme;
+        $this->locale             = $locale;
+        $this->exposeRouteOptions = $exposeRouteOptions;
     }
 
     public function getBaseUrl()
@@ -61,6 +63,11 @@ class RoutesResponse
                 'methods'      => $route->getMethods(),
                 'schemes'      => $route->getSchemes(),
             );
+
+            $options = $route->getOptions();
+            if ($this->exposeRouteOptions && !empty($options['exposed_options'])) {
+                $exposedRoutes[$name]['options'] = $options['exposed_options'];
+            }
         }
 
         return $exposedRoutes;

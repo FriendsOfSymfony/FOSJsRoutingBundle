@@ -14,6 +14,7 @@ namespace FOS\JsRoutingBundle\Tests\Command;
 use FOS\JsRoutingBundle\Command\DumpCommand;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class DumpCommandTest extends TestCase
 {

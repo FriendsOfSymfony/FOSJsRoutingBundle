@@ -63,6 +63,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->booleanNode('expose_options')->defaultFalse()->end()
             ->end();
 
         return $builder;
