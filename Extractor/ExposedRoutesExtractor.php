@@ -39,24 +39,36 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     protected $bundles;
 
     /**
+     * @var string
+     */
+    protected $pattern;
+
+    /**
      * @var array
      */
-    protected $routesToExpose;
+    protected $availableDomains;
 
     /**
      * Default constructor.
      *
-     * @param RouterInterface $router         The router.
-     * @param array           $routesToExpose Some route names to expose.
-     * @param string          $cacheDir
-     * @param array           $bundles        list of loaded bundles to check when generating the prefix
+     * @param RouterInterface $router The router.
+     * @param array $routesToExpose Some route names to expose.
+     * @param string $cacheDir
+     * @param array $bundles list of loaded bundles to check when generating the prefix
+     *
+     * @throws \Exception
      */
     public function __construct(RouterInterface $router, array $routesToExpose = array(), $cacheDir, $bundles = array())
     {
         $this->router         = $router;
-        $this->routesToExpose = $routesToExpose;
         $this->cacheDir       = $cacheDir;
         $this->bundles        = $bundles;
+
+        $domainPatterns = $this->extractDomainPatterns($routesToExpose);
+
+        $this->availableDomains = array_keys($domainPatterns);
+
+        $this->pattern = $this->buildPattern($domainPatterns);
     }
 
     /**
@@ -69,9 +81,27 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
 
         /** @var Route $route */
         foreach ($collection->all() as $name => $route) {
-            if ($this->isRouteExposed($route, $name)) {
+
+            if ($route->hasOption('expose')) {
                 $routes->add($name, $route);
+                continue;
             }
+
+            preg_match('#' . $this->pattern . '#', $name, $matches);
+
+            if (count($matches) === 0) {
+                continue;
+            }
+
+            $domain = $this->getDomainByRouteMatches($matches, $name);
+
+            if (is_null($domain)) {
+                continue;
+            }
+
+            $route = clone $route;
+            $route->setOption('expose', $domain);
+            $routes->add($name, $route);
         }
 
         return $routes;
@@ -166,23 +196,64 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
      */
     public function isRouteExposed(Route $route, $name)
     {
-        $pattern = $this->buildPattern();
+        return true === $route->hasOption('expose') ||
+            ('' !== $this->pattern && preg_match('#' . $this->pattern . '#', $name));
+    }
 
-        return true === $route->getOption('expose')
-            || 'true' === $route->getOption('expose')
-            || ('' !== $pattern && preg_match('#' . $pattern . '#', $name));
+    protected function getDomainByRouteMatches($matches, $name)
+    {
+        $matches = array_filter($matches, function($match) {
+            return !empty($match);
+        });
+
+        $matches = array_flip(array_intersect_key($matches, array_flip($this->availableDomains)));
+
+        return isset($matches[$name]) ? $matches[$name] : null;
+    }
+
+    protected function extractDomainPatterns($routesToExpose)
+    {
+        $domainPatterns = array();
+
+        foreach ($routesToExpose as $item) {
+
+            if (is_string($item)) {
+                $domainPatterns['default'][] = $item;
+                continue;
+            }
+
+            if (is_array($item) && is_string($item['pattern'])) {
+
+                if (!isset($item['domain'])) {
+                    $domainPatterns['default'][] = $item['pattern'];
+                    continue;
+                } elseif (is_string($item['domain'])) {
+                    $domainPatterns[$item['domain']][] = $item['pattern'];
+                    continue;
+                }
+
+            }
+
+            throw new \Exception('routes_to_expose definition is invalid');
+        }
+
+        return $domainPatterns;
     }
 
     /**
      * Convert the routesToExpose array in a regular expression pattern
      *
+     * @param $domainPatterns
      * @return string
+     * @throws \Exception
      */
-    protected function buildPattern()
+    protected function buildPattern($domainPatterns)
     {
         $patterns = array();
-        foreach ($this->routesToExpose as $toExpose) {
-            $patterns[] = '(' . $toExpose . ')';
+
+        foreach ($domainPatterns as $domain => $items) {
+
+            $patterns[] =  '(?P<' . $domain . '>' . implode($items, '|') . ')';
         }
 
         return implode($patterns, '|');

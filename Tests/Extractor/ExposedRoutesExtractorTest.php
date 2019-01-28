@@ -44,6 +44,9 @@ class ExposedRoutesExtractorTest extends TestCase
 
         $router = $this->getRouter($expected);
         $extractor = new ExposedRoutesExtractor($router, array('.*'), $this->cacheDir, array());
+
+        $expected->addOptions(array('expose' => 'default'));
+
         $this->assertEquals($expected, $extractor->getRoutes());
     }
 

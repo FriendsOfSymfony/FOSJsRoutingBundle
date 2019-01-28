@@ -22,8 +22,10 @@ class RoutesResponse
     private $port;
     private $scheme;
     private $locale;
+    private $domains;
 
-    public function __construct($baseUrl, RouteCollection $routes = null, $prefix = null, $host = null, $port = null, $scheme = null, $locale = null)
+    public function __construct($baseUrl, RouteCollection $routes = null, $prefix = null, $host = null, $port = null,
+                                $scheme = null, $locale = null, $domains = array())
     {
         $this->baseUrl = $baseUrl;
         $this->routes  = $routes ?: new RouteCollection();
@@ -32,6 +34,7 @@ class RoutesResponse
         $this->port    = $port;
         $this->scheme  = $scheme;
         $this->locale  = $locale;
+        $this->domains = $domains;
     }
 
     public function getBaseUrl()
@@ -43,6 +46,23 @@ class RoutesResponse
     {
         $exposedRoutes = array();
         foreach ($this->routes->all() as $name => $route) {
+
+            if (!$route->hasOption('expose')) {
+                $domain = 'default';
+            } else {
+                $domain = $route->getOption('expose');
+                $domain = is_string($domain) ? ($domain === 'true' ? 'default' : $domain) : 'default';
+            }
+
+
+            if (count($this->domains) === 0) {
+                if ($domain !== 'default') {
+                    continue;
+                }
+            } elseif (!in_array($domain, $this->domains, true)) {
+                continue;
+            }
+
             $compiledRoute = $route->compile();
             $defaults      = array_intersect_key(
                 $route->getDefaults(),

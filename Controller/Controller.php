@@ -98,7 +98,8 @@ class Controller
             $this->exposedRoutesExtractor->getHost(),
             $this->exposedRoutesExtractor->getPort(),
             $this->exposedRoutesExtractor->getScheme(),
-            $request->getLocale()
+            $request->getLocale(),
+            $request->query->has('domain') ? explode(',', $request->query->get('domain')) : array()
         );
 
         $content = $this->serializer->serialize($routesResponse, 'json');
