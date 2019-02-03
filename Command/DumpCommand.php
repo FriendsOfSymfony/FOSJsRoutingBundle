@@ -101,6 +101,13 @@ class DumpCommand extends Command
                 InputOption::VALUE_NONE,
                 'Pretty print the JSON.'
             )
+            ->addOption(
+                'domain',
+                null,
+                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                'Specify expose domain',
+                array()
+            )
         ;
     }
 
@@ -132,12 +139,15 @@ class DumpCommand extends Command
      */
     private function doDump(InputInterface $input, OutputInterface $output)
     {
+        $domain = $input->getOption('domain');
+
         $extractor = $this->extractor;
         $serializer = $this->serializer;
         $targetPath = $input->getOption('target') ?:
             sprintf(
-                '%s/../web/js/fos_js_routes.%s',
+                '%s/../web/js/fos_js_routes%s.%s',
                 $this->rootDir,
+                empty($domain) ? '' : ('_' . implode('_', $domain)),
                 $input->getOption('format')
             );
         
@@ -168,7 +178,8 @@ class DumpCommand extends Command
                 $extractor->getPrefix($input->getOption('locale')),
                 $extractor->getHost(),
                 $extractor->getPort(),
-                $extractor->getScheme()
+                $extractor->getScheme(),
+                $domain
             ),
             'json',
             $params

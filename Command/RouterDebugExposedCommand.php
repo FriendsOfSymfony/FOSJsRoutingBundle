@@ -20,6 +20,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\RouteCollection;
 
 /**
  * A console command for retrieving information about exposed routes.
@@ -54,6 +55,7 @@ class RouterDebugExposedCommand extends Command
                 new InputOption('show-controllers', null, InputOption::VALUE_NONE, 'Show assigned controllers in overview'),
                 new InputOption('format', null, InputOption::VALUE_REQUIRED, 'The output format (txt, xml, json, or md)', 'txt'),
                 new InputOption('raw', null, InputOption::VALUE_NONE, 'To output raw route(s)'),
+                new InputOption('domain', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Specify expose domain', array())
             ))
             ->setName('fos:js-routing:debug')
             ->setDescription('Displays currently exposed routes for an application')
@@ -96,11 +98,35 @@ EOF
             ));
         } else {
             $helper = new DescriptorHelper();
-            $helper->describe($output, $this->extractor->getRoutes(), array(
+            $helper->describe($output, $this->getRoutes($input->getOption('domain')), array(
                 'format'           => $input->getOption('format'),
                 'raw_text'         => $input->getOption('raw'),
                 'show_controllers' => $input->getOption('show-controllers'),
             ));
         }
+    }
+
+    protected function getRoutes($domain = array())
+    {
+        $routes = $this->extractor->getRoutes();
+
+        if (empty($domain)) {
+            return $routes;
+        }
+
+        $targetRoutes = new RouteCollection();
+
+        foreach ($routes as $name => $route) {
+
+            $expose = $route->getOption('expose');
+            $expose = is_string($expose) ? ($expose === 'true' ? 'default' : $expose) : 'default';
+
+            if (in_array($expose, $domain, true)) {
+                $targetRoutes->add($name, $route);
+            }
+
+        }
+
+        return $targetRoutes;
     }
 }

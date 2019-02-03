@@ -157,6 +157,49 @@ class ControllerTest extends TestCase
         $this->assertEquals(456, $response->headers->getCacheControlDirective('s-maxage'));
     }
 
+    public function testExposeDomain()
+    {
+        $routes = new RouteCollection();
+        $routes->add('homepage', new Route('/'));
+        $routes->add('admin_index', new Route('/admin', array(), array(),
+            array('expose' => 'admin')));
+        $routes->add('admin_pages', new Route('/admin/path', array(), array(),
+            array('expose' => 'admin')));
+        $routes->add('blog_index', new Route('/blog', array(), array(),
+            array('expose' => 'blog'), 'localhost'));
+        $routes->add('blog_post', new Route('/blog/{slug}', array(), array(),
+            array('expose' => 'blog'), 'localhost'));
+
+        $controller = new Controller(
+            $this->getSerializer(),
+            $this->getExtractor($routes)
+        );
+
+        $response = $controller->indexAction($this->getRequest('/'), 'json');
+
+        $this->assertEquals('{"base_url":"","routes":{"homepage":{"tokens":[["text","\/"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":""}', $response->getContent());
+
+        $response = $controller->indexAction($this->getRequest('/',
+            'GET', array('domain' => 'admin')), 'json');
+
+        $this->assertEquals('{"base_url":"","routes":{"admin_index":{"tokens":[["text","\/admin"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"admin_pages":{"tokens":[["text","\/admin\/path"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":""}', $response->getContent());
+
+        $response = $controller->indexAction($this->getRequest('/',
+            'GET', array('domain' => 'blog')), 'json');
+
+        $this->assertEquals('{"base_url":"","routes":{"blog_index":{"tokens":[["text","\/blog"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]},"blog_post":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":""}', $response->getContent());
+
+        $response = $controller->indexAction($this->getRequest('/',
+            'GET', array('domain' => 'admin,blog')), 'json');
+
+        $this->assertEquals('{"base_url":"","routes":{"admin_index":{"tokens":[["text","\/admin"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"admin_pages":{"tokens":[["text","\/admin\/path"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"blog_index":{"tokens":[["text","\/blog"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]},"blog_post":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":""}', $response->getContent());
+
+        $response = $controller->indexAction($this->getRequest('/',
+            'GET', array('domain' => 'default,admin,blog')), 'json');
+
+        $this->assertEquals('{"base_url":"","routes":{"homepage":{"tokens":[["text","\/"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"admin_index":{"tokens":[["text","\/admin"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"admin_pages":{"tokens":[["text","\/admin\/path"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"blog_index":{"tokens":[["text","\/blog"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]},"blog_post":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":""}', $response->getContent());
+    }
+
     private function getExtractor(RouteCollection $exposedRoutes = null, $baseUrl = '')
     {
         if (null === $exposedRoutes) {
