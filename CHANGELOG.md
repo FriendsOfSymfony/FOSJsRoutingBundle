@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.3.0 - 2019-02-03
+- Add routing-sf4.xml to move towards Symfony >4.1 syntax
+- Add functionality to granularly expose routes based on domains ([#346](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/issues/346))
+- Small cleanup and textual fix
+
 ## v2.2.2 - 2018-11-28
 - Fix Symfony 4.2 deprecation
 - Add setRoutingData to typescript definition
