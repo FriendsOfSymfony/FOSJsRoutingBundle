@@ -45,14 +45,17 @@ in the ``app/AppKernel.php`` file of your project:
 Step 3: Register the Routes
 ---------------------------
 
-Load the bundle's routing definition in the application (usually in the
-``app/config/routing.yml`` file):
+Load the bundle's routing definition in the application:
 
 .. code-block:: yaml
 
-    # app/config/routing.yml
+    # Symfony 2 + 3: app/config/routing.yml
     fos_js_routing:
         resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+    # Symfony 4: config/routes/fos_js_routing.yml
+    fos_js_routing:
+        resource: "@FOSJsRoutingBundle/Resources/config/routing/routing-sf4.xml"
 
 Step 4: Publish the Assets
 --------------------------
@@ -64,7 +67,7 @@ Execute the following command to publish the assets required by the bundle:
     # Symfony 2
     $ php app/console assets:install --symlink web
 
-    # Symfony 3
+    # Symfony 3 + 4
     $ php bin/console assets:install --symlink web
 
 .. _`installation chapter`: https://getcomposer.org/doc/00-intro.md
