@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.3.1 - 2019-06-17
+- Fix regex pattern to match whole url pattern ([#350](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/350))
+- Small documentation update
+
 ## v2.3.0 - 2019-02-03
 - Add routing-sf4.xml to move towards Symfony >4.1 syntax
 - Add functionality to granularly expose routes based on domains ([#346](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/issues/346))
