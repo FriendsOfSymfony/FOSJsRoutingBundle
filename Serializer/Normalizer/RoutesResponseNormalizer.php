@@ -31,6 +31,7 @@ class RoutesResponseNormalizer implements NormalizerInterface
             'host'     => $data->getHost(),
             'port'     => $data->getPort(),
             'scheme'   => $data->getScheme(),
+            'locale'   => $data->getLocale(),
         );
     }
 

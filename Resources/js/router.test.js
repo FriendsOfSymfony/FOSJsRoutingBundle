@@ -327,7 +327,7 @@ function testGetBaseUrl() {
 }
 
 function testGeti18n() {
-    var router = new fos.Router({base_url: '/foo', prefix: 'en__RG__'}, {
+    var router = new fos.Router({base_url: '/foo', prefix: 'en__RG__', locale: 'en'}, {
         en__RG__homepage: {
             tokens: [['text', '/bar']],
             defaults: {},
@@ -345,14 +345,29 @@ function testGeti18n() {
             defaults: {},
             requirements: {},
             hosttokens: []
+        },
+        "login.en": {
+            tokens: [['text', '/en/login']],
+            defaults: {},
+            requirements: {},
+            hosttokens: []
+        },
+        "login.es": {
+            tokens: [['text', '/es/login']],
+            defaults: {},
+            requirements: {},
+            hosttokens: []
         }
     });
 
     assertEquals('/foo/bar', router.generate('homepage'));
     assertEquals('/foo/admin', router.generate('_admin'));
+    assertEquals('/foo/en/login', router.generate('login'));
 
     router.setPrefix('es__RG__');
+    router.setLocale('es');
     assertEquals('/foo/es/bar', router.generate('homepage'));
+    assertEquals('/foo/es/login', router.generate('login'));
 }
 
 function testGetRoute() {

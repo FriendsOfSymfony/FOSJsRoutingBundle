@@ -19,7 +19,7 @@ class Router {
      * @param {Object.<string, Router.Route>=} routes
      */
     constructor(context, routes) {
-        this.context_ = context || {base_url: '', prefix: '', host: '', port: '', scheme: ''};
+        this.context_ = context || {base_url: '', prefix: '', host: '', port: '', scheme: '', locale: ''};
         this.setRoutes(routes || {});
     }
 
@@ -54,6 +54,9 @@ class Router {
         }
         if ('port' in data) {
           this.setPort(data['port']);
+        }
+        if ('locale' in data) {
+          this.setLocale(data['locale']);
         }
 
         this.setHost(data['host']);
@@ -138,6 +141,20 @@ class Router {
     };
 
     /**
+     * @param {string} locale
+     */
+    setLocale(locale) {
+      this.context_.locale = locale;
+    }
+
+    /**
+     * @return {string}
+     */
+    getLocale() {
+      return this.context_.locale;
+    };
+
+    /**
      * Builds query string params added to a URL.
      * Port of jQuery's $.param() function, so credit is due there.
      *
@@ -174,17 +191,17 @@ class Router {
      */
     getRoute(name) {
         let prefixedName = this.context_.prefix + name;
+        let sf41i18nName = name + '.' + this.context_.locale;
+        let prefixedSf41i18nName = this.context_.prefix + name + '.' + this.context_.locale;
+        let variants = [prefixedName, sf41i18nName, prefixedSf41i18nName, name];
 
-        if (!(prefixedName in this.routes_)) {
-            // Check first for default route before failing
-            if (!(name in this.routes_)) {
-                throw new Error('The route "' + name + '" does not exist.');
+        for (let i in variants) {
+            if (variants[i] in this.routes_) {
+                return this.routes_[variants[i]];
             }
-        } else {
-            name = prefixedName;
         }
 
-        return this.routes_[name];
+        throw new Error('The route "' + name + '" does not exist.');
     }
 
     /**
