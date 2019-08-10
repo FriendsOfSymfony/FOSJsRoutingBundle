@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.4.0 - 2019-08-10
+- Add Symfony 4.1 localized routes support ([#334](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/334))
+- Add documentation remarks on JMSI18nRoutingBundle compatibility ([#352](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/352))
+
 ## v2.3.1 - 2019-06-17
 - Fix regex pattern to match whole url pattern ([#350](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/350))
 - Small documentation update
