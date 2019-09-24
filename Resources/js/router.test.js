@@ -183,6 +183,19 @@ function testGenerateUsesAbsoluteUrl() {
     assertEquals('http://localhost/foo/bar', router.generate('homepage', [], true));
 }
 
+function testGenerateUsesAbsoluteUrlWithGivenPort() {
+    var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http", port: "8000"}, {
+        homepage: {
+            tokens: [['text', '/bar']],
+            defaults: {},
+            requirements: {},
+            hosttokens: []
+        }
+    });
+
+    assertEquals('http://localhost:8000/foo/bar', router.generate('homepage', [], true));
+}
+
 function testGenerateUsesAbsoluteUrlWhenSchemeRequirementGiven() {
     var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
         homepage: {
@@ -194,6 +207,19 @@ function testGenerateUsesAbsoluteUrlWhenSchemeRequirementGiven() {
     });
 
     assertEquals('http://localhost/foo/bar', router.generate('homepage', [], true));
+}
+
+function testGenerateUsesAbsoluteUrlWithGivenPortWhenSchemeRequirementGiven() {
+    var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http", port: "8080"}, {
+        homepage: {
+            tokens: [['text', '/bar']],
+            defaults: {},
+            requirements: {"_scheme": "http"},
+            hosttokens: []
+        }
+    });
+
+    assertEquals('http://localhost:8080/foo/bar', router.generate('homepage', [], true));
 }
 
 function testGenerateUsesAbsoluteUrlWhenSchemeGiven() {
@@ -209,6 +235,21 @@ function testGenerateUsesAbsoluteUrlWhenSchemeGiven() {
     });
 
     assertEquals('http://localhost/foo/bar', router.generate('homepage', [], true));
+}
+
+function testGenerateUsesAbsoluteUrlWithGivenPortWhenSchemeGiven() {
+    var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http", port:"1234"}, {
+        homepage: {
+            tokens: [['text', '/bar']],
+            defaults: {},
+            requirements: {},
+            hosttokens: [],
+            schemes: ['http'],
+            methods: []
+        }
+    });
+
+    assertEquals('http://localhost:1234/foo/bar', router.generate('homepage', [], true));
 }
 
 function testGenerateWithOptionalTrailingParam() {
