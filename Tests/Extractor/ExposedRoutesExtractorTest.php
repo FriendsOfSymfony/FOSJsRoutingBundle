@@ -26,7 +26,7 @@ class ExposedRoutesExtractorTest extends TestCase
 {
     private $cacheDir;
 
-    public function setUp()
+    public function setUp(): void
     {
         if (!class_exists('Symfony\\Component\\Routing\\Route')) {
             $this->markTestSkipped('The Routing component is not available.');

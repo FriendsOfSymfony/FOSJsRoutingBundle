@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class FOSJsRoutingExtensionTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         if (!class_exists('Symfony\Component\DependencyInjection\ContainerBuilder')) {
             $this->markTestSkipped('The DependencyInjection component is not available.');
