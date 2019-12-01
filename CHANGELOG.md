@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.5.0 - 2019-12-01
+- [BC break] Add support for Symfony 5, drop support for PHP5, drop support for Symfony 2 ([#366](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/366))
+- Fix absolute url generation including ports ([#361](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/361))
+- Fix cache for exposed routes in debug mode ([#362](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/362))
+
 ## v2.4.0 - 2019-08-10
 - Add Symfony 4.1 localized routes support ([#334](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/334))
 - Add documentation remarks on JMSI18nRoutingBundle compatibility ([#352](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/352))
