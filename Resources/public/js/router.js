@@ -368,13 +368,13 @@ var Router = function () {
             // Foo-bar!
             url = this.context_.base_url + url;
             if (route.requirements && "_scheme" in route.requirements && this.getScheme() != route.requirements["_scheme"]) {
-                url = route.requirements["_scheme"] + "://" + (host || this.getHost()) + url;
+                url = route.requirements["_scheme"] + "://" + (host || this.getHost()) + ('' === port ? '' : ':' + port) + url;
             } else if ("undefined" !== typeof route.schemes && "undefined" !== typeof route.schemes[0] && this.getScheme() !== route.schemes[0]) {
-                url = route.schemes[0] + "://" + (host || this.getHost()) + url;
+                url = route.schemes[0] + "://" + (host || this.getHost()) + ('' === port ? '' : ':' + port) + url;
             } else if (host && this.getHost() !== host + ('' === port ? '' : ':' + port)) {
                 url = this.getScheme() + "://" + host + ('' === port ? '' : ':' + port) + url;
             } else if (absolute === true) {
-                url = this.getScheme() + "://" + this.getHost() + url;
+                url = this.getScheme() + "://" + this.getHost() + ('' === port ? '' : ':' + port) + url;
             }
 
             if (Object.keys(unusedParams).length > 0) {
