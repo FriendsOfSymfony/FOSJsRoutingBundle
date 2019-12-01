@@ -104,6 +104,7 @@ EOF
                 'show_controllers' => $input->getOption('show-controllers'),
             ));
         }
+        return 0;
     }
 
     protected function getRoutes($domain = array())

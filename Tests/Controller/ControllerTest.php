@@ -17,6 +17,7 @@ use FOS\JsRoutingBundle\Serializer\Normalizer\RouteCollectionNormalizer;
 use FOS\JsRoutingBundle\Serializer\Normalizer\RoutesResponseNormalizer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -26,12 +27,12 @@ class ControllerTest extends TestCase
 {
     private $cachePath;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->cachePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'fosJsRouting' . DIRECTORY_SEPARATOR . 'data.json';
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unlink($this->cachePath);
     }
@@ -108,11 +109,9 @@ class ControllerTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
-     */
     public function testGenerateWithInvalidCallback()
     {
+        $this->expectException(HttpException::class);
         $controller = new Controller($this->getSerializer(), $this->getExtractor());
         $controller->indexAction($this->getRequest('/', 'GET', array('callback' => '(function xss(x) {evil()})')), 'json');
     }

@@ -22,7 +22,7 @@ class RouterDebugExposedCommandTest extends TestCase
     protected $extractor;
     protected $router;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->extractor = $this->getMockBuilder('FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor')
             ->disableOriginalConstructor()
@@ -54,12 +54,10 @@ class RouterDebugExposedCommandTest extends TestCase
         $this->assertRegExp('/list(.*ANY){3}.*\/literal/', $tester->getDisplay());
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage The route "foobar" does not exist.
-     */
     public function testExecuteWithNameUnknown()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The route "foobar" does not exist.');
         $routes = new RouteCollection();
         $routes->add('literal', new Route('/literal'));
         $routes->add('blog_post', new Route('/blog-post/{slug}'));
@@ -75,12 +73,10 @@ class RouterDebugExposedCommandTest extends TestCase
         $tester->execute(array('name' => 'foobar'));
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage The route "literal" was found, but it is not an exposed route.
-     */
     public function testExecuteWithNameNotExposed()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The route "literal" was found, but it is not an exposed route.');
         $routes = new RouteCollection();
         $routes->add('literal', new Route('/literal'));
         $routes->add('blog_post', new Route('/blog-post/{slug}'));
@@ -116,6 +112,6 @@ class RouterDebugExposedCommandTest extends TestCase
         $tester = new CommandTester($command);
         $tester->execute(array('name' => 'literal'));
 
-        $this->assertContains('exposed: true', $tester->getDisplay());
+        $this->assertStringContainsString('exposed: true', $tester->getDisplay());
     }
 }
