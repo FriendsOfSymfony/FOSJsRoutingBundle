@@ -18,7 +18,7 @@
         <service id="fos_js_routing.dump_command" class="FOS\JsRoutingBundle\Command\DumpCommand">
             <argument type="service" id="fos_js_routing.extractor" />
             <argument type="service" id="fos_js_routing.serializer" />
-            <argument>%kernel.root_dir%</argument>
+            <argument>%kernel.project_dir%</argument>
             <argument>%fos_js_routing.request_context_base_url%</argument>
             <tag name="console.command" />
         </service>

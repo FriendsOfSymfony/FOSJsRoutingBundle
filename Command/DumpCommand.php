@@ -29,11 +29,6 @@ class DumpCommand extends Command
     protected static $defaultName = 'fos:js-routing:dump';
 
     /**
-     * @var string
-     */
-    private $targetPath;
-
-    /**
      * @var ExposedRoutesExtractorInterface
      */
     private $extractor;
@@ -46,18 +41,18 @@ class DumpCommand extends Command
     /**
      * @var string
      */
-    private $rootDir;
+    private $projectDir;
 
     /**
      * @var string
      */
     private $requestContextBaseUrl;
 
-    public function __construct(ExposedRoutesExtractorInterface $extractor, SerializerInterface $serializer, $rootDir, $requestContextBaseUrl = null)
+    public function __construct(ExposedRoutesExtractorInterface $extractor, SerializerInterface $serializer, $projectDir, $requestContextBaseUrl = null)
     {
         $this->extractor = $extractor;
         $this->serializer = $serializer;
-        $this->rootDir = $rootDir;
+        $this->projectDir = $projectDir;
         $this->requestContextBaseUrl = $requestContextBaseUrl;
 
         parent::__construct();
@@ -145,8 +140,8 @@ class DumpCommand extends Command
         $serializer = $this->serializer;
         $targetPath = $input->getOption('target') ?:
             sprintf(
-                '%s/../web/js/fos_js_routes%s.%s',
-                $this->rootDir,
+                '%s/web/js/fos_js_routes%s.%s',
+                $this->projectDir,
                 empty($domain) ? '' : ('_' . implode('_', $domain)),
                 $input->getOption('format')
             );

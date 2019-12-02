@@ -253,10 +253,10 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
 
         foreach ($domainPatterns as $domain => $items) {
 
-            $patterns[] =  '(?P<' . $domain . '>' . implode($items, '|') . ')';
+            $patterns[] =  '(?P<' . $domain . '>' . implode('|', $items) . ')';
         }
 
-        return implode($patterns, '|');
+        return implode('|', $patterns);
     }
 
     /**
