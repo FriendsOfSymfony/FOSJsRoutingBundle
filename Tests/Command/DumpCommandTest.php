@@ -98,7 +98,7 @@ class DumpCommandTest extends TestCase
     public function testExecuteUnableToCreateDirectory()
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Unable to create directory /root/dir/../web/js');
+        $this->expectExceptionMessage('Unable to create directory /root/dir/web/js');
         $command = new DumpCommand($this->extractor, $this->serializer, '/root/dir');
 
         $tester = new CommandTester($command);
