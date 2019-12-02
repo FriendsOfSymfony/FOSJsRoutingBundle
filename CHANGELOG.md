@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.5.1 - 2019-12-02
+- [BC break] Fix root dir deprecation and fix PHP 7.4 deprecation (drops Symfony < 3.3 support) ([#369](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/369))
+
 ## v2.5.0 - 2019-12-01
 - [BC break] Add support for Symfony 5, drop support for PHP5, drop support for Symfony 2 ([#366](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/366))
 - Fix absolute url generation including ports ([#361](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/361))
