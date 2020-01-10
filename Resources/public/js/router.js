@@ -67,7 +67,7 @@ var Router = function () {
          * @param {Object} data
          */
         value: function setRoutingData(data) {
-            this.setBaseUrl(data['base_url']);
+            this.setBaseUrl(data['base_url'] && data['base_url'].length > 0 ? data['base_url'] : window.location.host);
             this.setRoutes(data['routes']);
 
             if ('prefix' in data) {
