@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.5.2 - 2020-01-12
+- Fall back to current domain when baseurl is missing or empty in json ([#371](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/371))
+- Upgrade gulp to version 4 ([#372](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/372))
+
 ## v2.5.1 - 2019-12-02
 - [BC break] Fix root dir deprecation and fix PHP 7.4 deprecation (drops Symfony < 3.3 support) ([#369](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/369))
 
