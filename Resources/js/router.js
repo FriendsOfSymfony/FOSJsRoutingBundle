@@ -46,7 +46,7 @@ class Router {
      * @param {Object} data
      */
     setRoutingData(data) {
-        this.setBaseUrl(data['base_url'] && data['base_url'].length > 0 ? data['base_url'] : window.location.host);
+        this.setBaseUrl((data['base_url'] && data['base_url'].length > 0) ? data['base_url'] : window.location.host);
         this.setRoutes(data['routes']);
 
         if ('prefix' in data) {
