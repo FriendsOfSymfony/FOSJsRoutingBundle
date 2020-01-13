@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.5.3 - 2020-01-13
+- Rervert fall back to current domain when baseurl is missing or empty in json ([#374](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/374))
+
 ## v2.5.2 - 2020-01-12
 - Fall back to current domain when baseurl is missing or empty in json ([#371](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/371))
 - Upgrade gulp to version 4 ([#372](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/372))
