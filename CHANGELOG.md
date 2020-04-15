@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.5.4 - 2020-04-15
+- Fix duplicated port in absolute path ([#381](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/381))
+
 ## v2.5.3 - 2020-01-13
 - Rervert fall back to current domain when baseurl is missing or empty in json ([#374](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/374))
 
