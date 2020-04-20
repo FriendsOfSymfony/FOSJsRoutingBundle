@@ -321,7 +321,7 @@ var Router = function () {
                         var empty = true === value || false === value || '' === value;
 
                         if (!empty || !optional) {
-                            var encodedValue = encodeURIComponent(value).replace(/%2F/g, '/');
+                            var encodedValue = encodeURIComponent(value).replace(/%2F/g, '/').replace(/%40/g, '@').replace(/%3A/g, ':').replace(/%3B/g, ';').replace(/%2C/g, ',').replace(/%3D/g, '=').replace(/%2B/g, '+').replace(/%21/g, '!').replace(/%2A/g, '*').replace(/%7C/g, '|');
 
                             if ('null' === encodedValue && null === value) {
                                 encodedValue = '';
