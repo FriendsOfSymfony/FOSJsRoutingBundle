@@ -333,6 +333,19 @@ function testAllowSlashes() {
     assertEquals('/blog-post/foo/bar', router.generate('posts', {id: 'foo/bar'}));
 }
 
+function testSomeCharsAreNotPercentEncoded() {
+    var router = new fos.Router({base_url: ''}, {
+        posts: {
+            tokens: [['variable', '/', '[^/]+?', 'id'], ['text', '/blog-post']],
+            defaults: {},
+            requirements: {},
+            hosttokens: []
+        }
+    });
+
+    assertEquals('/blog-post/@:;,=+!*|', router.generate('posts', {id: '@:;,=+!*|'}));
+}
+
 function testGenerateWithExtraParams() {
     var router = new fos.Router(undefined, {
         foo: {
