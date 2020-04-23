@@ -296,7 +296,7 @@ var Router = function () {
 
             route.tokens.forEach(function (token) {
                 if ('text' === token[0]) {
-                    url = token[1] + url;
+                    url = Router.encodePathComponent(token[1]) + url;
                     optional = false;
 
                     return;
@@ -321,7 +321,7 @@ var Router = function () {
                         var empty = true === value || false === value || '' === value;
 
                         if (!empty || !optional) {
-                            var encodedValue = encodeURIComponent(value).replace(/%2F/g, '/');
+                            var encodedValue = Router.encodePathComponent(value);
 
                             if ('null' === encodedValue && null === value) {
                                 encodedValue = '';
@@ -392,18 +392,26 @@ var Router = function () {
                     // change null to empty string
                     value = value === null ? '' : value;
 
-                    queryParams.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+                    queryParams.push(Router.encodeQueryComponent(key) + '=' + Router.encodeQueryComponent(value));
                 };
 
                 for (prefix in unusedParams) {
                     this.buildQueryParams(prefix, unusedParams[prefix], add);
                 }
 
-                url = url + '?' + queryParams.join('&').replace(/%20/g, '+');
+                url = url + '?' + queryParams.join('&');
             }
 
             return url;
         }
+
+        /**
+         * Returns the given string encoded to mimic Symfony URL generator.
+         *
+         * @param {string} value
+         * @return {string}
+         */
+
     }], [{
         key: 'getInstance',
         value: function getInstance() {
@@ -421,6 +429,37 @@ var Router = function () {
             var router = Router.getInstance();
 
             router.setRoutingData(data);
+        }
+    }, {
+        key: 'customEncodeURIComponent',
+        value: function customEncodeURIComponent(value) {
+            return encodeURIComponent(value).replace(/%2F/g, '/').replace(/%40/g, '@').replace(/%3A/g, ':').replace(/%21/g, '!').replace(/%3B/g, ';').replace(/%2C/g, ',').replace(/%2A/g, '*').replace(/\(/g, '%28').replace(/\)/g, '%29').replace(/'/g, '%27');
+        }
+
+        /**
+         * Returns the given path properly encoded to mimic Symfony URL generator.
+         *
+         * @param {string} value
+         * @return {string}
+         */
+
+    }, {
+        key: 'encodePathComponent',
+        value: function encodePathComponent(value) {
+            return Router.customEncodeURIComponent(value).replace(/%3D/g, '=').replace(/%2B/g, '+').replace(/%21/g, '!').replace(/%7C/g, '|');
+        }
+
+        /**
+         * Returns the given query parameter or value properly encoded to mimic Symfony URL generator.
+         *
+         * @param {string} value
+         * @return {string}
+         */
+
+    }, {
+        key: 'encodeQueryComponent',
+        value: function encodeQueryComponent(value) {
+            return Router.customEncodeURIComponent(value).replace(/%3F/g, '?');
         }
     }]);
 
