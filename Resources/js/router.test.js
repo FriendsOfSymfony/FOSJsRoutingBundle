@@ -519,3 +519,18 @@ function testGenerateWithPort() {
 
   assertEquals('http://api.localhost:443/foo/bar', router.generate('homepage'));
 }
+
+// Regression test for issue #384 (https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/issues/384)
+function testGenerateWithPortInHost() {
+  var router = new fos.Router({base_url: '', host: "my-host.loc:81", scheme: "http", port: 81}, {
+    homepage: {
+      tokens: [['text', "\/foo\/"]],
+      defaults: [],
+      requirements: {},
+      hosttokens: [["text", "my-host.loc"]],
+      methods: ["GET", "POST"],
+    }
+  });
+
+  assertEquals('/foo/', router.generate('homepage'));
+}
