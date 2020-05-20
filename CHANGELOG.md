@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.6.0 - 2020-05-20
+- [BC break] Fix URL encoding to mimic Symfony URL Generator (this might change behavior for special characters, it should be in line with Symfony Router though) ([#387](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/387))
+- Fixed issue with creating absolute instead of relative path on hosts with differing ports ([#391](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/391))
+
 ## v2.5.4 - 2020-04-15
 - Fix duplicated port in absolute path ([#381](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/381))
 
