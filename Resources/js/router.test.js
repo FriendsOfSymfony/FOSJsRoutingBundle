@@ -359,7 +359,7 @@ function testGenerateWithExtraParamsDeep() {
         }
     });
 
-    assertEquals('/baz?foo%5B%5D=1&foo%5B1%5D%5B%5D=1&foo%5B1%5D%5B%5D=2&foo%5B1%5D%5B%5D=3&foo%5B1%5D%5B%5D=foo&foo%5B%5D=3&foo%5B%5D=4&foo%5B%5D=bar&foo%5B5%5D%5B%5D=1&foo%5B5%5D%5B%5D=2&foo%5B5%5D%5B%5D=3&foo%5B5%5D%5B%5D=baz&baz%5Bfoo%5D=bar+foo&baz%5Bbar%5D=baz&bob=cat', router.generate('foo', {
+    assertEquals('/baz?foo%5B%5D=1&foo%5B1%5D%5B%5D=1&foo%5B1%5D%5B%5D=2&foo%5B1%5D%5B%5D=3&foo%5B1%5D%5B%5D=foo&foo%5B%5D=3&foo%5B%5D=4&foo%5B%5D=bar&foo%5B5%5D%5B%5D=1&foo%5B5%5D%5B%5D=2&foo%5B5%5D%5B%5D=3&foo%5B5%5D%5B%5D=baz&baz%5Bfoo%5D=bar%20foo&baz%5Bbar%5D=baz&bob=cat', router.generate('foo', {
         bar: 'baz', // valid param, not included in the query string
         foo: [1, [1, 2, 3, 'foo'], 3, 4, 'bar', [1, 2, 3, 'baz']],
         baz: {
@@ -368,6 +368,28 @@ function testGenerateWithExtraParamsDeep() {
         },
         bob: 'cat'
     }));
+}
+
+function testUrlEncoding() {
+    // This test was copied from Symfony URL Generator
+
+    // This tests the encoding of reserved characters that are used for delimiting of URI components (defined in RFC 3986)
+    // and other special ASCII chars. These chars are tested as static text path, variable path and query param.
+    var chars = '@:[]/()*\'" +,;-._~&$<>|{}%\\^`!?foo=bar#id';
+
+    var router = new fos.Router({base_url: '/app.php'}, {
+        posts: {
+            tokens: [['variable', '/', '.+', 'varpath'], ['text', '/'+chars]],
+            defaults: {},
+            requirements: {},
+            hosttokens: []
+        }
+    });
+
+    assertEquals(
+        '/app.php/@:%5B%5D/%28%29*%27%22%20+,;-._~%26%24%3C%3E|%7B%7D%25%5C%5E%60!%3Ffoo=bar%23id/@:%5B%5D/%28%29*%27%22%20+,;-._~%26%24%3C%3E|%7B%7D%25%5C%5E%60!%3Ffoo=bar%23id?query=@:%5B%5D/%28%29*%27%22%20%2B,;-._~%26%24%3C%3E%7C%7B%7D%25%5C%5E%60!?foo%3Dbar%23id',
+        router.generate('posts', {varpath: chars, query: chars})
+    );
 }
 
 function testGenerateThrowsErrorWhenRequiredParameterWasNotGiven() {
