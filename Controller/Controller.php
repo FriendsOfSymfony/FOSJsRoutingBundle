@@ -105,8 +105,7 @@ class Controller
         $content = $this->serializer->serialize($routesResponse, 'json');
 
         if (null !== $callback = $request->query->get('callback')) {
-            $validator = new \JsonpCallbackValidator();
-            if (!$validator->validate($callback)) {
+            if (!is_string($callback) || !(new \JsonpCallbackValidator())->validate($callback)) {
                 throw new HttpException(400, 'Invalid JSONP callback value');
             }
 

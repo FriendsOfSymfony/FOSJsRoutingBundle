@@ -109,11 +109,17 @@ class ControllerTest extends TestCase
         );
     }
 
-    public function testGenerateWithInvalidCallback()
+    /**
+     * @testWith ["(function xss(x) {evil()})"]
+     *           [["foo", "bar"]]
+     *
+     * @group legacy
+     */
+    public function testGenerateWithInvalidCallback($callback)
     {
         $this->expectException(HttpException::class);
         $controller = new Controller($this->getSerializer(), $this->getExtractor());
-        $controller->indexAction($this->getRequest('/', 'GET', array('callback' => '(function xss(x) {evil()})')), 'json');
+        $controller->indexAction($this->getRequest('/', 'GET', array('callback' => $callback)), 'json');
     }
 
     public function testIndexActionWithoutRoutes()
