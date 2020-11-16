@@ -49,9 +49,9 @@ class RouterDebugExposedCommandTest extends TestCase
         $tester = new CommandTester($command);
         $tester->execute(array());
 
-        $this->assertRegExp('/literal(.*ANY){3}.*\/literal/', $tester->getDisplay());
-        $this->assertRegExp('/blog_post(.*ANY){3}.*\/blog-post\/{slug}/', $tester->getDisplay());
-        $this->assertRegExp('/list(.*ANY){3}.*\/literal/', $tester->getDisplay());
+        $this->assertMatchesRegularExpression('/literal(.*ANY){3}.*\/literal/', $tester->getDisplay());
+        $this->assertMatchesRegularExpression('/blog_post(.*ANY){3}.*\/blog-post\/{slug}/', $tester->getDisplay());
+        $this->assertMatchesRegularExpression('/list(.*ANY){3}.*\/literal/', $tester->getDisplay());
     }
 
     public function testExecuteWithNameUnknown()
