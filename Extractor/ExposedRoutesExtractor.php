@@ -58,7 +58,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
      *
      * @throws \Exception
      */
-    public function __construct(RouterInterface $router, array $routesToExpose = array(), $cacheDir, $bundles = array())
+    public function __construct(RouterInterface $router, array $routesToExpose, $cacheDir, $bundles = array())
     {
         $this->router         = $router;
         $this->cacheDir       = $cacheDir;
