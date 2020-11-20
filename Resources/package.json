@@ -32,7 +32,7 @@
     "babel-polyfill": "^6.9.1",
     "babel-preset-es2015": "^6.9.0",
     "babel-register": "^6.11.6",
-    "google-closure-library": "^20171203.0.0",
+    "google-closure-library": "^20200830.0.0",
     "gulp": "^4.0.2",
     "gulp-babel": "^6.1.2",
     "gulp-rename": "^1.2.2",
