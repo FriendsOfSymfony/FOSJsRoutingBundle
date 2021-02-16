@@ -12,6 +12,7 @@
 namespace FOS\JsRoutingBundle\Util;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
 
 class CacheControlConfig
 {
@@ -33,6 +34,8 @@ class CacheControlConfig
         if (empty($this->parameters['enabled'])) {
             return;
         }
+
+        $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
 
         $this->parameters['public'] ? $response->setPublic() : $response->setPrivate();
 
