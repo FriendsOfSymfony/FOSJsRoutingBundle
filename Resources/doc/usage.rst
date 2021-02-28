@@ -78,6 +78,11 @@ Assuming some route definitions:
             // ...
         }
 
+        #[Route('/new', name: 'new', options: ["expose" => true], methods: ['GET', 'POST'])]
+        public function newAction(Request $request) {
+            // ...
+        }
+
         /**
          * @Route("/blog/{page}",
          *     defaults = { "page" = 1 },
