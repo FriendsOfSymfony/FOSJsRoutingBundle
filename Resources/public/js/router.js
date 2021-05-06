@@ -16,18 +16,13 @@
         };
     }
 }(this, function () {
-    'use strict';
-/**
- * @fileoverview This file defines the Router class.
- *
- * You can compile this file by running the following command from the Resources folder:
- *
- *    npm install && npm run build
- */
+    var exports = {};
+    "use strict";
 
-/**
- * Class Router
- */
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Routing = exports.Router = void 0;
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
@@ -40,11 +35,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var Router = /*#__PURE__*/function () {
-  /**
-   * @constructor
-   * @param {Router.Context=} context
-   * @param {Object.<string, Router.Route>=} routes
-   */
   function Router(context, routes) {
     _classCallCheck(this, Router);
 
@@ -58,20 +48,10 @@ var Router = /*#__PURE__*/function () {
     };
     this.setRoutes(routes || {});
   }
-  /**
-   * Returns the current instance.
-   * @returns {Router}
-   */
-
 
   _createClass(Router, [{
     key: "setRoutingData",
-    value:
-    /**
-     * Sets data for the current instance
-     * @param {Object} data
-     */
-    function setRoutingData(data) {
+    value: function setRoutingData(data) {
       this.setBaseUrl(data['base_url']);
       this.setRoutes(data['routes']);
 
@@ -90,100 +70,56 @@ var Router = /*#__PURE__*/function () {
       this.setHost(data['host']);
       this.setScheme(data['scheme']);
     }
-    /**
-     * @param {Object.<string, Router.Route>} routes
-     */
-
   }, {
     key: "setRoutes",
     value: function setRoutes(routes) {
       this.routes_ = Object.freeze(routes);
     }
-    /**
-     * @return {Object.<string, Router.Route>} routes
-     */
-
   }, {
     key: "getRoutes",
     value: function getRoutes() {
       return this.routes_;
     }
-    /**
-     * @param {string} baseUrl
-     */
-
   }, {
     key: "setBaseUrl",
     value: function setBaseUrl(baseUrl) {
       this.context_.base_url = baseUrl;
     }
-    /**
-     * @return {string}
-     */
-
   }, {
     key: "getBaseUrl",
     value: function getBaseUrl() {
       return this.context_.base_url;
     }
-    /**
-     * @param {string} prefix
-     */
-
   }, {
     key: "setPrefix",
     value: function setPrefix(prefix) {
       this.context_.prefix = prefix;
     }
-    /**
-     * @param {string} scheme
-     */
-
   }, {
     key: "setScheme",
     value: function setScheme(scheme) {
       this.context_.scheme = scheme;
     }
-    /**
-     * @return {string}
-     */
-
   }, {
     key: "getScheme",
     value: function getScheme() {
       return this.context_.scheme;
     }
-    /**
-     * @param {string} host
-     */
-
   }, {
     key: "setHost",
     value: function setHost(host) {
       this.context_.host = host;
     }
-    /**
-     * @return {string}
-     */
-
   }, {
     key: "getHost",
     value: function getHost() {
       return this.context_.host;
     }
-    /**
-     * @param {string} port
-    */
-
   }, {
     key: "setPort",
     value: function setPort(port) {
       this.context_.port = port;
     }
-    /**
-     * @return {string}
-     */
-
   }, {
     key: "getPort",
     value: function getPort() {
@@ -191,17 +127,9 @@ var Router = /*#__PURE__*/function () {
     }
   }, {
     key: "setLocale",
-    value:
-    /**
-     * @param {string} locale
-     */
-    function setLocale(locale) {
+    value: function setLocale(locale) {
       this.context_.locale = locale;
     }
-    /**
-     * @return {string}
-     */
-
   }, {
     key: "getLocale",
     value: function getLocale() {
@@ -213,10 +141,6 @@ var Router = /*#__PURE__*/function () {
     /**
      * Builds query string params added to a URL.
      * Port of jQuery's $.param() function, so credit is due there.
-     *
-     * @param {string} prefix
-     * @param {Array|Object|string} params
-     * @param {Function} add
      */
     function buildQueryParams(prefix, params, add) {
       var _this = this;
@@ -242,9 +166,6 @@ var Router = /*#__PURE__*/function () {
     }
     /**
      * Returns a raw route object.
-     *
-     * @param {string} name
-     * @return {Router.Route}
      */
 
   }, {
@@ -265,25 +186,18 @@ var Router = /*#__PURE__*/function () {
     }
     /**
      * Generates the URL for a route.
-     *
-     * @param {string} name
-     * @param {Object.<string, string>} opt_params
-     * @param {boolean} absolute
-     * @return {string}
      */
 
   }, {
     key: "generate",
-    value: function generate(name, opt_params) {
-      var absolute = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
+    value: function generate(name, opt_params, absolute) {
       var route = this.getRoute(name),
           params = opt_params || {},
           unusedParams = _extends({}, params),
           url = '',
           optional = true,
           host = '',
-          port = typeof this.getPort() == "undefined" || this.getPort() === null ? '' : this.getPort();
+          port = typeof this.getPort() == 'undefined' || this.getPort() === null ? '' : this.getPort();
 
       route.tokens.forEach(function (token) {
         if ('text' === token[0]) {
@@ -358,21 +272,22 @@ var Router = /*#__PURE__*/function () {
 
       url = this.context_.base_url + url;
 
-      if (route.requirements && "_scheme" in route.requirements && this.getScheme() != route.requirements["_scheme"]) {
+      if (route.requirements && '_scheme' in route.requirements && this.getScheme() != route.requirements['_scheme']) {
         var currentHost = host || this.getHost();
-        url = route.requirements["_scheme"] + "://" + currentHost + (currentHost.indexOf(':' + port) > -1 || '' === port ? '' : ':' + port) + url;
-      } else if ("undefined" !== typeof route.schemes && "undefined" !== typeof route.schemes[0] && this.getScheme() !== route.schemes[0]) {
+        url = route.requirements['_scheme'] + '://' + currentHost + (currentHost.indexOf(':' + port) > -1 || '' === port ? '' : ':' + port) + url;
+      } else if ('undefined' !== typeof route.schemes && 'undefined' !== typeof route.schemes[0] && this.getScheme() !== route.schemes[0]) {
         var _currentHost = host || this.getHost();
 
-        url = route.schemes[0] + "://" + _currentHost + (_currentHost.indexOf(':' + port) > -1 || '' === port ? '' : ':' + port) + url;
+        url = route.schemes[0] + '://' + _currentHost + (_currentHost.indexOf(':' + port) > -1 || '' === port ? '' : ':' + port) + url;
       } else if (host && this.getHost() !== host + (host.indexOf(':' + port) > -1 || '' === port ? '' : ':' + port)) {
-        url = this.getScheme() + "://" + host + (host.indexOf(':' + port) > -1 || '' === port ? '' : ':' + port) + url;
+        url = this.getScheme() + '://' + host + (host.indexOf(':' + port) > -1 || '' === port ? '' : ':' + port) + url;
       } else if (absolute === true) {
-        url = this.getScheme() + "://" + this.getHost() + (this.getHost().indexOf(':' + port) > -1 || '' === port ? '' : ':' + port) + url;
+        url = this.getScheme() + '://' + this.getHost() + (this.getHost().indexOf(':' + port) > -1 || '' === port ? '' : ':' + port) + url;
       }
 
       if (Object.keys(unusedParams).length > 0) {
-        var prefix;
+        var _prefix;
+
         var queryParams = [];
 
         var add = function add(key, value) {
@@ -383,8 +298,8 @@ var Router = /*#__PURE__*/function () {
           queryParams.push(Router.encodeQueryComponent(key) + '=' + Router.encodeQueryComponent(value));
         };
 
-        for (prefix in unusedParams) {
-          this.buildQueryParams(prefix, unusedParams[prefix], add);
+        for (_prefix in unusedParams) {
+          this.buildQueryParams(_prefix, unusedParams[_prefix], add);
         }
 
         url = url + '?' + queryParams.join('&');
@@ -394,9 +309,6 @@ var Router = /*#__PURE__*/function () {
     }
     /**
      * Returns the given string encoded to mimic Symfony URL generator.
-     *
-     * @param {string} value
-     * @return {string}
      */
 
   }], [{
@@ -404,11 +316,6 @@ var Router = /*#__PURE__*/function () {
     value: function getInstance() {
       return Routing;
     }
-    /**
-     * Configures the current Router instance with the provided data.
-     * @param {Object} data
-     */
-
   }, {
     key: "setData",
     value: function setData(data) {
@@ -422,9 +329,6 @@ var Router = /*#__PURE__*/function () {
     }
     /**
      * Returns the given path properly encoded to mimic Symfony URL generator.
-     *
-     * @param {string} value
-     * @return {string}
      */
 
   }, {
@@ -434,9 +338,6 @@ var Router = /*#__PURE__*/function () {
     }
     /**
      * Returns the given query parameter or value properly encoded to mimic Symfony URL generator.
-     *
-     * @param {string} value
-     * @return {string}
      */
 
   }, {
@@ -448,31 +349,10 @@ var Router = /*#__PURE__*/function () {
 
   return Router;
 }();
-/**
- * @typedef {{
- *     tokens: (Array.<Array.<string>>),
- *     defaults: (Object.<string, string>),
- *     requirements: Object,
- *     hosttokens: (Array.<string>)
- * }}
- */
 
-
-Router.Route;
-/**
- * @typedef {{
- *     base_url: (string)
- * }}
- */
-
-Router.Context;
-/**
- * Router singleton.
- * @const
- * @type {Router}
- */
-
+exports.Router = Router;
 var Routing = new Router();
+exports.Routing = Routing;
 
     return { Router: Router, Routing: Routing };
 }));
