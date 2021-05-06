@@ -55,20 +55,23 @@ var Router = /*#__PURE__*/function () {
       this.setBaseUrl(data['base_url']);
       this.setRoutes(data['routes']);
 
-      if ('prefix' in data) {
+      if (typeof data.prefix !== 'undefined') {
         this.setPrefix(data['prefix']);
       }
 
-      if ('port' in data) {
+      if (typeof data.port !== 'undefined') {
         this.setPort(data['port']);
       }
 
-      if ('locale' in data) {
+      if (typeof data.locale !== 'undefined') {
         this.setLocale(data['locale']);
       }
 
       this.setHost(data['host']);
-      this.setScheme(data['scheme']);
+
+      if (typeof data.scheme !== 'undefined') {
+        this.setScheme(data['scheme']);
+      }
     }
   }, {
     key: "setRoutes",
@@ -191,14 +194,15 @@ var Router = /*#__PURE__*/function () {
   }, {
     key: "generate",
     value: function generate(name, opt_params, absolute) {
-      var route = this.getRoute(name),
-          params = opt_params || {},
-          unusedParams = _extends({}, params),
-          url = '',
-          optional = true,
-          host = '',
-          port = typeof this.getPort() == 'undefined' || this.getPort() === null ? '' : this.getPort();
+      var route = this.getRoute(name);
+      var params = opt_params || {};
 
+      var unusedParams = _extends({}, params);
+
+      var url = '';
+      var optional = true;
+      var host = '';
+      var port = typeof this.getPort() == 'undefined' || this.getPort() === null ? '' : this.getPort();
       route.tokens.forEach(function (token) {
         if ('text' === token[0]) {
           url = Router.encodePathComponent(token[1]) + url;
@@ -207,15 +211,15 @@ var Router = /*#__PURE__*/function () {
         }
 
         if ('variable' === token[0]) {
-          var hasDefault = route.defaults && token[3] in route.defaults;
+          var hasDefault = route.defaults && !Array.isArray(route.defaults) && token[3] && token[3] in route.defaults;
 
-          if (false === optional || !hasDefault || token[3] in params && params[token[3]] != route.defaults[token[3]]) {
+          if (false === optional || !hasDefault || token[3] && token[3] in params && !Array.isArray(route.defaults) && params[token[3]] != route.defaults[token[3]]) {
             var value;
 
-            if (token[3] in params) {
+            if (token[3] && token[3] in params) {
               value = params[token[3]];
               delete unusedParams[token[3]];
-            } else if (hasDefault) {
+            } else if (token[3] && hasDefault && !Array.isArray(route.defaults)) {
               value = route.defaults[token[3]];
             } else if (optional) {
               return;
@@ -236,7 +240,7 @@ var Router = /*#__PURE__*/function () {
             }
 
             optional = false;
-          } else if (hasDefault && token[3] in unusedParams) {
+          } else if (hasDefault && token[3] && token[3] in unusedParams) {
             delete unusedParams[token[3]];
           }
 
@@ -262,7 +266,7 @@ var Router = /*#__PURE__*/function () {
           if (token[3] in params) {
             value = params[token[3]];
             delete unusedParams[token[3]];
-          } else if (route.defaults && token[3] in route.defaults) {
+          } else if (route.defaults && !Array.isArray(route.defaults) && token[3] in route.defaults) {
             value = route.defaults[token[3]];
           }
 
@@ -286,8 +290,6 @@ var Router = /*#__PURE__*/function () {
       }
 
       if (Object.keys(unusedParams).length > 0) {
-        var _prefix;
-
         var queryParams = [];
 
         var add = function add(key, value) {
@@ -298,8 +300,10 @@ var Router = /*#__PURE__*/function () {
           queryParams.push(Router.encodeQueryComponent(key) + '=' + Router.encodeQueryComponent(value));
         };
 
-        for (_prefix in unusedParams) {
-          this.buildQueryParams(_prefix, unusedParams[_prefix], add);
+        for (var _prefix in unusedParams) {
+          if (unusedParams.hasOwnProperty(_prefix)) {
+            this.buildQueryParams(_prefix, unusedParams[_prefix], add);
+          }
         }
 
         url = url + '?' + queryParams.join('&');

@@ -15,11 +15,12 @@ export interface QueryParamAddFunction {
 }
 
 export interface Route {
-  tokens: string[][];
-  defaults: RouteDefaults;
-  requirements: RouteRequirements;
-  hosttokens: string[];
+  tokens: ([string, string] | [string, string, string] | [string, string, string, string] | [string, string, string, string, boolean])[];
+  defaults: undefined[] | RouteDefaults;
+  requirements: undefined[] | RouteRequirements;
+  hosttokens: string[][];
   schemes: string[];
+  methods: string[];
 }
 
 export interface RoutesMap {
@@ -30,7 +31,7 @@ export interface Context {
   base_url: string;
   prefix: string;
   host: string;
-  port: string;
+  port: string | null;
   scheme: string;
   locale: string;
 }
@@ -40,12 +41,14 @@ export interface RoutingData {
   routes: RoutesMap;
   prefix?: string;
   host: string;
-  scheme: string;
+  port?: string | null;
+  scheme?: string;
+  locale?: string;
 }
 
 export class Router {
   private context_: Context;
-  private routes_: RoutesMap;
+  private routes_!: RoutesMap;
 
   static getInstance(): Router {
     return Routing;
@@ -66,18 +69,21 @@ export class Router {
     this.setBaseUrl(data['base_url']);
     this.setRoutes(data['routes']);
 
-    if ('prefix' in data) {
+    if (typeof data.prefix !== 'undefined') {
       this.setPrefix(data['prefix']);
     }
-    if ('port' in data) {
+    if (typeof data.port !== 'undefined') {
       this.setPort(data['port']);
     }
-    if ('locale' in data) {
+    if (typeof data.locale !== 'undefined') {
       this.setLocale(data['locale']);
     }
 
     this.setHost(data['host']);
-    this.setScheme(data['scheme']);
+
+    if (typeof data.scheme !== 'undefined') {
+      this.setScheme(data['scheme']);
+    }
   }
 
   setRoutes(routes: RoutesMap): void {
@@ -116,11 +122,11 @@ export class Router {
     return this.context_.host;
   }
 
-  setPort(port: string) {
+  setPort(port: string | null) {
     this.context_.port = port;
   }
 
-  getPort(): string {
+  getPort(): string | null {
     return this.context_.port;
   };
 
@@ -179,13 +185,13 @@ export class Router {
    * Generates the URL for a route.
    */
   generate(name: string, opt_params?: RouteParams, absolute?: boolean): string {
-    let route = (this.getRoute(name)),
-      params = opt_params || {},
-      unusedParams = Object.assign({}, params),
-      url = '',
-      optional = true,
-      host = '',
-      port = (typeof this.getPort() == 'undefined' || this.getPort() === null) ? '' : this.getPort();
+    let route = (this.getRoute(name));
+    let params = opt_params || {};
+    let unusedParams = Object.assign({}, params);
+    let url = '';
+    let optional = true;
+    let host = '';
+    let port = (typeof this.getPort() == 'undefined' || this.getPort() === null) ? '' : this.getPort();
 
     route.tokens.forEach((token) => {
       if ('text' === token[0]) {
@@ -196,14 +202,14 @@ export class Router {
       }
 
       if ('variable' === token[0]) {
-        let hasDefault = route.defaults && (token[3] in route.defaults);
-        if (false === optional || !hasDefault || ((token[3] in params) && params[token[3]] != route.defaults[token[3]])) {
+        let hasDefault = route.defaults && !Array.isArray(route.defaults) && token[3] && (token[3] in route.defaults);
+        if (false === optional || !hasDefault || ((token[3] && token[3] in params) && !Array.isArray(route.defaults) && params[token[3]] != route.defaults[token[3]])) {
           let value;
 
-          if (token[3] in params) {
+          if (token[3] && token[3] in params) {
             value = params[token[3]];
             delete unusedParams[token[3]];
-          } else if (hasDefault) {
+          } else if (token[3] && hasDefault && !Array.isArray(route.defaults)) {
             value = route.defaults[token[3]];
           } else if (optional) {
             return;
@@ -224,7 +230,7 @@ export class Router {
           }
 
           optional = false;
-        } else if (hasDefault && (token[3] in unusedParams)) {
+        } else if (hasDefault && (token[3] && token[3] in unusedParams)) {
           delete unusedParams[token[3]];
         }
 
@@ -251,7 +257,7 @@ export class Router {
         if (token[3] in params) {
           value = params[token[3]];
           delete unusedParams[token[3]];
-        } else if (route.defaults && (token[3] in route.defaults)) {
+        } else if (route.defaults && !Array.isArray(route.defaults) && (token[3] in route.defaults)) {
           value = route.defaults[token[3]];
         }
 
@@ -276,9 +282,8 @@ export class Router {
     }
 
     if (Object.keys(unusedParams).length > 0) {
-      let prefix;
-      let queryParams = [];
-      let add = (key, value) => {
+      let queryParams: string[] = [];
+      let add = (key: string, value: string|(() => string)) => {
         // if value is a function then call it and assign it's return value as value
         value = (typeof value === 'function') ? value() : value;
 
@@ -288,8 +293,10 @@ export class Router {
         queryParams.push(Router.encodeQueryComponent(key) + '=' + Router.encodeQueryComponent(value));
       };
 
-      for (prefix in unusedParams) {
-        this.buildQueryParams(prefix, unusedParams[prefix], add);
+      for (const prefix in unusedParams) {
+        if(unusedParams.hasOwnProperty(prefix)) {
+          this.buildQueryParams(prefix, unusedParams[prefix], add);
+        }
       }
 
       url = url + '?' + queryParams.join('&');

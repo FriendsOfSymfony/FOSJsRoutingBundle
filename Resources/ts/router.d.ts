@@ -11,11 +11,12 @@ export interface QueryParamAddFunction {
     (prefix: string, params: any): void;
 }
 export interface Route {
-    tokens: string[][];
-    defaults: RouteDefaults;
-    requirements: RouteRequirements;
-    hosttokens: string[];
+    tokens: ([string, string] | [string, string, string] | [string, string, string, string] | [string, string, string, string, boolean])[];
+    defaults: undefined[] | RouteDefaults;
+    requirements: undefined[] | RouteRequirements;
+    hosttokens: string[][];
     schemes: string[];
+    methods: string[];
 }
 export interface RoutesMap {
     [index: string]: Route;
@@ -24,7 +25,7 @@ export interface Context {
     base_url: string;
     prefix: string;
     host: string;
-    port: string;
+    port: string | null;
     scheme: string;
     locale: string;
 }
@@ -33,7 +34,9 @@ export interface RoutingData {
     routes: RoutesMap;
     prefix?: string;
     host: string;
-    scheme: string;
+    port?: string | null;
+    scheme?: string;
+    locale?: string;
 }
 export declare class Router {
     private context_;
@@ -51,8 +54,8 @@ export declare class Router {
     getScheme(): string;
     setHost(host: string): void;
     getHost(): string;
-    setPort(port: string): void;
-    getPort(): string;
+    setPort(port: string | null): void;
+    getPort(): string | null;
     setLocale(locale: string): void;
     getLocale(): string;
     /**
