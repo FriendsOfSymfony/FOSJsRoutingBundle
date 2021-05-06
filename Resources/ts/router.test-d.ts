@@ -17,7 +17,7 @@ Routing.setScheme('https');
 expectType<string>(Routing.getHost());
 Routing.setHost('localhost');
 
-expectType<string>(Routing.getPort());
+expectType<string | null>(Routing.getPort());
 Routing.setPort('1234');
 
 expectType<string>(Routing.getLocale());
