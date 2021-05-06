@@ -21,12 +21,13 @@
       "email": "bens.sampaio@gmail.com"
     }
   ],
+  "main": "public/js/router.js",
   "files": [
     "public/js/router.js",
     "public/js/router.min.js",
     "ts/router.d.ts"
   ],
-  "main": "public/js/router.js",
+  "types": "ts/router.d.ts",
   "devDependencies": {
     "@babel/core": "^7.14.0",
     "@babel/plugin-transform-object-assign": "^7.12.13",
@@ -41,12 +42,14 @@
     "gulp-uglify": "^1.5.4",
     "gulp-wrap": "^0.13.0",
     "jasmine": "^2.4.1",
+    "tsd": "^0.14.0",
     "typescript": "^4.2.4"
   },
   "scripts": {
     "build": "gulp && npm run build:types",
     "build:types": "tsc --declaration --emitDeclarationOnly",
-    "test": "npm run build && phantomjs js/run_jsunit.js js/router_test.html"
+    "test": "npm run build && npm run test:types && phantomjs js/run_jsunit.js js/router_test.html",
+    "test:types": "tsd"
   },
   "dependencies": {}
 }
