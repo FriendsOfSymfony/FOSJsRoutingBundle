@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "declarationDir": "ts"
+    "declarationDir": "ts",
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   }
 }

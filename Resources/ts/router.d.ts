@@ -11,7 +11,7 @@ export interface QueryParamAddFunction {
     (prefix: string, params: any): void;
 }
 export interface Route {
-    tokens: ([string, string] | [string, string, string] | [string, string, string, string] | [string, string, string, string, boolean])[];
+    tokens: (string | boolean)[][];
     defaults: undefined[] | RouteDefaults;
     requirements: undefined[] | RouteRequirements;
     hosttokens: string[][];
@@ -27,7 +27,7 @@ export interface Context {
     host: string;
     port: string | null;
     scheme: string;
-    locale: string;
+    locale: string | null;
 }
 export interface RoutingData {
     base_url: string;
@@ -36,7 +36,7 @@ export interface RoutingData {
     host: string;
     port?: string | null;
     scheme?: string;
-    locale?: string;
+    locale?: string | null;
 }
 export declare class Router {
     private context_;
@@ -56,8 +56,8 @@ export declare class Router {
     getHost(): string;
     setPort(port: string | null): void;
     getPort(): string | null;
-    setLocale(locale: string): void;
-    getLocale(): string;
+    setLocale(locale: string | null): void;
+    getLocale(): string | null;
     /**
      * Builds query string params added to a URL.
      * Port of jQuery's $.param() function, so credit is due there.

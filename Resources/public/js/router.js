@@ -204,22 +204,22 @@ var Router = /*#__PURE__*/function () {
       var host = '';
       var port = typeof this.getPort() == 'undefined' || this.getPort() === null ? '' : this.getPort();
       route.tokens.forEach(function (token) {
-        if ('text' === token[0]) {
+        if ('text' === token[0] && typeof token[1] === 'string') {
           url = Router.encodePathComponent(token[1]) + url;
           optional = false;
           return;
         }
 
         if ('variable' === token[0]) {
-          var hasDefault = route.defaults && !Array.isArray(route.defaults) && token[3] && token[3] in route.defaults;
+          var hasDefault = route.defaults && !Array.isArray(route.defaults) && typeof token[3] === 'string' && token[3] in route.defaults;
 
-          if (false === optional || !hasDefault || token[3] && token[3] in params && !Array.isArray(route.defaults) && params[token[3]] != route.defaults[token[3]]) {
+          if (false === optional || !hasDefault || typeof token[3] === 'string' && token[3] in params && !Array.isArray(route.defaults) && params[token[3]] != route.defaults[token[3]]) {
             var value;
 
-            if (token[3] && token[3] in params) {
+            if (typeof token[3] === 'string' && token[3] in params) {
               value = params[token[3]];
               delete unusedParams[token[3]];
-            } else if (token[3] && hasDefault && !Array.isArray(route.defaults)) {
+            } else if (typeof token[3] === 'string' && hasDefault && !Array.isArray(route.defaults)) {
               value = route.defaults[token[3]];
             } else if (optional) {
               return;
@@ -240,7 +240,7 @@ var Router = /*#__PURE__*/function () {
             }
 
             optional = false;
-          } else if (hasDefault && token[3] && token[3] in unusedParams) {
+          } else if (hasDefault && typeof token[3] === 'string' && token[3] in unusedParams) {
             delete unusedParams[token[3]];
           }
 

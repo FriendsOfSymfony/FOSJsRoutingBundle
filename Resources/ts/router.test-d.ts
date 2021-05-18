@@ -1,6 +1,7 @@
 import { expectType } from 'tsd';
 import { RoutesMap } from '../js/router';
 import { Route, Router, Routing } from './router';
+import routes from './routes.json';
 
 expectType<Router>(Router.getInstance());
 expectType<Router>(Routing);
@@ -20,9 +21,10 @@ Routing.setHost('localhost');
 expectType<string | null>(Routing.getPort());
 Routing.setPort('1234');
 
-expectType<string>(Routing.getLocale());
+expectType<string | null>(Routing.getLocale());
 Routing.setLocale('en');
 
+Routing.setRoutingData(routes);
 Routing.setRoutingData({
   base_url: '',
   routes: {
