@@ -22,7 +22,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Routing = exports.Router = void 0;
+exports["default"] = exports.Routing = exports.Router = void 0;
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
@@ -357,6 +357,8 @@ var Router = /*#__PURE__*/function () {
 exports.Router = Router;
 var Routing = new Router();
 exports.Routing = Routing;
+var _default = Routing;
+exports["default"] = _default;
 
     return { Router: Router, Routing: Routing };
 }));

@@ -346,3 +346,5 @@ export class Router {
 }
 
 export const Routing = new Router();
+
+export default Routing;
