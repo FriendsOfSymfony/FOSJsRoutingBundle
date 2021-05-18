@@ -15,7 +15,7 @@ export interface QueryParamAddFunction {
 }
 
 export interface Route {
-  tokens: ([string, string] | [string, string, string] | [string, string, string, string] | [string, string, string, string, boolean])[];
+  tokens: (string|boolean)[][];
   defaults: undefined[] | RouteDefaults;
   requirements: undefined[] | RouteRequirements;
   hosttokens: string[][];
@@ -33,7 +33,7 @@ export interface Context {
   host: string;
   port: string | null;
   scheme: string;
-  locale: string;
+  locale: string | null;
 }
 
 export interface RoutingData {
@@ -43,7 +43,7 @@ export interface RoutingData {
   host: string;
   port?: string | null;
   scheme?: string;
-  locale?: string;
+  locale?: string | null;
 }
 
 export class Router {
@@ -130,11 +130,11 @@ export class Router {
     return this.context_.port;
   };
 
-  setLocale(locale: string) {
+  setLocale(locale: string | null) {
     this.context_.locale = locale;
   }
 
-  getLocale(): string {
+  getLocale(): string | null {
     return this.context_.locale;
   };
 
@@ -194,7 +194,7 @@ export class Router {
     let port = (typeof this.getPort() == 'undefined' || this.getPort() === null) ? '' : this.getPort();
 
     route.tokens.forEach((token) => {
-      if ('text' === token[0]) {
+      if ('text' === token[0] && typeof token[1] === 'string') {
         url = Router.encodePathComponent(token[1]) + url;
         optional = false;
 
@@ -202,14 +202,14 @@ export class Router {
       }
 
       if ('variable' === token[0]) {
-        let hasDefault = route.defaults && !Array.isArray(route.defaults) && token[3] && (token[3] in route.defaults);
-        if (false === optional || !hasDefault || ((token[3] && token[3] in params) && !Array.isArray(route.defaults) && params[token[3]] != route.defaults[token[3]])) {
+        let hasDefault = route.defaults && !Array.isArray(route.defaults) && typeof token[3] === 'string' && (token[3] in route.defaults);
+        if (false === optional || !hasDefault || ((typeof token[3] === 'string' && token[3] in params) && !Array.isArray(route.defaults) && params[token[3]] != route.defaults[token[3]])) {
           let value;
 
-          if (token[3] && token[3] in params) {
+          if (typeof token[3] === 'string' && token[3] in params) {
             value = params[token[3]];
             delete unusedParams[token[3]];
-          } else if (token[3] && hasDefault && !Array.isArray(route.defaults)) {
+          } else if (typeof token[3] === 'string' && hasDefault && !Array.isArray(route.defaults)) {
             value = route.defaults[token[3]];
           } else if (optional) {
             return;
@@ -230,7 +230,7 @@ export class Router {
           }
 
           optional = false;
-        } else if (hasDefault && (token[3] && token[3] in unusedParams)) {
+        } else if (hasDefault && (typeof token[3] === 'string' && token[3] in unusedParams)) {
           delete unusedParams[token[3]];
         }
 

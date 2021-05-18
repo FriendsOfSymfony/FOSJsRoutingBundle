@@ -1,0 +1,45 @@
+{
+  "base_url": "",
+  "routes": {
+    "bazinga_jstranslation_js": {
+      "tokens": [
+        [
+          "variable",
+          ".",
+          "js|json",
+          "_format",
+          true
+        ],
+        [
+          "variable",
+          "\/",
+          "[\\w]+",
+          "domain",
+          true
+        ],
+        [
+          "text",
+          "\/translations"
+        ]
+      ],
+      "defaults": {
+        "domain": "messages",
+        "_format": "js"
+      },
+      "requirements": {
+        "_format": "js|json",
+        "domain": "[\\w]+"
+      },
+      "hosttokens": [],
+      "methods": [
+        "GET"
+      ],
+      "schemes": []
+    }
+  },
+  "prefix": "",
+  "host": "localhost",
+  "port": "",
+  "scheme": "https",
+  "locale": null
+}
