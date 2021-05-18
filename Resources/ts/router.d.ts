@@ -85,3 +85,4 @@ export declare class Router {
     static encodeQueryComponent(value: string): string;
 }
 export declare const Routing: Router;
+export default Routing;
