@@ -57,19 +57,16 @@ Routing.setRoutingData({
       ],
       schemes: []
     },
-    bazinga_jstranslation_js: {
+    feed_post: {
       tokens: [
         ['variable', '.', 'js|json', '_format', true],
-        ['variable', '/', '[\\w]+', 'domain', true],
-        ['text', '/translations'],
+        ['text', '/feed/post']
       ],
       defaults: {
-        domain: 'messages',
-        _format: 'js',
+        _format: 'xml',
       },
       requirements: {
-        _format: 'js|json',
-        domain: '[\\w]+',
+        _format: 'xml|json',
       },
       hosttokens: [],
       methods: ['GET'],
