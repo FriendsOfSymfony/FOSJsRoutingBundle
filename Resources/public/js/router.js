@@ -272,8 +272,7 @@ var Router = /*#__PURE__*/function () {
 
           host = token[1] + value + host;
         }
-      }); // Foo-bar!
-
+      });
       url = this.context_.base_url + url;
 
       if (route.requirements && '_scheme' in route.requirements && this.getScheme() != route.requirements['_scheme']) {
