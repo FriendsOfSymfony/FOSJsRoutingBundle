@@ -1,0 +1,33 @@
+{
+  "base_url": "",
+  "routes": {
+    "feed_post": {
+      "tokens": [
+        [
+          "variable",
+          ".",
+          "js|json",
+          "_format",
+          true
+        ],
+        ["text", "/feed/post"]
+      ],
+      "defaults": {
+        "_format": "xml"
+      },
+      "requirements": {
+        "_format": "xml|json"
+      },
+      "hosttokens": [],
+      "methods": [
+        "GET"
+      ],
+      "schemes": []
+    }
+  },
+  "prefix": "",
+  "host": "localhost",
+  "port": "",
+  "scheme": "https",
+  "locale": null
+}
