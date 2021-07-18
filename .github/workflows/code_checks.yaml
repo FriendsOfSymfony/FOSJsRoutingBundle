@@ -62,6 +62,10 @@ jobs:
           - php: '7.4'
             dependencies: highest
             symfony: '5.4.*'
+
+          - php: '8.0'
+            dependencies: highest
+            symfony: '6.0.*'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
