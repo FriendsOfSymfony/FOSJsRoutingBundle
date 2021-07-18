@@ -6,11 +6,15 @@ matrix:
     - php: 7.2
     - php: 7.3
     - php: 7.4
-    - php: 8.0snapshot
+    - php: 8.0
     - php: 7.1
       env: SYMFONY_VERSION='3.4.*'
     - php: 7.1
       env: DEPENDENCIES=beta
+    - php: 8.0
+      env:
+        - DEPENDENCIES=dev
+        - SYMFONY_VERSION='6.0.x-dev'
 
 sudo: false
 
@@ -20,7 +24,7 @@ cache:
     - $HOME/.composer/cache/files
 
 before_install:
-  - if [ "$DEPENDENCIES" = "beta" ]; then composer config minimum-stability beta; fi;
+  - if [ "$DEPENDENCIES" != "" ]; then composer config minimum-stability $DEPENDENCIES; fi;
   - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ] && [ "$TRAVIS_PHP_VERSION" != "7.3" ]; then phpenv config-rm xdebug.ini; fi
   - if [ "$SYMFONY_VERSION" != "" ]; then composer require --dev --no-update symfony/symfony=$SYMFONY_VERSION; fi
 
