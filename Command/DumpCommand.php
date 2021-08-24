@@ -174,6 +174,7 @@ class DumpCommand extends Command
                 $extractor->getHost(),
                 $extractor->getPort(),
                 $extractor->getScheme(),
+                $input->getOption('locale'),
                 $domain
             ),
             'json',
