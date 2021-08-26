@@ -14,7 +14,7 @@ This is a port of the _symfony 1.x_ plugin: [chCmsExposeRoutingPlugin](https://g
 Documentation
 -------------
 
-For documentation, see:
+For documentation, see: [Resources/doc/index.rst](Resources/doc/index.rst).
 
 [https://symfony.com/doc/master/bundles/FOSJsRoutingBundle/index.html](https://symfony.com/doc/master/bundles/FOSJsRoutingBundle/index.html)
 
