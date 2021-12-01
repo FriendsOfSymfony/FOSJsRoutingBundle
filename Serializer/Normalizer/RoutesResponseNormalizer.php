@@ -38,7 +38,7 @@ class RoutesResponseNormalizer implements NormalizerInterface
     /**
      * {@inheritDoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null) : bool
     {
         return $data instanceof RoutesResponse;
     }
