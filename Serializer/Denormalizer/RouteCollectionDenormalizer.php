@@ -19,6 +19,7 @@ class RouteCollectionDenormalizer implements DenormalizerInterface
 {
     /**
      * {@inheritDoc}
+     * @return mixed
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
@@ -43,7 +44,7 @@ class RouteCollectionDenormalizer implements DenormalizerInterface
     /**
      * {@inheritDoc}
      */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         if (!is_array($data)) {
             return false;

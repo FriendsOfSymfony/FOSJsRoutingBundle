@@ -76,7 +76,7 @@ EOF
     /**
      * @see Command
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($name = $input->getArgument('name')) {
             /** @var Route $route */

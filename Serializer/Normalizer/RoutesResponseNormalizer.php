@@ -21,6 +21,7 @@ class RoutesResponseNormalizer implements NormalizerInterface
 {
     /**
      * {@inheritdoc}
+     * @return array|string|int|float|bool|\ArrayObject|null
      */
     public function normalize($data, $format = null, array $context = array())
     {
@@ -38,7 +39,7 @@ class RoutesResponseNormalizer implements NormalizerInterface
     /**
      * {@inheritDoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof RoutesResponse;
     }
