@@ -66,7 +66,7 @@ class Controller
     /**
      * indexAction action.
      */
-    public function indexAction(Request $request, $_format)
+    public function indexAction(Request $request, $_format): Response
     {
         $session = $request->hasSession() ? $request->getSession() : null;
 

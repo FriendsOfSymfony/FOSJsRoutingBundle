@@ -74,7 +74,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function getRoutes()
+    public function getRoutes(): RouteCollection
     {
         $collection = $this->router->getRouteCollection();
         $routes     = new RouteCollection();
@@ -110,7 +110,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function getBaseUrl()
+    public function getBaseUrl(): string
     {
         return $this->router->getContext()->getBaseUrl() ?: '';
     }
@@ -118,7 +118,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function getPrefix($locale)
+    public function getPrefix($locale): string
     {
         if (isset($this->bundles['JMSI18nRoutingBundle'])) {
             return $locale . I18nLoader::ROUTING_PREFIX;
@@ -130,7 +130,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function getHost()
+    public function getHost(): string
     {
         $requestContext = $this->router->getContext();
 
@@ -143,7 +143,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function getPort()
+    public function getPort(): string
     {
         $requestContext = $this->router->getContext();
 
@@ -159,7 +159,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function getScheme()
+    public function getScheme(): string
     {
         return $this->router->getContext()->getScheme();
     }
@@ -167,7 +167,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function getCachePath($locale)
+    public function getCachePath($locale): string
     {
         $cachePath = $this->cacheDir . DIRECTORY_SEPARATOR . 'fosJsRouting';
         if (!file_exists($cachePath)) {

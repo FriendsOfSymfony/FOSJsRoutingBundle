@@ -22,7 +22,7 @@ class RouteCollectionNormalizer implements NormalizerInterface
     /**
      * {@inheritDoc}
      */
-    public function normalize($data, $format = null, array $context = array())
+    public function normalize($data, $format = null, array $context = array()): array
     {
         $collection = array();
 
@@ -45,7 +45,7 @@ class RouteCollectionNormalizer implements NormalizerInterface
     /**
      * {@inheritDoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof RouteCollection;
     }

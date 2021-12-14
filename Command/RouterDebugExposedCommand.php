@@ -47,7 +47,7 @@ class RouterDebugExposedCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDefinition(array(
@@ -76,7 +76,7 @@ EOF
     /**
      * @see Command
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($name = $input->getArgument('name')) {
             /** @var Route $route */
@@ -107,7 +107,7 @@ EOF
         return 0;
     }
 
-    protected function getRoutes($domain = array())
+    protected function getRoutes($domain = array()) : RouteCollection
     {
         $routes = $this->extractor->getRoutes();
 

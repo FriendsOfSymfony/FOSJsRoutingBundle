@@ -58,7 +58,7 @@ class DumpCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure() : void
     {
         $this
             ->setName('fos:js-routing:dump')
@@ -106,7 +106,7 @@ class DumpCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         if(!in_array($input->getOption('format'), array('js', 'json'))) {
             $output->writeln('<error>Invalid format specified. Use js or json.</error>');
@@ -132,7 +132,7 @@ class DumpCommand extends Command
      * @param InputInterface  $input  The command input
      * @param OutputInterface $output The command output
      */
-    private function doDump(InputInterface $input, OutputInterface $output)
+    private function doDump(InputInterface $input, OutputInterface $output): void
     {
         $domain = $input->getOption('domain');
 
