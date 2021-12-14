@@ -4,6 +4,20 @@ name: Code_Checks
 on: ["push", "pull_request"]
 
 jobs:
+  js-tests:
+    name: "JS Tests"
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install JS dependencies
+        run: |
+          cd Resources && npm install
+
+      - name: Run JS tests
+        run: |
+          cd Resources && npm run test
   phpunit:
     name: "PHP ${{ matrix.php }} + ${{ matrix.dependencies }} dependencies + Symfony ${{ matrix.symfony }}"
     runs-on: ubuntu-20.04
