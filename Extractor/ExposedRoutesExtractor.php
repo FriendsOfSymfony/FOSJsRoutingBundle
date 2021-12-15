@@ -120,7 +120,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function getPort(): string
+    public function getPort(): ?string
     {
         $requestContext = $this->router->getContext();
 

@@ -43,7 +43,7 @@ interface ExposedRoutesExtractorInterface
     /**
      * Get the port from RequestContext, only if non standard port (Eg: "8080")
      */
-    public function getPort(): string;
+    public function getPort(): ?string;
 
     /**
      * Get the scheme from RequestContext
