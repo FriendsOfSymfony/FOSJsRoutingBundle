@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.8.0 - 2021-12-15
+- Fix expose: false behavior ([#404](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/404))
+- Fix dump using domains ([#410](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/410))
+- Fix docs links ([#412](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/412))
+- Replace Travis with Github actions ([#414](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/414))
+
+## v2.7.0 - 2020-11-22
+- Add support for PHP 8 ([#399](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/399))
+
 ## v2.6.0 - 2020-05-20
 - [BC break] Fix URL encoding to mimic Symfony URL Generator (this might change behavior for special characters, it should be in line with Symfony Router though) ([#387](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/387))
 - Fixed issue with creating absolute instead of relative path on hosts with differing ports ([#391](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/391))
