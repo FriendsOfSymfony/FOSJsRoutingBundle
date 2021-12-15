@@ -19,6 +19,7 @@ class RouteCollectionDenormalizer implements DenormalizerInterface
 {
     /**
      * {@inheritDoc}
+     * @return mixed
      */
     public function denormalize($data, $type, $format = null, array $context = [])
     {
