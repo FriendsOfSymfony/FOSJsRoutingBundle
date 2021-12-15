@@ -140,6 +140,33 @@ class ExposedRoutesExtractorTest extends TestCase
         $this->assertEquals($expected, $extractor->getHost());
     }
 
+    public function testExposeFalse()
+    {
+        $expected = new RouteCollection();
+        $expected->add('user_public_1', new Route('/user/public/1'));
+        $expected->add('user_public_2', new Route('/user/public/2', [], [], ['expose' => true]));
+        $expected->add('user_public_3', new Route('/user/public/3', [], [], ['expose' => 'true']));
+        $expected->add('user_public_4', new Route('/user/public/4', [], [], ['expose' => 'default']));
+        $expected->add('user_public_5', new Route('/user/public/5', [], [], ['expose' => 'group_name']));
+        $expected->add('user_secret_1', new Route('/user/secret/1', [], [], ['expose' => false]));
+        $expected->add('user_secret_2', new Route('/user/secret/2', [], [], ['expose' => 'false']));
+
+        $router = $this->getRouter($expected);
+        $extractor = new ExposedRoutesExtractor($router, array('user_.+'), $this->cacheDir, []);
+
+        $this->assertCount(5, $extractor->getRoutes());
+
+        foreach ($expected->all() as $name => $route) {
+
+            if (in_array($name, ['user_secret_1', 'user_secret_2'])) {
+                $this->assertFalse($extractor->isRouteExposed($route, $name));
+            } else {
+                $this->assertTrue($extractor->isRouteExposed($route, $name));
+            }
+
+        }
+    }
+
     /**
      * @return array
      */
