@@ -73,9 +73,6 @@ EOF
         ;
     }
 
-    /**
-     * @see Command
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($name = $input->getArgument('name')) {

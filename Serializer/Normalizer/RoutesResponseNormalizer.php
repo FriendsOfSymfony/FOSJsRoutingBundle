@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class RoutesResponseNormalizer implements NormalizerInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      * @return array|string|int|float|bool|\ArrayObject|null
      */
     public function normalize($data, $format = null, array $context = array())
