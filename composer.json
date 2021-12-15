@@ -18,7 +18,7 @@
     "require": {
         "php": "^7.1|^8.0",
         "symfony/framework-bundle": "^4.4.20|^5.3|^6.0",
-        "symfony/serializer": "^4.4.20|^5.3|^6.0",
+        "symfony/serializer": "^4.4.20|^5.3|^6.0.1",
         "symfony/console": "^4.4.20|^5.3|^6.0",
         "willdurand/jsonp-callback-validator": "~1.1"
     },
