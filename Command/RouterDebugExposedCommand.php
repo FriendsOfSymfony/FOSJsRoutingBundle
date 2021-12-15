@@ -31,15 +31,8 @@ class RouterDebugExposedCommand extends Command
 {
     protected static $defaultName = 'fos:js-routing:debug';
 
-    private $extractor;
-
-    private $router;
-
-    public function __construct(ExposedRoutesExtractorInterface $extractor, RouterInterface $router)
+    public function __construct(private ExposedRoutesExtractorInterface $extractor, private RouterInterface $router)
     {
-        $this->extractor = $extractor;
-        $this->router = $router;
-
         parent::__construct();
     }
 
@@ -47,7 +40,7 @@ class RouterDebugExposedCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDefinition(array(
@@ -104,7 +97,7 @@ EOF
         return 0;
     }
 
-    protected function getRoutes($domain = array())
+    protected function getRoutes($domain = array()): RouteCollection
     {
         $routes = $this->extractor->getRoutes();
 

@@ -15,20 +15,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CacheControlConfig
 {
-    /**
-     * @var array
-     */
-    private $parameters;
 
-    public function __construct(array $parameters = array())
+    public function __construct(private array $parameters = [])
     {
-        $this->parameters = $parameters;
     }
 
-    /**
-     * @param Response $response
-     */
-    public function apply(Response $response)
+    public function apply(Response $response): void
     {
         if (empty($this->parameters['enabled'])) {
             return;
@@ -36,11 +28,11 @@ class CacheControlConfig
 
         $this->parameters['public'] ? $response->setPublic() : $response->setPrivate();
 
-        if (is_integer($this->parameters['maxage'])) {
+        if (is_int($this->parameters['maxage'])) {
             $response->setMaxAge($this->parameters['maxage']);
         }
 
-        if (is_integer($this->parameters['smaxage'])) {
+        if (is_int($this->parameters['smaxage'])) {
             $response->setSharedMaxAge($this->parameters['smaxage']);
         }
 

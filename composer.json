@@ -1,7 +1,7 @@
 {
     "name": "friendsofsymfony/jsrouting-bundle",
     "type": "symfony-bundle",
-    "description": "A pretty nice way to expose your Symfony2 routing to client applications.",
+    "description": "A pretty nice way to expose your Symfony routing to client applications.",
     "keywords": [ "js routing", "routing", "javascript" ],
     "homepage": "http://friendsofsymfony.github.com",
     "license": "MIT",
@@ -16,15 +16,15 @@
         }
     ],
     "require": {
-        "php": "^7.1|^8.0",
-        "symfony/framework-bundle": "^4.4.20|^5.3|^6.0",
-        "symfony/serializer": "^4.4.20|^5.3|^6.0.1",
-        "symfony/console": "^4.4.20|^5.3|^6.0",
+        "php": "^8.0",
+        "symfony/framework-bundle": "^5.4|^6.0",
+        "symfony/serializer": "^5.4|^6.0.1",
+        "symfony/console": "^5.4|^6.0",
         "willdurand/jsonp-callback-validator": "~1.1"
     },
     "require-dev": {
-        "symfony/expression-language": "^4.4.20|^5.3|^6.0",
-        "symfony/phpunit-bridge": "^5.3|^6.0"
+        "symfony/expression-language": "^5.4|^6.0",
+        "symfony/phpunit-bridge": "^5.4|^6.0"
     },
     "autoload": {
         "psr-4": { "FOS\\JsRoutingBundle\\": "" },
@@ -34,7 +34,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.x-dev"
+            "dev-master": "3.x-dev"
         }
     }
 }

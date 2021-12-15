@@ -21,25 +21,24 @@ class RoutesResponseNormalizer implements NormalizerInterface
 {
     /**
      * {@inheritDoc}
-     * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($data, $format = null, array $context = array())
+    public function normalize(mixed $object, string $format = null, array $context = []): array
     {
         return array(
-            'base_url' => $data->getBaseUrl(),
-            'routes'   => $data->getRoutes(),
-            'prefix'   => $data->getPrefix(),
-            'host'     => $data->getHost(),
-            'port'     => $data->getPort(),
-            'scheme'   => $data->getScheme(),
-            'locale'   => $data->getLocale(),
+            'base_url' => $object->getBaseUrl(),
+            'routes'   => $object->getRoutes(),
+            'prefix'   => $object->getPrefix(),
+            'host'     => $object->getHost(),
+            'port'     => $object->getPort(),
+            'scheme'   => $object->getScheme(),
+            'locale'   => $object->getLocale(),
         );
     }
 
     /**
      * {@inheritDoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization(mixed $data, string $format = null): bool
     {
         return $data instanceof RoutesResponse;
     }

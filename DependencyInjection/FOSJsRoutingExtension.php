@@ -19,17 +19,11 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * FOSJsRoutingExtension
- * Load configuration.
- *
  * @author      William DURAND <william.durand1@gmail.com>
  */
 class FOSJsRoutingExtension extends Extension
 {
-    /**
-     * Load configuration.
-     */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $processor = new Processor();
         $configuration = new Configuration();

@@ -1,5 +1,11 @@
 # Changelog
 
+## v3.0.0 - 2021-12-15
+- Migrate router implementation to TS ([#406](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/406))
+- Allow Symfony 6 ([#408](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/408))
+- [BC break] Drop support for PHP <8.0 and Symfony <5.4, add typing to all classes
+- Add documentation for attributes
+
 ## v2.8.0 - 2021-12-15
 - Fix expose: false behavior ([#404](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/404))
 - Fix dump using domains ([#410](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/410))

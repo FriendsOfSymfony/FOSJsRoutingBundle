@@ -28,7 +28,6 @@ and export your routes to json, this command will create a json file into the ``
 
 .. code-block:: bash
 
-    # Symfony 3
     bin/console fos:js-routing:dump --format=json
 
 If you are using Flex, probably you want to dump your routes into the ``public`` folder
@@ -67,7 +66,40 @@ Or if you want to generate **absolute URLs**:
 
 Assuming some route definitions:
 
-**With annotations:**
+**With attributes:**
+
+.. code-block:: php
+
+    // src/AppBundle/Controller/DefaultController.php
+
+    #[Route(path: '/foo/{id}/bar', name: 'my_route_to_expose', options: ['expose' => true])]
+    public function indexAction($foo) {
+        // ...
+    }
+
+    #[Route(path: '/blog/{page}', name: 'my_route_to_expose_with_defaults', options: ['expose' => true], defaults: ['page' => 1])]
+    public function blogAction($page) {
+        // ...
+    }
+
+**With YAML:**
+
+.. code-block:: yaml
+
+    # app/config/routing.yml
+    my_route_to_expose:
+        pattern: /foo/{id}/bar
+        defaults: { _controller: AppBundle:Default:index }
+        options:
+            expose: true
+
+    my_route_to_expose_with_defaults:
+        pattern: /blog/{page}
+        defaults: { _controller: AppBundle:Default:blog, page: 1 }
+        options:
+            expose: true
+
+**With annotations (deprecated):**
 
 .. code-block:: php
 
@@ -91,22 +123,8 @@ Assuming some route definitions:
         // ...
     }
 
-**With YAML:**
 
-.. code-block:: yaml
 
-    # app/config/routing.yml
-    my_route_to_expose:
-        pattern: /foo/{id}/bar
-        defaults: { _controller: AppBundle:Default:index }
-        options:
-            expose: true
-
-    my_route_to_expose_with_defaults:
-        pattern: /blog/{page}
-        defaults: { _controller: AppBundle:Default:blog, page: 1 }
-        options:
-            expose: true
 
 You can use the ``generate()`` method that way:
 

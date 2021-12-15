@@ -13,6 +13,7 @@ namespace FOS\JsRoutingBundle\Extractor;
 
 use Symfony\Component\Config\Resource\ResourceInterface;
 use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
 
 /**
  * @author William DURAND <william.durand1@gmail.com>
@@ -21,63 +22,49 @@ interface ExposedRoutesExtractorInterface
 {
     /**
      * Returns a collection of exposed routes
-     *
-     * @return \Symfony\Component\Routing\RouteCollection
      */
-    public function getRoutes();
+    public function getRoutes(): RouteCollection;
 
     /**
      * Return the Base URL
-     *
-     * @return string
      */
-    public function getBaseUrl();
+    public function getBaseUrl(): string;
 
     /**
      * Get the route prefix to use, i.e. the language if JMSI18nRoutingBundle is active
-     *
-     * @param string $locale the request locale
-     *
-     * @return string
      */
-    public function getPrefix($locale);
+    public function getPrefix(string $locale): string;
 
     /**
      * Get the host and applicable port from RequestContext
-     *
-     * @return string
      */
-    public function getHost();
+    public function getHost(): string;
 
     /**
      * Get the port from RequestContext, only if non standard port (Eg: "8080")
-     *
-     * @return string
      */
-    public function getPort();
+    public function getPort(): ?string;
 
     /**
      * Get the scheme from RequestContext
-     *
-     * @return string
      */
-    public function getScheme();
+    public function getScheme(): string;
 
     /**
      * Get the cache path for this request
      *
-     * @param string $locale the request locale
+     * @param string|null $locale the request locale
      *
      * @return string
      */
-    public function getCachePath($locale);
+    public function getCachePath(?string $locale): string;
 
     /**
      * Return an array of routing resources
      *
      * @return ResourceInterface[]
      */
-    public function getResources();
+    public function getResources(): array;
 
     /**
      * Tell whether a route should be considered as exposed
@@ -87,5 +74,5 @@ interface ExposedRoutesExtractorInterface
      *
      * @return bool
      */
-    public function isRouteExposed(Route $route, $name);
+    public function isRouteExposed(Route $route, string $name): bool;
 }
