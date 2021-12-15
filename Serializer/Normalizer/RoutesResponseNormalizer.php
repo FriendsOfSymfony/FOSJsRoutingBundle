@@ -23,7 +23,7 @@ class RoutesResponseNormalizer implements NormalizerInterface
      * {@inheritDoc}
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($data, string $format = null, array $context = array())
+    public function normalize($data, $format = null, array $context = array())
     {
         return array(
             'base_url' => $data->getBaseUrl(),
