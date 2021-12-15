@@ -10,10 +10,6 @@ to combine the routes with the other JavaScript files in assetic.
 
 .. code-block:: bash
 
-    # Symfony 2
-    $ php app/console fos:js-routing:dump
-    
-    # Symfony 3
     $ php bin/console fos:js-routing:dump
 
 Instead of the line
@@ -57,9 +53,6 @@ This command lists all exposed routes:
 
 .. code-block:: bash
 
-    # Symfony 2
-    $ php app/console fos:js-routing:debug [name]
-    
     # Symfony 3
     $ php bin/console fos:js-routing:debug [name]
 

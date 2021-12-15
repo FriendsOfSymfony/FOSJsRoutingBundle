@@ -21,48 +21,20 @@ use JMS\I18nRoutingBundle\Router\I18nLoader;
  */
 class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
 {
-    /**
-     * @var RouterInterface
-     */
-    protected $router;
+    protected string $pattern;
 
-    /**
-     * Base cache directory
-     *
-     * @var string
-     */
-    protected $cacheDir;
-
-    /**
-     * @var array
-     */
-    protected $bundles;
-
-    /**
-     * @var string
-     */
-    protected $pattern;
-
-    /**
-     * @var array
-     */
-    protected $availableDomains;
+    protected array $availableDomains;
 
     /**
      * Default constructor.
      *
-     * @param RouterInterface $router The router.
      * @param array $routesToExpose Some route names to expose.
-     * @param string $cacheDir
      * @param array $bundles list of loaded bundles to check when generating the prefix
      *
      * @throws \Exception
      */
-    public function __construct(RouterInterface $router, array $routesToExpose, $cacheDir, $bundles = array())
+    public function __construct(private RouterInterface $router, array $routesToExpose, private string $cacheDir, private array $bundles = [])
     {
-        $this->router         = $router;
-        $this->cacheDir       = $cacheDir;
-        $this->bundles        = $bundles;
 
         $domainPatterns = $this->extractDomainPatterns($routesToExpose);
 
@@ -74,7 +46,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function getRoutes()
+    public function getRoutes(): RouteCollection
     {
         $collection = $this->router->getRouteCollection();
         $routes     = new RouteCollection();
@@ -115,7 +87,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function getBaseUrl()
+    public function getBaseUrl(): string
     {
         return $this->router->getContext()->getBaseUrl() ?: '';
     }
@@ -123,7 +95,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function getPrefix($locale)
+    public function getPrefix(string $locale): string
     {
         if (isset($this->bundles['JMSI18nRoutingBundle'])) {
             return $locale . I18nLoader::ROUTING_PREFIX;
@@ -135,7 +107,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function getHost()
+    public function getHost(): string
     {
         $requestContext = $this->router->getContext();
 
@@ -148,7 +120,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function getPort()
+    public function getPort(): string
     {
         $requestContext = $this->router->getContext();
 
@@ -164,7 +136,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function getScheme()
+    public function getScheme(): string
     {
         return $this->router->getContext()->getScheme();
     }
@@ -172,7 +144,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function getCachePath($locale)
+    public function getCachePath(string $locale = NULL): string
     {
         $cachePath = $this->cacheDir . DIRECTORY_SEPARATOR . 'fosJsRouting';
         if (!file_exists($cachePath)) {
@@ -191,7 +163,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function getResources()
+    public function getResources(): array
     {
         return $this->router->getRouteCollection()->getResources();
     }
@@ -199,7 +171,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function isRouteExposed(Route $route, $name)
+    public function isRouteExposed(Route $route, $name): bool
     {
         if (false === $route->hasOption('expose')) {
             return ('' !== $this->pattern && preg_match('#^' . $this->pattern . '$#', $name));
@@ -209,7 +181,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
         return ($status !== false && $status !== 'false');
     }
 
-    protected function getDomainByRouteMatches($matches, $name)
+    protected function getDomainByRouteMatches($matches, $name): int|string|null
     {
         $matches = array_filter($matches, function($match) {
             return !empty($match);
@@ -220,7 +192,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
         return isset($matches[$name]) ? $matches[$name] : null;
     }
 
-    protected function extractDomainPatterns($routesToExpose)
+    protected function extractDomainPatterns($routesToExpose): array
     {
         $domainPatterns = array();
 
@@ -251,12 +223,9 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
 
     /**
      * Convert the routesToExpose array in a regular expression pattern
-     *
-     * @param $domainPatterns
-     * @return string
      * @throws \Exception
      */
-    protected function buildPattern($domainPatterns)
+    protected function buildPattern(array $domainPatterns): string
     {
         $patterns = array();
 
@@ -270,30 +239,24 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
 
     /**
      * Check whether server is serving this request from a non-standard port
-     *
-     * @return bool
      */
-    private function usesNonStandardPort()
+    private function usesNonStandardPort(): bool
     {
         return $this->usesNonStandardHttpPort() || $this->usesNonStandardHttpsPort();
     }
 
     /**
      * Check whether server is serving HTTP over a non-standard port
-     *
-     * @return bool
      */
-    private function usesNonStandardHttpPort()
+    private function usesNonStandardHttpPort(): bool
     {
         return 'http' === $this->getScheme() && '80' != $this->router->getContext()->getHttpPort();
     }
 
     /**
      * Check whether server is serving HTTPS over a non-standard port
-     *
-     * @return bool
      */
-    private function usesNonStandardHttpsPort()
+    private function usesNonStandardHttpsPort(): bool
     {
         return 'https' === $this->getScheme() && '443' != $this->router->getContext()->getHttpsPort();
     }

@@ -24,17 +24,13 @@ class Configuration implements ConfigurationInterface
     /**
      * Generates the configuration tree builder.
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The tree builder
+     * @return TreeBuilder The tree builder
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $builder = new TreeBuilder('fos_js_routing');
-        if (\method_exists($builder, 'getRootNode')) {
-            $rootNode = $builder->getRootNode();
-        } else {
-            // BC layer for symfony/config 4.1 and older
-            $rootNode = $builder->root('fos_js_routing');
-        }
+
+        $rootNode = $builder->getRootNode();
 
         $rootNode
             ->children()

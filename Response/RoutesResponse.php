@@ -15,34 +15,22 @@ use Symfony\Component\Routing\RouteCollection;
 
 class RoutesResponse
 {
-    private $baseUrl;
     private $routes;
-    private $prefix;
-    private $host;
-    private $port;
-    private $scheme;
-    private $locale;
-    private $domains;
 
-    public function __construct($baseUrl, RouteCollection $routes = null, $prefix = null, $host = null, $port = null,
-                                $scheme = null, $locale = null, $domains = array())
+    public function __construct(private string $baseUrl, RouteCollection $routes = null,
+                                private ?string $prefix = null, private ?string $host = null,
+                                private ?string $port = null, private ?string $scheme = null,
+                                private ?string $locale = null, private array $domains = [])
     {
-        $this->baseUrl = $baseUrl;
         $this->routes  = $routes ?: new RouteCollection();
-        $this->prefix  = $prefix;
-        $this->host    = $host;
-        $this->port    = $port;
-        $this->scheme  = $scheme;
-        $this->locale  = $locale;
-        $this->domains = $domains;
     }
 
-    public function getBaseUrl()
+    public function getBaseUrl(): string
     {
         return $this->baseUrl;
     }
 
-    public function getRoutes()
+    public function getRoutes(): array
     {
         $exposedRoutes = array();
         foreach ($this->routes->all() as $name => $route) {
@@ -86,27 +74,27 @@ class RoutesResponse
         return $exposedRoutes;
     }
 
-    public function getPrefix()
+    public function getPrefix(): ?string
     {
         return $this->prefix;
     }
 
-    public function getHost()
+    public function getHost(): ?string
     {
         return $this->host;
     }
 
-    public function getPort()
+    public function getPort(): ?string
     {
         return $this->port;
     }
 
-    public function getScheme()
+    public function getScheme(): ?string
     {
         return $this->scheme;
     }
 
-    public function getLocale()
+    public function getLocale(): ?string
     {
         return $this->locale;
     }
