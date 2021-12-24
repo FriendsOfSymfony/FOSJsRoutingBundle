@@ -203,7 +203,7 @@ export class Router {
 
       if ('variable' === token[0]) {
         let hasDefault = route.defaults && !Array.isArray(route.defaults) && typeof token[3] === 'string' && (token[3] in route.defaults);
-        if (false === optional || !hasDefault || ((typeof token[3] === 'string' && token[3] in params) && !Array.isArray(route.defaults) && params[token[3]] != route.defaults[token[3]])) {
+        if (false === optional || hasDefault || ((typeof token[3] === 'string' && token[3] in params) && !Array.isArray(route.defaults) && params[token[3]] != route.defaults[token[3]])) {
           let value;
 
           if (typeof token[3] === 'string' && token[3] in params) {
