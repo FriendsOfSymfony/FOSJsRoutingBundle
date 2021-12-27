@@ -187,7 +187,7 @@ function testGenerateSupportsOptionalPlaceholderDefaults() {
 function testGenerateSupportsExplicitNonOptionalPlaceholderDefaults() {
     var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
         homepage: {
-            tokens: [['variable', '/','', '!page'],['text', '/bar']],
+            tokens: [['variable', '/','', 'page', false, true],['text', '/bar']],
             defaults: {page: 'api'},
             requirements: {},
             hosttokens: [
