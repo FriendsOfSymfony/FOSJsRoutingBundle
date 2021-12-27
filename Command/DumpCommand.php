@@ -56,7 +56,7 @@ class DumpCommand extends Command
                 'target',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Override the target directory to dump routes in.'
+                'Override the target file to dump routes in.'
             )
             ->addOption(
                 'locale',

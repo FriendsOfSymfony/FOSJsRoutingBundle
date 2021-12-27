@@ -43,8 +43,11 @@ Or inside assetic, do
 .. tip::
 
     If you are using JMSI18nRoutingBundle, you need to run the command with the
-    ``--locale`` parameter once for each locale you use and adjust your include
-    paths accordingly.
+    ``--locale`` parameter and a custom ``--target`` once for each locale you use.
+    Then adjust your include path accordingly. Note that you can only load the dump
+    of one locale at once in your html as each following dump would overwrite the
+    data of the previous one.
+
 
 fos:js-routing:debug
 --------------------
