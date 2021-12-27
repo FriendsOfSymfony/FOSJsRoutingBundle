@@ -202,6 +202,10 @@ export class Router {
       }
 
       if ('variable' === token[0]) {
+        if (typeof token[3] === 'string' && token[3][0] === '!') { // If parameter starts with exclamation mark, always include in path
+          token[3] = token[3].substring(1); // Remove the exclamation mark
+          optional = false;
+        }
         let hasDefault = route.defaults && !Array.isArray(route.defaults) && typeof token[3] === 'string' && (token[3] in route.defaults);
         if (false === optional || !hasDefault || ((typeof token[3] === 'string' && token[3] in params) && !Array.isArray(route.defaults) && params[token[3]] != route.defaults[token[3]])) {
           let value;

@@ -154,6 +154,53 @@ function testGenerateSupportsHostPlaceholdersDefaults() {
     assertEquals('http://api.localhost/foo/bar', router.generate('homepage'));
 }
 
+function testGenerateSupportsNonOptionalPlaceholderDefaults() {
+    var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
+        homepage: {
+            tokens: [['text', '/bar'],['variable', '/','', 'page']],
+            defaults: {page: 'api'},
+            requirements: {},
+            hosttokens: [
+                ['text', 'localhost']
+            ]
+        }
+    });
+
+    assertEquals('/foo/api/bar', router.generate('homepage'));
+}
+
+function testGenerateSupportsOptionalPlaceholderDefaults() {
+    var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
+        homepage: {
+            tokens: [['variable', '/','', 'page'],['text', '/bar']],
+            defaults: {page: 'api'},
+            requirements: {},
+            hosttokens: [
+                ['text', 'localhost']
+            ]
+        }
+    });
+
+    assertEquals('/foo/bar', router.generate('homepage'));
+}
+
+function testGenerateSupportsExplicitNonOptionalPlaceholderDefaults() {
+    var router = new fos.Router({base_url: '/foo', host: "localhost", scheme: "http"}, {
+        homepage: {
+            tokens: [['variable', '/','', '!page'],['text', '/bar']],
+            defaults: {page: 'api'},
+            requirements: {},
+            hosttokens: [
+                ['text', 'localhost']
+            ]
+        }
+    });
+
+    assertEquals('/foo/bar/api', router.generate('homepage'));
+}
+
+
+
 function testGenerateGeneratesRelativePathWhenTheSameHostGiven() {
     var router = new fos.Router({base_url: '/foo', host: "api.localhost", scheme: "http"}, {
         homepage: {
