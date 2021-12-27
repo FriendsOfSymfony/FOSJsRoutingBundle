@@ -48,7 +48,6 @@ Or inside assetic, do
     of one locale at once in your html as each following dump would overwrite the
     data of the previous one.
 
-
 fos:js-routing:debug
 --------------------
 
