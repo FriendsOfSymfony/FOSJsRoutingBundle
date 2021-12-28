@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.1.0 - 2021-12-28
+- Improve documentation for dump command when using locales ([#426](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/426))
+- Add support for explicit default inclusion ([#423](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/issues/423))
+
 ## v3.0.0 - 2021-12-15
 - Migrate router implementation to TS ([#406](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/406))
 - Allow Symfony 6 ([#408](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/408))
