@@ -23,12 +23,24 @@ In applications not using webpack add these two lines in your layout:
     the two JavaScript files above loaded at some point in your web page.
 
 
-If you are using webpack and Encore to package your assets you will need to use the dump command
+If you are using webpack and Encore to package your assets you can use the webpack plugin included in this package
+
+.. code-block:: js
+
+    const FosRouting = require('fos-router/webpack/FosRouting');
+    //...
+    Encore
+      .addPlugin(new FosRouting())
+
+Then use it simply by importing ``import Routing from 'fos-router';`` in your js or ts code
+
+
+Alternatively you can use the dump command
 and export your routes to json, this command will create a json file into the ``web/js`` folder:
 
 .. code-block:: bash
 
-    bin/console fos:js-routing:dump --format=json
+    bin/console fos:js-routing:dump --format=json --target=assets/js/routes.json
 
 If you are using Flex, probably you want to dump your routes into the ``public`` folder
 instead of ``web``, to achieve this you can set the ``target`` parameter:
