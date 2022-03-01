@@ -112,12 +112,12 @@ class DumpCommand extends Command
         $serializer = $this->serializer;
         $targetPath = $input->getOption('target') ?:
             sprintf(
-                '%s/web/js/fos_js_routes%s.%s',
+                '%s/public/js/fos_js_routes%s.%s',
                 $this->projectDir,
                 empty($domain) ? '' : ('_' . implode('_', $domain)),
                 $input->getOption('format')
             );
-        
+
         if (!is_dir($dir = dirname($targetPath))) {
             $output->writeln('<info>[dir+]</info>  ' . $dir);
             if (false === @mkdir($dir, 0777, true)) {
