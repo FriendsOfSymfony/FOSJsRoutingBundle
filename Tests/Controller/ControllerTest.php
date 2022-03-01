@@ -136,7 +136,7 @@ class ControllerTest extends TestCase
 
     public function testIndexActionWithoutRoutes(): void
     {
-        $controller = new Controller($this->getSerializer(), $this->getExtractor(), [], sys_get_temp_dir());
+        $controller = new Controller($this->getSerializer(), $this->getExtractor());
         $response = $controller->indexAction($this->getRequest('/'), 'json');
 
         $this->assertEquals('{"base_url":"","routes":[],"prefix":"","host":"","port":null,"scheme":"","locale":"en"}', $response->getContent());
@@ -160,7 +160,7 @@ class ControllerTest extends TestCase
             'vary' => [],
         ];
 
-        $controller = new Controller($this->getSerializer(), $this->getExtractor(), $cacheControlConfig, sys_get_temp_dir());
+        $controller = new Controller($this->getSerializer(), $this->getExtractor(), $cacheControlConfig);
         $response = $controller->indexAction($this->getRequest('/'), 'json');
 
         $this->assertTrue($response->headers->hasCacheControlDirective('public'));

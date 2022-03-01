@@ -126,7 +126,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
         $port = '';
         if ($this->usesNonStandardPort()) {
             $method = sprintf('get%sPort', ucfirst($requestContext->getScheme()));
-            $port = $requestContext->$method();
+            $port = (string) $requestContext->$method();
         }
 
         return $port;
