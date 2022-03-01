@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSJsRoutingBundle package.
  *
@@ -33,7 +35,7 @@ class RouterDebugExposedCommandTest extends TestCase
             ->getMock();
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $routes = new RouteCollection();
         $routes->add('literal', new Route('/literal'));
@@ -47,14 +49,14 @@ class RouterDebugExposedCommandTest extends TestCase
         $command = new RouterDebugExposedCommand($this->extractor, $this->router);
 
         $tester = new CommandTester($command);
-        $tester->execute(array());
+        $tester->execute([]);
 
         $this->assertMatchesRegularExpression('/literal(.*ANY){3}.*\/literal/', $tester->getDisplay());
         $this->assertMatchesRegularExpression('/blog_post(.*ANY){3}.*\/blog-post\/{slug}/', $tester->getDisplay());
         $this->assertMatchesRegularExpression('/list(.*ANY){3}.*\/literal/', $tester->getDisplay());
     }
 
-    public function testExecuteWithNameUnknown()
+    public function testExecuteWithNameUnknown(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The route "foobar" does not exist.');
@@ -70,10 +72,10 @@ class RouterDebugExposedCommandTest extends TestCase
         $command = new RouterDebugExposedCommand($this->extractor, $this->router);
 
         $tester = new CommandTester($command);
-        $tester->execute(array('name' => 'foobar'));
+        $tester->execute(['name' => 'foobar']);
     }
 
-    public function testExecuteWithNameNotExposed()
+    public function testExecuteWithNameNotExposed(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The route "literal" was found, but it is not an exposed route.');
@@ -89,13 +91,13 @@ class RouterDebugExposedCommandTest extends TestCase
         $command = new RouterDebugExposedCommand($this->extractor, $this->router);
 
         $tester = new CommandTester($command);
-        $tester->execute(array('name' => 'literal'));
+        $tester->execute(['name' => 'literal']);
     }
 
-    public function testExecuteWithName()
+    public function testExecuteWithName(): void
     {
         $routes = new RouteCollection();
-        $routes->add('literal', new Route('/literal', array(), array(), array('exposed' => true)));
+        $routes->add('literal', new Route('/literal', [], [], ['exposed' => true]));
         $routes->add('blog_post', new Route('/blog-post/{slug}'));
         $routes->add('list', new Route('/literal'));
 
@@ -110,7 +112,7 @@ class RouterDebugExposedCommandTest extends TestCase
         $command = new RouterDebugExposedCommand($this->extractor, $this->router);
 
         $tester = new CommandTester($command);
-        $tester->execute(array('name' => 'literal'));
+        $tester->execute(['name' => 'literal']);
 
         $this->assertStringContainsString('exposed: true', $tester->getDisplay());
     }
