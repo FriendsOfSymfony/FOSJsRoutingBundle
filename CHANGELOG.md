@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.1.1 - 2022-03-02
+- Allow willdurand/jsonp-callback-validator v2 ([#430](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/issues/430))
+- Use latest PHP 8.0 features ([#432](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/issues/432))
+
 ## v3.1.0 - 2021-12-28
 - Improve documentation for dump command when using locales ([#426](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/426))
 - Add support for explicit default inclusion ([#423](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/issues/423))
