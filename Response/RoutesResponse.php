@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSJsRoutingBundle package.
  *
@@ -22,7 +24,7 @@ class RoutesResponse
                                 private ?string $port = null, private ?string $scheme = null,
                                 private ?string $locale = null, private array $domains = [])
     {
-        $this->routes  = $routes ?: new RouteCollection();
+        $this->routes = $routes ?: new RouteCollection();
     }
 
     public function getBaseUrl(): string
@@ -32,19 +34,17 @@ class RoutesResponse
 
     public function getRoutes(): array
     {
-        $exposedRoutes = array();
+        $exposedRoutes = [];
         foreach ($this->routes->all() as $name => $route) {
-
             if (!$route->hasOption('expose')) {
                 $domain = 'default';
             } else {
                 $domain = $route->getOption('expose');
-                $domain = is_string($domain) ? ($domain === 'true' ? 'default' : $domain) : 'default';
+                $domain = is_string($domain) ? ('true' === $domain ? 'default' : $domain) : 'default';
             }
 
-
-            if (count($this->domains) === 0) {
-                if ($domain !== 'default') {
+            if (0 === count($this->domains)) {
+                if ('default' !== $domain) {
                     continue;
                 }
             } elseif (!in_array($domain, $this->domains, true)) {
@@ -52,7 +52,7 @@ class RoutesResponse
             }
 
             $compiledRoute = $route->compile();
-            $defaults      = array_intersect_key(
+            $defaults = array_intersect_key(
                 $route->getDefaults(),
                 array_fill_keys($compiledRoute->getVariables(), null)
             );
@@ -61,14 +61,14 @@ class RoutesResponse
                 $defaults['_locale'] = $this->locale;
             }
 
-            $exposedRoutes[$name] = array(
-                'tokens'       => $compiledRoute->getTokens(),
-                'defaults'     => $defaults,
+            $exposedRoutes[$name] = [
+                'tokens' => $compiledRoute->getTokens(),
+                'defaults' => $defaults,
                 'requirements' => $route->getRequirements(),
-                'hosttokens'   => method_exists($compiledRoute, 'getHostTokens') ? $compiledRoute->getHostTokens() : array(),
-                'methods'      => $route->getMethods(),
-                'schemes'      => $route->getSchemes(),
-            );
+                'hosttokens' => method_exists($compiledRoute, 'getHostTokens') ? $compiledRoute->getHostTokens() : [],
+                'methods' => $route->getMethods(),
+                'schemes' => $route->getSchemes(),
+            ];
         }
 
         return $exposedRoutes;

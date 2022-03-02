@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSJsRoutingBundle package.
  *
@@ -29,7 +31,7 @@ class ControllerTest extends TestCase
 
     public function setUp(): void
     {
-        $this->cachePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'fosJsRouting' . DIRECTORY_SEPARATOR . 'data.json';
+        $this->cachePath = sys_get_temp_dir().DIRECTORY_SEPARATOR.'fosJsRouting'.DIRECTORY_SEPARATOR.'data.json';
     }
 
     public function tearDown(): void
@@ -37,11 +39,11 @@ class ControllerTest extends TestCase
         unlink($this->cachePath);
     }
 
-    public function testIndexAction()
+    public function testIndexAction(): void
     {
         $routes = new RouteCollection();
         $routes->add('literal', new Route('/homepage'));
-        $routes->add('blog', new Route('/blog-post/{slug}', array(), array(), array(), 'localhost'));
+        $routes->add('blog', new Route('/blog-post/{slug}', [], [], [], 'localhost'));
 
         $controller = new Controller(
             $this->getSerializer(),
@@ -53,11 +55,11 @@ class ControllerTest extends TestCase
         $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":"","locale":"en"}', $response->getContent());
     }
 
-    public function testIndexWithExplicitTokenAction()
+    public function testIndexWithExplicitTokenAction(): void
     {
         $routes = new RouteCollection();
         $routes->add('literal', new Route('/homepage'));
-        $routes->add('blog', new Route('/blog-post/{!slug}', array(), array(), array(), 'localhost'));
+        $routes->add('blog', new Route('/blog-post/{!slug}', [], [], [], 'localhost'));
 
         $controller = new Controller(
             $this->getSerializer(),
@@ -69,11 +71,11 @@ class ControllerTest extends TestCase
         $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug",false,true],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":"","locale":"en"}', $response->getContent());
     }
 
-    public function testIndexActionWithLocalizedRoutes()
+    public function testIndexActionWithLocalizedRoutes(): void
     {
         $routes = new RouteCollection();
         $routes->add('literal', new Route('/homepage'));
-        $routes->add('blog', new Route('/blog-post/{slug}/{_locale}', array(), array(), array(), 'localhost'));
+        $routes->add('blog', new Route('/blog-post/{slug}/{_locale}', [], [], [], 'localhost'));
 
         $controller = new Controller(
             $this->getSerializer(),
@@ -85,7 +87,7 @@ class ControllerTest extends TestCase
         $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"blog":{"tokens":[["variable","\/","[^\/]++","_locale"],["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":{"_locale":"en"},"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":"","locale":"en"}', $response->getContent());
     }
 
-    public function testConfigCache()
+    public function testConfigCache(): void
     {
         $routes = new RouteCollection();
         $routes->add('literal', new Route('/homepage'));
@@ -106,10 +108,10 @@ class ControllerTest extends TestCase
     /**
      * @dataProvider dataProviderForTestGenerateWithCallback
      */
-    public function testGenerateWithCallback($callback)
+    public function testGenerateWithCallback($callback): void
     {
         $controller = new Controller($this->getSerializer(), $this->getExtractor());
-        $response   = $controller->indexAction($this->getRequest('/', 'GET', array('callback' => $callback)), 'json');
+        $response = $controller->indexAction($this->getRequest('/', 'GET', ['callback' => $callback]), 'json');
 
         $this->assertEquals(
             sprintf('/**/%s({"base_url":"","routes":[],"prefix":"","host":"","port":null,"scheme":"","locale":"en"});', $callback),
@@ -119,23 +121,23 @@ class ControllerTest extends TestCase
 
     public static function dataProviderForTestGenerateWithCallback()
     {
-        return array(
-            array('fos.Router.data'),
-            array('foo'),
-        );
+        return [
+            ['fos.Router.data'],
+            ['foo'],
+        ];
     }
 
-    public function testGenerateWithInvalidCallback()
+    public function testGenerateWithInvalidCallback(): void
     {
         $this->expectException(HttpException::class);
         $controller = new Controller($this->getSerializer(), $this->getExtractor());
-        $controller->indexAction($this->getRequest('/', 'GET', array('callback' => '(function xss(x) {evil()})')), 'json');
+        $controller->indexAction($this->getRequest('/', 'GET', ['callback' => '(function xss(x) {evil()})']), 'json');
     }
 
-    public function testIndexActionWithoutRoutes()
+    public function testIndexActionWithoutRoutes(): void
     {
-        $controller = new Controller($this->getSerializer(), $this->getExtractor(), array(), sys_get_temp_dir());
-        $response   = $controller->indexAction($this->getRequest('/'), 'json');
+        $controller = new Controller($this->getSerializer(), $this->getExtractor());
+        $response = $controller->indexAction($this->getRequest('/'), 'json');
 
         $this->assertEquals('{"base_url":"","routes":[],"prefix":"","host":"","port":null,"scheme":"","locale":"en"}', $response->getContent());
         $this->assertEquals(200, $response->getStatusCode());
@@ -147,19 +149,19 @@ class ControllerTest extends TestCase
         $this->assertFalse($response->headers->hasCacheControlDirective('s-maxage'));
     }
 
-    public function testCacheControl()
+    public function testCacheControl(): void
     {
-        $cacheControlConfig = array(
+        $cacheControlConfig = [
             'enabled' => true,
-            'public'  => true,
+            'public' => true,
             'expires' => '2013-10-04 23:59:59 UTC',
-            'maxage'  => 123,
+            'maxage' => 123,
             'smaxage' => 456,
-            'vary'    => array(),
-        );
+            'vary' => [],
+        ];
 
-        $controller = new Controller($this->getSerializer(), $this->getExtractor(), $cacheControlConfig, sys_get_temp_dir());
-        $response   = $controller->indexAction($this->getRequest('/'), 'json');
+        $controller = new Controller($this->getSerializer(), $this->getExtractor(), $cacheControlConfig);
+        $response = $controller->indexAction($this->getRequest('/'), 'json');
 
         $this->assertTrue($response->headers->hasCacheControlDirective('public'));
 
@@ -172,18 +174,18 @@ class ControllerTest extends TestCase
         $this->assertEquals(456, $response->headers->getCacheControlDirective('s-maxage'));
     }
 
-    public function testExposeDomain()
+    public function testExposeDomain(): void
     {
         $routes = new RouteCollection();
         $routes->add('homepage', new Route('/'));
-        $routes->add('admin_index', new Route('/admin', array(), array(),
-            array('expose' => 'admin')));
-        $routes->add('admin_pages', new Route('/admin/path', array(), array(),
-            array('expose' => 'admin')));
-        $routes->add('blog_index', new Route('/blog', array(), array(),
-            array('expose' => 'blog'), 'localhost'));
-        $routes->add('blog_post', new Route('/blog/{slug}', array(), array(),
-            array('expose' => 'blog'), 'localhost'));
+        $routes->add('admin_index', new Route('/admin', [], [],
+            ['expose' => 'admin']));
+        $routes->add('admin_pages', new Route('/admin/path', [], [],
+            ['expose' => 'admin']));
+        $routes->add('blog_index', new Route('/blog', [], [],
+            ['expose' => 'blog'], 'localhost'));
+        $routes->add('blog_post', new Route('/blog/{slug}', [], [],
+            ['expose' => 'blog'], 'localhost'));
 
         $controller = new Controller(
             $this->getSerializer(),
@@ -195,22 +197,22 @@ class ControllerTest extends TestCase
         $this->assertEquals('{"base_url":"","routes":{"homepage":{"tokens":[["text","\/"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":"","locale":"en"}', $response->getContent());
 
         $response = $controller->indexAction($this->getRequest('/',
-            'GET', array('domain' => 'admin')), 'json');
+            'GET', ['domain' => 'admin']), 'json');
 
         $this->assertEquals('{"base_url":"","routes":{"admin_index":{"tokens":[["text","\/admin"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"admin_pages":{"tokens":[["text","\/admin\/path"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":"","locale":"en"}', $response->getContent());
 
         $response = $controller->indexAction($this->getRequest('/',
-            'GET', array('domain' => 'blog')), 'json');
+            'GET', ['domain' => 'blog']), 'json');
 
         $this->assertEquals('{"base_url":"","routes":{"blog_index":{"tokens":[["text","\/blog"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]},"blog_post":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":"","locale":"en"}', $response->getContent());
 
         $response = $controller->indexAction($this->getRequest('/',
-            'GET', array('domain' => 'admin,blog')), 'json');
+            'GET', ['domain' => 'admin,blog']), 'json');
 
         $this->assertEquals('{"base_url":"","routes":{"admin_index":{"tokens":[["text","\/admin"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"admin_pages":{"tokens":[["text","\/admin\/path"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"blog_index":{"tokens":[["text","\/blog"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]},"blog_post":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":"","locale":"en"}', $response->getContent());
 
         $response = $controller->indexAction($this->getRequest('/',
-            'GET', array('domain' => 'default,admin,blog')), 'json');
+            'GET', ['domain' => 'default,admin,blog']), 'json');
 
         $this->assertEquals('{"base_url":"","routes":{"homepage":{"tokens":[["text","\/"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"admin_index":{"tokens":[["text","\/admin"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"admin_pages":{"tokens":[["text","\/admin\/path"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"blog_index":{"tokens":[["text","\/blog"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]},"blog_post":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":"","locale":"en"}', $response->getContent());
     }
@@ -262,16 +264,16 @@ class ControllerTest extends TestCase
             $this->markTestSkipped('The Serializer component is not available.');
         }
 
-        return new Serializer(array(
+        return new Serializer([
             new RoutesResponseNormalizer(new RouteCollectionNormalizer()),
             new RouteCollectionNormalizer(),
             new RouteCollectionDenormalizer(),
-        ), array(
-            'json' => new JsonEncoder()
-        ));
+        ], [
+            'json' => new JsonEncoder(),
+        ]);
     }
 
-    private function getRequest($uri, $method = 'GET', $parameters = array(), $cookies = array(), $files = array(), $server = array(), $content = null)
+    private function getRequest($uri, $method = 'GET', $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
     {
         return Request::create($uri, $method, $parameters, $cookies, $files, $server, $content);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSJsRoutingBundle package.
  *
@@ -15,7 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CacheControlConfig
 {
-
     public function __construct(private array $parameters = [])
     {
     }
@@ -36,7 +37,7 @@ class CacheControlConfig
             $response->setSharedMaxAge($this->parameters['smaxage']);
         }
 
-        if ($this->parameters['expires'] !== null) {
+        if (null !== $this->parameters['expires']) {
             $response->setExpires(new \DateTime($this->parameters['expires']));
         }
 

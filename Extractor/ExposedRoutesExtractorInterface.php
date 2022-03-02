@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSJsRoutingBundle package.
  *
@@ -21,58 +23,51 @@ use Symfony\Component\Routing\RouteCollection;
 interface ExposedRoutesExtractorInterface
 {
     /**
-     * Returns a collection of exposed routes
+     * Returns a collection of exposed routes.
      */
     public function getRoutes(): RouteCollection;
 
     /**
-     * Return the Base URL
+     * Return the Base URL.
      */
     public function getBaseUrl(): string;
 
     /**
-     * Get the route prefix to use, i.e. the language if JMSI18nRoutingBundle is active
+     * Get the route prefix to use, i.e. the language if JMSI18nRoutingBundle is active.
      */
     public function getPrefix(string $locale): string;
 
     /**
-     * Get the host and applicable port from RequestContext
+     * Get the host and applicable port from RequestContext.
      */
     public function getHost(): string;
 
     /**
-     * Get the port from RequestContext, only if non standard port (Eg: "8080")
+     * Get the port from RequestContext, only if non standard port (Eg: "8080").
      */
     public function getPort(): ?string;
 
     /**
-     * Get the scheme from RequestContext
+     * Get the scheme from RequestContext.
      */
     public function getScheme(): string;
 
     /**
-     * Get the cache path for this request
+     * Get the cache path for this request.
      *
      * @param string|null $locale the request locale
-     *
-     * @return string
      */
     public function getCachePath(?string $locale): string;
 
     /**
-     * Return an array of routing resources
+     * Return an array of routing resources.
      *
      * @return ResourceInterface[]
      */
     public function getResources(): array;
 
     /**
-     * Tell whether a route should be considered as exposed
-     *
-     * @param Route  $route
-     * @param string $name
-     *
-     * @return bool
+     * Tell whether a route should be considered as exposed.
      */
     public function isRouteExposed(Route $route, string $name): bool;
 }

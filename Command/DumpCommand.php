@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSJsRoutingBundle package.
  *
@@ -76,21 +78,23 @@ class DumpCommand extends Command
                 null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 'Specify expose domain',
-                array()
+                []
             )
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if(!in_array($input->getOption('format'), array('js', 'json'))) {
+        if (!in_array($input->getOption('format'), ['js', 'json'])) {
             $output->writeln('<error>Invalid format specified. Use js or json.</error>');
+
             return 1;
         }
 
         $callback = $input->getOption('callback');
-        if(empty($callback)) {
+        if (empty($callback)) {
             $output->writeln('<error>If you include --callback it must not be empty. Do you perhaps want --format=json</error>');
+
             return 1;
         }
 
@@ -98,6 +102,7 @@ class DumpCommand extends Command
         $output->writeln('');
 
         $this->doDump($input, $output);
+
         return 0;
     }
 
@@ -114,18 +119,18 @@ class DumpCommand extends Command
             sprintf(
                 '%s/web/js/fos_js_routes%s.%s',
                 $this->projectDir,
-                empty($domain) ? '' : ('_' . implode('_', $domain)),
+                empty($domain) ? '' : ('_'.implode('_', $domain)),
                 $input->getOption('format')
             );
-        
+
         if (!is_dir($dir = dirname($targetPath))) {
-            $output->writeln('<info>[dir+]</info>  ' . $dir);
+            $output->writeln('<info>[dir+]</info>  '.$dir);
             if (false === @mkdir($dir, 0777, true)) {
-                throw new \RuntimeException('Unable to create directory ' . $dir);
+                throw new \RuntimeException('Unable to create directory '.$dir);
             }
         }
 
-        $output->writeln('<info>[file+]</info> ' . $targetPath);
+        $output->writeln('<info>[file+]</info> '.$targetPath);
 
         $baseUrl = null !== $this->requestContextBaseUrl ?
             $this->requestContextBaseUrl :
@@ -133,9 +138,9 @@ class DumpCommand extends Command
         ;
 
         if ($input->getOption('pretty-print')) {
-            $params = array('json_encode_options' => JSON_PRETTY_PRINT);
+            $params = ['json_encode_options' => JSON_PRETTY_PRINT];
         } else {
-            $params = array();
+            $params = [];
         }
 
         $content = $serializer->serialize(
@@ -153,12 +158,12 @@ class DumpCommand extends Command
             $params
         );
 
-        if('js' == $input->getOption('format')) {
-            $content = sprintf("%s(%s);", $input->getOption('callback'), $content);
+        if ('js' == $input->getOption('format')) {
+            $content = sprintf('%s(%s);', $input->getOption('callback'), $content);
         }
 
         if (false === @file_put_contents($targetPath, $content)) {
-            throw new \RuntimeException('Unable to write file ' . $targetPath);
+            throw new \RuntimeException('Unable to write file '.$targetPath);
         }
     }
 }
