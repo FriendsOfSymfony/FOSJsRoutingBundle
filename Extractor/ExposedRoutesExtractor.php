@@ -147,7 +147,9 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     {
         $cachePath = $this->cacheDir.DIRECTORY_SEPARATOR.'fosJsRouting';
         if (!file_exists($cachePath)) {
-            mkdir($cachePath);
+            if (false === @mkdir($cachePath)) {
+                throw new \RuntimeException('Unable to create Cache directory ' . $cachePath);
+            }
         }
 
         if (isset($this->bundles['JMSI18nRoutingBundle'])) {
