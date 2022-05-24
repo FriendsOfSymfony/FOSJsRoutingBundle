@@ -31,8 +31,6 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class RouterDebugExposedCommand extends Command
 {
-    protected static $defaultName = 'fos:js-routing:debug';
-
     public function __construct(private ExposedRoutesExtractorInterface $extractor, private RouterInterface $router)
     {
         parent::__construct();

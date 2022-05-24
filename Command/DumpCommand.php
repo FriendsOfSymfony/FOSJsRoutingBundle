@@ -28,8 +28,6 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class DumpCommand extends Command
 {
-    protected static $defaultName = 'fos:js-routing:dump';
-
     public function __construct(private ExposedRoutesExtractorInterface $extractor, private SerializerInterface $serializer, private string $projectDir, private ?string $requestContextBaseUrl = null)
     {
         parent::__construct();
