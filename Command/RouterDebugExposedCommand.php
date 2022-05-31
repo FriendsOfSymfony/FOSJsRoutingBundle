@@ -15,6 +15,7 @@ namespace FOS\JsRoutingBundle\Command;
 
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,10 +30,9 @@ use Symfony\Component\Routing\RouterInterface;
  *
  * @author      William DURAND <william.durand1@gmail.com>
  */
+#[AsCommand('fos:js-routing:debug', 'Displays currently exposed routes for an application')]
 class RouterDebugExposedCommand extends Command
 {
-    protected static $defaultName = 'fos:js-routing:debug';
-
     public function __construct(private ExposedRoutesExtractorInterface $extractor, private RouterInterface $router)
     {
         parent::__construct();

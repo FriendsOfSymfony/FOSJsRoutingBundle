@@ -15,6 +15,7 @@ namespace FOS\JsRoutingBundle\Command;
 
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
 use FOS\JsRoutingBundle\Response\RoutesResponse;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -26,10 +27,9 @@ use Symfony\Component\Serializer\SerializerInterface;
  *
  * @author Benjamin Dulau <benjamin.dulau@anonymation.com>
  */
+#[AsCommand('fos:js-routing:dump', 'Dumps exposed routes to the filesystem')]
 class DumpCommand extends Command
 {
-    protected static $defaultName = 'fos:js-routing:dump';
-
     public function __construct(private ExposedRoutesExtractorInterface $extractor, private SerializerInterface $serializer, private string $projectDir, private ?string $requestContextBaseUrl = null)
     {
         parent::__construct();
