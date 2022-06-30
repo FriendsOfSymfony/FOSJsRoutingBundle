@@ -603,3 +603,32 @@ function testGenerateWithPortInHost() {
 
   assertEquals('/foo/', router.generate('homepage'));
 }
+
+function testGenerateWithNullableDefaults() {
+    var router = new fos.Router({ base_url: '/foo' }, {
+        homepage: {
+            tokens: [
+                ['text', '/'],
+                [
+                    'variable',
+                    '/',
+                    '\d*',
+                    'id',
+                    true,
+                ],
+            ],
+            defaults: {
+                'id': null,
+            },
+            requirements: {
+                'id': '\d*',
+            },
+            hosttokens: [],
+            methods: [],
+            schemes: [],
+        },
+    });
+
+    assertEquals('/foo//', router.generate('homepage'));
+    assertEquals('/foo/1234/', router.generate('homepage', { id: 1234 }));
+}

@@ -1,5 +1,5 @@
 export interface RouteDefaults {
-    [index: string]: string;
+    [index: string]: string | null;
 }
 export interface RouteRequirements {
     [index: string]: string;
