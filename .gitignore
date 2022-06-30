@@ -5,3 +5,4 @@
 /node_modules/
 /.phpunit/
 /.phpunit.result.cache
+.idea

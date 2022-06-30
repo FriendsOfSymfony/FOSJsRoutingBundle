@@ -19,5 +19,5 @@
     var exports = {};
     <%= contents %>
 
-    return { Router: Router, Routing: Routing };
+    return { Router: exports.Router, Routing: exports.Routing };
 }));
