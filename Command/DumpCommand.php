@@ -117,7 +117,7 @@ class DumpCommand extends Command
         $serializer = $this->serializer;
         $targetPath = $input->getOption('target') ?:
             sprintf(
-                '%s/web/js/fos_js_routes%s.%s',
+                '%s/public/js/fos_js_routes%s.%s',
                 $this->projectDir,
                 empty($domain) ? '' : ('_'.implode('_', $domain)),
                 $input->getOption('format')
