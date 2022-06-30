@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.2.0 - 2022-06-30
+- [BC break] Use Symfony Flex default path. Will break if you're still using the `web` directory and not defining the path ([#433](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/433))
+- Add webpack plugin to automatically load the routes with no user interactions ([#429](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/429))
+- Changed ExposedRoutesExtractor to handle mkdir warnings ([#434](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/434))
+- Handle nullable route defaults ([#436](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/436))
+- Fix Symfony 6.1 deprecations ([#439](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/439))
+
 ## v3.1.1 - 2022-03-02
 - Allow willdurand/jsonp-callback-validator v2 ([#430](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/issues/430))
 - Use latest PHP 8.0 features ([#432](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/issues/432))
