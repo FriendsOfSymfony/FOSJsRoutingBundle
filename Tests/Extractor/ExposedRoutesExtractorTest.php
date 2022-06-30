@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSJsRoutingBundle package.
  *
@@ -35,7 +37,7 @@ class ExposedRoutesExtractorTest extends TestCase
         $this->cacheDir = sys_get_temp_dir();
     }
 
-    public function testGetRoutes()
+    public function testGetRoutes(): void
     {
         $expected = new RouteCollection();
         $expected->add('literal', new Route('/literal'));
@@ -43,58 +45,58 @@ class ExposedRoutesExtractorTest extends TestCase
         $expected->add('list', new Route('/literal'));
 
         $router = $this->getRouter($expected);
-        $extractor = new ExposedRoutesExtractor($router, array('.*'), $this->cacheDir, array());
+        $extractor = new ExposedRoutesExtractor($router, ['.*'], $this->cacheDir, []);
 
-        $expected->addOptions(array('expose' => 'default'));
+        $expected->addOptions(['expose' => 'default']);
 
         $this->assertEquals($expected, $extractor->getRoutes());
     }
 
-    public function testGetRoutesWithPatterns()
+    public function testGetRoutesWithPatterns(): void
     {
         $expected = new RouteCollection();
-        $expected->add('hello_you', new Route('/foo', array('_controller' => '')));
-        $expected->add('hello_123', new Route('/foo', array('_controller' => '')));
-        $expected->add('hello_world', new Route('/foo', array('_controller' => '')));
+        $expected->add('hello_you', new Route('/foo', ['_controller' => '']));
+        $expected->add('hello_123', new Route('/foo', ['_controller' => '']));
+        $expected->add('hello_world', new Route('/foo', ['_controller' => '']));
 
         $router = $this->getRouter($expected);
 
-        $extractor = new ExposedRoutesExtractor($router, array('hello_.*'), $this->cacheDir, array());
+        $extractor = new ExposedRoutesExtractor($router, ['hello_.*'], $this->cacheDir, []);
         $this->assertCount(3, $extractor->getRoutes(), '3 routes match the pattern: "hello_.*"');
 
-        $extractor = new ExposedRoutesExtractor($router, array('hello_[0-9]{3}'), $this->cacheDir, array());
+        $extractor = new ExposedRoutesExtractor($router, ['hello_[0-9]{3}'], $this->cacheDir, []);
         $this->assertCount(1, $extractor->getRoutes(), '1 routes match the pattern: "hello_[0-9]{3}"');
 
-        $extractor = new ExposedRoutesExtractor($router, array('hello_[0-9]{4}'), $this->cacheDir, array());
+        $extractor = new ExposedRoutesExtractor($router, ['hello_[0-9]{4}'], $this->cacheDir, []);
         $this->assertCount(0, $extractor->getRoutes(), '1 routes match the pattern: "hello_[0-9]{4}"');
 
-        $extractor = new ExposedRoutesExtractor($router, array('hello_.+o.+'), $this->cacheDir, array());
+        $extractor = new ExposedRoutesExtractor($router, ['hello_.+o.+'], $this->cacheDir, []);
         $this->assertCount(2, $extractor->getRoutes(), '2 routes match the pattern: "hello_.+o.+"');
 
-        $extractor = new ExposedRoutesExtractor($router, array('hello_.+o.+', 'hello_123'), $this->cacheDir, array());
+        $extractor = new ExposedRoutesExtractor($router, ['hello_.+o.+', 'hello_123'], $this->cacheDir, []);
         $this->assertCount(3, $extractor->getRoutes(), '3 routes match patterns: "hello_.+o.+" and "hello_123"');
 
-        $extractor = new ExposedRoutesExtractor($router, array('hello_.+o.+', 'hello_$'), $this->cacheDir, array());
+        $extractor = new ExposedRoutesExtractor($router, ['hello_.+o.+', 'hello_$'], $this->cacheDir, []);
         $this->assertCount(2, $extractor->getRoutes(), '2 routes match patterns: "hello_.+o.+" and "hello_"');
 
-        $extractor = new ExposedRoutesExtractor($router, array(), $this->cacheDir, array());
+        $extractor = new ExposedRoutesExtractor($router, [], $this->cacheDir, []);
         $this->assertCount(0, $extractor->getRoutes(), 'No patterns so no matched routes');
     }
 
-    public function testGetCachePath()
+    public function testGetCachePath(): void
     {
         $router = $this->getMockBuilder('Symfony\\Component\\Routing\\Router')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $extractor = new ExposedRoutesExtractor($router, array(), $this->cacheDir, array());
-        $this->assertEquals($this->cacheDir . DIRECTORY_SEPARATOR . 'fosJsRouting' . DIRECTORY_SEPARATOR . 'data.json', $extractor->getCachePath(''));
+        $extractor = new ExposedRoutesExtractor($router, [], $this->cacheDir, []);
+        $this->assertEquals($this->cacheDir.DIRECTORY_SEPARATOR.'fosJsRouting'.DIRECTORY_SEPARATOR.'data.json', $extractor->getCachePath(''));
     }
 
     /**
      * @dataProvider provideTestGetHostOverHttp
      */
-    public function testGetHostOverHttp($host, $httpPort, $expected)
+    public function testGetHostOverHttp($host, $httpPort, $expected): void
     {
         $requestContext = new RequestContext('/app_dev.php', 'GET', $host, 'http', $httpPort);
 
@@ -105,7 +107,7 @@ class ExposedRoutesExtractorTest extends TestCase
             ->method('getContext')
             ->will($this->returnValue($requestContext));
 
-        $extractor = new ExposedRoutesExtractor($router, array(), $this->cacheDir, array());
+        $extractor = new ExposedRoutesExtractor($router, [], $this->cacheDir, []);
 
         $this->assertEquals($expected, $extractor->getHost());
     }
@@ -115,16 +117,16 @@ class ExposedRoutesExtractorTest extends TestCase
      */
     public function provideTestGetHostOverHttp()
     {
-        return array(
-            'HTTP Standard' => array('127.0.0.1', 80, '127.0.0.1'),
-            'HTTP Non-Standard' => array('127.0.0.1', 8888, '127.0.0.1:8888'),
-        );
+        return [
+            'HTTP Standard' => ['127.0.0.1', 80, '127.0.0.1'],
+            'HTTP Non-Standard' => ['127.0.0.1', 8888, '127.0.0.1:8888'],
+        ];
     }
 
     /**
      * @dataProvider provideTestGetHostOverHttps
      */
-    public function testGetHostOverHttps($host, $httpsPort, $expected)
+    public function testGetHostOverHttps($host, $httpsPort, $expected): void
     {
         $requestContext = new RequestContext('/app_dev.php', 'GET', $host, 'https', 80, $httpsPort);
 
@@ -135,12 +137,12 @@ class ExposedRoutesExtractorTest extends TestCase
             ->method('getContext')
             ->will($this->returnValue($requestContext));
 
-        $extractor = new ExposedRoutesExtractor($router, array(), $this->cacheDir, array());
+        $extractor = new ExposedRoutesExtractor($router, [], $this->cacheDir, []);
 
         $this->assertEquals($expected, $extractor->getHost());
     }
 
-    public function testExposeFalse()
+    public function testExposeFalse(): void
     {
         $expected = new RouteCollection();
         $expected->add('user_public_1', new Route('/user/public/1'));
@@ -152,18 +154,16 @@ class ExposedRoutesExtractorTest extends TestCase
         $expected->add('user_secret_2', new Route('/user/secret/2', [], [], ['expose' => 'false']));
 
         $router = $this->getRouter($expected);
-        $extractor = new ExposedRoutesExtractor($router, array('user_.+'), $this->cacheDir, []);
+        $extractor = new ExposedRoutesExtractor($router, ['user_.+'], $this->cacheDir, []);
 
         $this->assertCount(5, $extractor->getRoutes());
 
         foreach ($expected->all() as $name => $route) {
-
             if (in_array($name, ['user_secret_1', 'user_secret_2'])) {
                 $this->assertFalse($extractor->isRouteExposed($route, $name));
             } else {
                 $this->assertTrue($extractor->isRouteExposed($route, $name));
             }
-
         }
     }
 
@@ -172,14 +172,14 @@ class ExposedRoutesExtractorTest extends TestCase
      */
     public function provideTestGetHostOverHttps()
     {
-        return array(
-            'HTTPS Standard' => array('127.0.0.1', 443, '127.0.0.1'),
-            'HTTPS Non-Standard' => array('127.0.0.1', 9876, '127.0.0.1:9876'),
-        );
+        return [
+            'HTTPS Standard' => ['127.0.0.1', 443, '127.0.0.1'],
+            'HTTPS Non-Standard' => ['127.0.0.1', 9876, '127.0.0.1:9876'],
+        ];
     }
 
     /**
-     * Get a mock object which represents a Router
+     * Get a mock object which represents a Router.
      *
      * @return \Symfony\Component\Routing\Router
      */

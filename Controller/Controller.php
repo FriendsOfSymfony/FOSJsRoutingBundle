@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSJsRoutingBundle package.
  *
@@ -33,13 +35,12 @@ class Controller
      * Default constructor.
      *
      * @param object                          $serializer             Any object with a serialize($data, $format) method
-     * @param ExposedRoutesExtractorInterface $exposedRoutesExtractor The extractor service.
-     * @param array                           $cacheControl
-     * @param boolean                         $debug
+     * @param ExposedRoutesExtractorInterface $exposedRoutesExtractor the extractor service
+     * @param bool                            $debug
      */
-    public function __construct(private mixed $serializer, private ExposedRoutesExtractorInterface $exposedRoutesExtractor, array $cacheControl = array(), private bool $debug = false)
+    public function __construct(private mixed $serializer, private ExposedRoutesExtractorInterface $exposedRoutesExtractor, array $cacheControl = [], private bool $debug = false)
     {
-        $this->cacheControlConfig     = new CacheControlConfig($cacheControl);
+        $this->cacheControlConfig = new CacheControlConfig($cacheControl);
     }
 
     public function indexAction(Request $request, $_format): Response
@@ -54,13 +55,13 @@ class Controller
         $cache = new ConfigCache($this->exposedRoutesExtractor->getCachePath($request->getLocale()), $this->debug);
 
         if (!$cache->isFresh() || $this->debug) {
-            $exposedRoutes    = $this->exposedRoutesExtractor->getRoutes();
+            $exposedRoutes = $this->exposedRoutesExtractor->getRoutes();
             $serializedRoutes = $this->serializer->serialize($exposedRoutes, 'json');
             $cache->write($serializedRoutes, $this->exposedRoutesExtractor->getResources());
         } else {
             $path = method_exists($cache, 'getPath') ? $cache->getPath() : (string) $cache;
             $serializedRoutes = file_get_contents($path);
-            $exposedRoutes    = $this->serializer->deserialize(
+            $exposedRoutes = $this->serializer->deserialize(
                 $serializedRoutes,
                 'Symfony\Component\Routing\RouteCollection',
                 'json'
@@ -75,7 +76,7 @@ class Controller
             $this->exposedRoutesExtractor->getPort(),
             $this->exposedRoutesExtractor->getScheme(),
             $request->getLocale(),
-            $request->query->has('domain') ? explode(',', $request->query->get('domain')) : array()
+            $request->query->has('domain') ? explode(',', $request->query->get('domain')) : []
         );
 
         $content = $this->serializer->serialize($routesResponse, 'json');
@@ -86,10 +87,10 @@ class Controller
                 throw new HttpException(400, 'Invalid JSONP callback value');
             }
 
-            $content = '/**/' . $callback . '(' . $content . ');';
+            $content = '/**/'.$callback.'('.$content.');';
         }
 
-        $response = new Response($content, 200, array('Content-Type' => $request->getMimeType($_format)));
+        $response = new Response($content, 200, ['Content-Type' => $request->getMimeType($_format)]);
         $this->cacheControlConfig->apply($response);
 
         return $response;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSJsRoutingBundle package.
  *
@@ -17,10 +19,10 @@ use PHPUnit\Framework\TestCase;
 
 class RoutesResponseNormalizerTest extends TestCase
 {
-    public function testSupportsNormalization()
+    public function testSupportsNormalization(): void
     {
         $normalizer = new RoutesResponseNormalizer(new RouteCollectionNormalizer());
-        $response   = $this->getMockBuilder('FOS\JsRoutingBundle\Response\RoutesResponse')
+        $response = $this->getMockBuilder('FOS\JsRoutingBundle\Response\RoutesResponse')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -28,16 +30,16 @@ class RoutesResponseNormalizerTest extends TestCase
         $this->assertTrue($normalizer->supportsNormalization($response));
     }
 
-    public function testNormalize()
+    public function testNormalize(): void
     {
         $normalizer = new RoutesResponseNormalizer(new RouteCollectionNormalizer());
-        $response   = $this->getMockBuilder('FOS\JsRoutingBundle\Response\RoutesResponse')
+        $response = $this->getMockBuilder('FOS\JsRoutingBundle\Response\RoutesResponse')
             ->disableOriginalConstructor()
             ->getMock();
 
         $response->expects($this->once())
             ->method('getRoutes')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $response->expects($this->once())
             ->method('getBaseUrl')
@@ -59,15 +61,15 @@ class RoutesResponseNormalizerTest extends TestCase
             ->method('getLocale')
             ->will($this->returnValue('locale'));
 
-        $expected = array(
+        $expected = [
             'base_url' => 'baseUrl',
-            'routes'   => array(),
-            'prefix'   => 'prefix',
-            'host'     => 'host',
-            'port'     => null,
-            'scheme'   => 'scheme',
-            'locale'   => 'locale',
-        );
+            'routes' => [],
+            'prefix' => 'prefix',
+            'host' => 'host',
+            'port' => null,
+            'scheme' => 'scheme',
+            'locale' => 'locale',
+        ];
 
         $this->assertSame($expected, $normalizer->normalize($response));
     }

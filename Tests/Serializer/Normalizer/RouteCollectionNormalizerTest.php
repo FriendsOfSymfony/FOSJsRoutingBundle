@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSJsRoutingBundle package.
  *
@@ -13,15 +15,15 @@ namespace FOS\JsRoutingBundle\Tests\Serializer\Normalizer;
 
 use FOS\JsRoutingBundle\Serializer\Normalizer\RouteCollectionNormalizer;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
 
 /**
- * Class RouteCollectionNormalizerTest
+ * Class RouteCollectionNormalizerTest.
  */
 class RouteCollectionNormalizerTest extends TestCase
 {
-    public function testSupportsNormalization()
+    public function testSupportsNormalization(): void
     {
         $normalizer = new RouteCollectionNormalizer();
 
@@ -29,7 +31,7 @@ class RouteCollectionNormalizerTest extends TestCase
         $this->assertTrue($normalizer->supportsNormalization(new RouteCollection()));
     }
 
-    public function testNormalize()
+    public function testNormalize(): void
     {
         $normalizer = new RouteCollectionNormalizer();
 
@@ -38,44 +40,44 @@ class RouteCollectionNormalizerTest extends TestCase
         $routes->add('blog_post', new Route('/blog-post/{slug}'));
         $routes->add('list', new Route('/literal'));
 
-        $expected = array(
-            'literal' => array(
-                'path'         => '/literal',
-                'host'         => '',
-                'defaults'     => array(),
-                'requirements' => array(),
-                'options'      => array(
-                    'compiler_class' => 'Symfony\Component\Routing\RouteCompiler'
-                ),
-                'schemes'   => array(),
-                'methods'   => array(),
-                'condition' => '',
-            ),
-            'blog_post' => array(
-                'path'         => '/blog-post/{slug}',
-                'host'         => '',
-                'defaults'     => array(),
-                'requirements' => array(),
-                'options'      => array(
-                    'compiler_class' => 'Symfony\Component\Routing\RouteCompiler'
-                ),
-                'schemes'   => array(),
-                'methods'   => array(),
-                'condition' => '',
-            ),
-            'list' => array(
-                'path'         => '/literal',
-                'host'         => '',
-                'defaults'     => array(),
-                'requirements' => array(),
-                'options'      => array(
+        $expected = [
+            'literal' => [
+                'path' => '/literal',
+                'host' => '',
+                'defaults' => [],
+                'requirements' => [],
+                'options' => [
                     'compiler_class' => 'Symfony\Component\Routing\RouteCompiler',
-                ),
-                'schemes'   => array(),
-                'methods'   => array(),
+                ],
+                'schemes' => [],
+                'methods' => [],
                 'condition' => '',
-            ),
-        );
+            ],
+            'blog_post' => [
+                'path' => '/blog-post/{slug}',
+                'host' => '',
+                'defaults' => [],
+                'requirements' => [],
+                'options' => [
+                    'compiler_class' => 'Symfony\Component\Routing\RouteCompiler',
+                ],
+                'schemes' => [],
+                'methods' => [],
+                'condition' => '',
+            ],
+            'list' => [
+                'path' => '/literal',
+                'host' => '',
+                'defaults' => [],
+                'requirements' => [],
+                'options' => [
+                    'compiler_class' => 'Symfony\Component\Routing\RouteCompiler',
+                ],
+                'schemes' => [],
+                'methods' => [],
+                'condition' => '',
+            ],
+        ];
 
         $this->assertSame($expected, $normalizer->normalize($routes));
     }

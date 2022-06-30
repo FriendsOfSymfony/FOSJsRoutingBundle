@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSJsRoutingBundle package.
  *
@@ -15,28 +17,28 @@ use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Class RouteCollectionNormalizer
+ * Class RouteCollectionNormalizer.
  */
 class RouteCollectionNormalizer implements NormalizerInterface
 {
     /**
      * {@inheritDoc}
      */
-    public function normalize(mixed $object, string $format = null, array $context = array()): array
+    public function normalize(mixed $object, string $format = null, array $context = []): array
     {
-        $collection = array();
+        $collection = [];
 
         foreach ($object->all() as $name => $route) {
-            $collection[$name] = array(
-                'path'         => $route->getPath(),
-                'host'         => $route->getHost(),
-                'defaults'     => $route->getDefaults(),
+            $collection[$name] = [
+                'path' => $route->getPath(),
+                'host' => $route->getHost(),
+                'defaults' => $route->getDefaults(),
                 'requirements' => $route->getRequirements(),
-                'options'      => $route->getOptions(),
-                'schemes'      => $route->getSchemes(),
-                'methods'      => $route->getMethods(),
-                'condition'    => method_exists($route, 'getCondition') ? $route->getCondition() : '',
-            );
+                'options' => $route->getOptions(),
+                'schemes' => $route->getSchemes(),
+                'methods' => $route->getMethods(),
+                'condition' => method_exists($route, 'getCondition') ? $route->getCondition() : '',
+            ];
         }
 
         return $collection;
@@ -45,7 +47,7 @@ class RouteCollectionNormalizer implements NormalizerInterface
     /**
      * {@inheritDoc}
      */
-    public function supportsNormalization(mixed $data, string $format = null): bool
+    public function supportsNormalization(mixed $data, string $format = null, array $context = []): bool
     {
         return $data instanceof RouteCollection;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSJsRoutingBundle package.
  *
@@ -24,9 +26,9 @@ class FOSJsRoutingExtensionTest extends TestCase
         }
     }
 
-    public function testRouterAlias()
+    public function testRouterAlias(): void
     {
-        $container = $this->load(array());
+        $container = $this->load([]);
 
         $this->assertTrue($container->hasAlias('fos_js_routing.router'));
         $alias = $container->getAlias('fos_js_routing.router');
@@ -35,9 +37,9 @@ class FOSJsRoutingExtensionTest extends TestCase
         $this->assertFalse($alias->isPublic());
     }
 
-    public function testCustomRouterAlias()
+    public function testCustomRouterAlias(): void
     {
-        $container = $this->load(array(array('router' => 'demo_router')));
+        $container = $this->load([['router' => 'demo_router']]);
 
         $this->assertTrue($container->hasAlias('fos_js_routing.router'));
         $alias = $container->getAlias('fos_js_routing.router');
@@ -46,12 +48,12 @@ class FOSJsRoutingExtensionTest extends TestCase
         $this->assertFalse($alias->isPublic());
     }
 
-    public function testLoadSetupsSerializerIfNotGiven()
+    public function testLoadSetupsSerializerIfNotGiven(): void
     {
-        $container = $this->load(array(array()));
+        $container = $this->load([[]]);
 
         $serializer = $container->get('fos_js_routing.serializer');
-        $this->assertEquals('{"foo":"bar"}', $serializer->serialize(array('foo' => 'bar'), 'json'));
+        $this->assertEquals('{"foo":"bar"}', $serializer->serialize(['foo' => 'bar'], 'json'));
     }
 
     private function load(array $configs)

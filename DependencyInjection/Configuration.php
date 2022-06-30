@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSJsRoutingBundle package.
  *
@@ -11,8 +13,8 @@
 
 namespace FOS\JsRoutingBundle\DependencyInjection;
 
-use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * Configuration class.
@@ -37,8 +39,8 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('serializer')->cannotBeEmpty()->end()
                 ->arrayNode('routes_to_expose')
                     ->beforeNormalization()
-                        ->ifTrue(function ($v) { return !is_array($v); })
-                        ->then(function ($v) { return array($v); })
+                        ->ifTrue(fn ($v) => !is_array($v))
+                        ->then(fn ($v) => [$v])
                     ->end()
                     ->prototype('scalar')->end()
                 ->end()
@@ -52,8 +54,8 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('smaxage')->defaultNull()->end()
                         ->arrayNode('vary')
                             ->beforeNormalization()
-                                ->ifTrue(function ($v) { return !is_array($v); })
-                                ->then(function ($v) { return array($v); })
+                                ->ifTrue(fn ($v) => !is_array($v))
+                                ->then(fn ($v) => [$v])
                             ->end()
                             ->prototype('scalar')->end()
                         ->end()

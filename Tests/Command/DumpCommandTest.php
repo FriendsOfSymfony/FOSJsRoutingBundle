@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSJsRoutingBundle package.
  *
@@ -36,7 +38,7 @@ class DumpCommandTest extends TestCase
             ->getMock();
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $this->serializer->expects($this->once())
             ->method('serialize')
@@ -45,7 +47,7 @@ class DumpCommandTest extends TestCase
         $command = new DumpCommand($this->extractor, $this->serializer, '/root/dir');
 
         $tester = new CommandTester($command);
-        $tester->execute(array('--target' => '/tmp/dump-command-test'));
+        $tester->execute(['--target' => '/tmp/dump-command-test']);
 
         $this->assertStringContainsString('Dumping exposed routes.', $tester->getDisplay());
         $this->assertStringContainsString('[file+] /tmp/dump-command-test', $tester->getDisplay());
@@ -53,7 +55,7 @@ class DumpCommandTest extends TestCase
         $this->assertEquals('fos.Router.setData({"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""});', file_get_contents('/tmp/dump-command-test'));
     }
 
-    public function testExecuteCallbackOption()
+    public function testExecuteCallbackOption(): void
     {
         $this->serializer->expects($this->once())
             ->method('serialize')
@@ -62,10 +64,10 @@ class DumpCommandTest extends TestCase
         $command = new DumpCommand($this->extractor, $this->serializer, '/root/dir');
 
         $tester = new CommandTester($command);
-        $tester->execute(array(
+        $tester->execute([
             '--target' => '/tmp/dump-command-test',
             '--callback' => 'test',
-        ));
+        ]);
 
         $this->assertStringContainsString('Dumping exposed routes.', $tester->getDisplay());
         $this->assertStringContainsString('[file+] /tmp/dump-command-test', $tester->getDisplay());
@@ -73,7 +75,7 @@ class DumpCommandTest extends TestCase
         $this->assertEquals('test({"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""});', file_get_contents('/tmp/dump-command-test'));
     }
 
-    public function testExecuteFormatOption()
+    public function testExecuteFormatOption(): void
     {
         $json = '{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""}';
 
@@ -84,10 +86,10 @@ class DumpCommandTest extends TestCase
         $command = new DumpCommand($this->extractor, $this->serializer, '/root/dir');
 
         $tester = new CommandTester($command);
-        $tester->execute(array(
+        $tester->execute([
             '--target' => '/tmp/dump-command-test',
             '--format' => 'json',
-        ));
+        ]);
 
         $this->assertStringContainsString('Dumping exposed routes.', $tester->getDisplay());
         $this->assertStringContainsString('[file+] /tmp/dump-command-test', $tester->getDisplay());
@@ -95,17 +97,17 @@ class DumpCommandTest extends TestCase
         $this->assertEquals($json, file_get_contents('/tmp/dump-command-test'));
     }
 
-    public function testExecuteUnableToCreateDirectory()
+    public function testExecuteUnableToCreateDirectory(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Unable to create directory /root/dir/web/js');
+        $this->expectExceptionMessage('Unable to create directory /root/dir/public/js');
         $command = new DumpCommand($this->extractor, $this->serializer, '/root/dir');
 
         $tester = new CommandTester($command);
-        $tester->execute(array());
+        $tester->execute([]);
     }
 
-    public function testExecuteUnableToWriteFile()
+    public function testExecuteUnableToWriteFile(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Unable to write file /tmp');
@@ -116,6 +118,6 @@ class DumpCommandTest extends TestCase
         $command = new DumpCommand($this->extractor, $this->serializer, '/root/dir');
 
         $tester = new CommandTester($command);
-        $tester->execute(array('--target' => '/tmp'));
+        $tester->execute(['--target' => '/tmp']);
     }
 }
