@@ -1,5 +1,8 @@
 # Changelog
 
+## v3.2.1 - 2022-07-01
+- fix for webpack plugin: fosRoute.json dir created at root ([#443](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/443))
+
 ## v3.2.0 - 2022-06-30
 - [BC break] Use Symfony Flex default path. Will break if you're still using the `web` directory and not defining the path ([#433](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/433))
 - Add webpack plugin to automatically load the routes with no user interactions ([#429](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/429))
