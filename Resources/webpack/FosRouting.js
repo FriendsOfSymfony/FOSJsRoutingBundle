@@ -66,7 +66,7 @@ class FosRouting {
             const content = await readFile(this.options.target);
             await rmFile(this.options.target);
             if (!prevContent || content.compare(prevContent) !== 0) {
-                await makeDir(path.basename(this.finalTarget), {recursive: true})
+                await makeDir(path.dirname(this.finalTarget), {recursive: true});
                 await writeFile(this.finalTarget, content);
                 prevContent = content;
                 if (comp.modifiedFiles && !comp.modifiedFiles.has(this.finalTarget)) {
