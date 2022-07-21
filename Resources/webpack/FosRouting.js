@@ -18,6 +18,7 @@ class FosRouting {
         locale: '',
         prettyPrint: false,
         domain: [],
+        php: 'php',
     };
 
     constructor(options = {}) {
@@ -62,7 +63,7 @@ class FosRouting {
                 }
                 return pass;
             }, []);
-            await execFile('bin/console', ['fos:js-routing:dump', ...args]);
+            await execFile(this.options.php, ['bin/console', 'fos:js-routing:dump', ...args]);
             const content = await readFile(this.options.target);
             await rmFile(this.options.target);
             if (!prevContent || content.compare(prevContent) !== 0) {
@@ -86,7 +87,7 @@ class FosRouting {
 
         new InjectPlugin(() => {
             return 'import Routing from "fos-router";' +
-                'import routes from "' + this.finalTarget + '";' +
+                'import routes from '+JSON.stringify(this.finalTarget)+';' +
                 'Routing.setRoutingData(routes);';
         }).apply(compiler);
     }
