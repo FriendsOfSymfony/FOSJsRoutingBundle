@@ -51,7 +51,7 @@ class FOSJsRoutingExtension extends Extension
 
         $container->setParameter(
             'fos_js_routing.request_context_base_url',
-            $config['request_context_base_url'] ? $config['request_context_base_url'] : null
+            $config['request_context_base_url'] ?: null
         );
 
         if (isset($config['cache_control'])) {

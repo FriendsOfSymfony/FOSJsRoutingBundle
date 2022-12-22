@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Routing\Router;
 
 /**
  * ExposedRoutesExtractorTest class.
@@ -26,11 +27,11 @@ use Symfony\Component\Routing\RouteCollection;
  */
 class ExposedRoutesExtractorTest extends TestCase
 {
-    private $cacheDir;
+    private string $cacheDir;
 
     public function setUp(): void
     {
-        if (!class_exists('Symfony\\Component\\Routing\\Route')) {
+        if (!class_exists(Route::class)) {
             $this->markTestSkipped('The Routing component is not available.');
         }
 
@@ -85,7 +86,7 @@ class ExposedRoutesExtractorTest extends TestCase
 
     public function testGetCachePath(): void
     {
-        $router = $this->getMockBuilder('Symfony\\Component\\Routing\\Router')
+        $router = $this->getMockBuilder(Router::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -100,7 +101,7 @@ class ExposedRoutesExtractorTest extends TestCase
     {
         $requestContext = new RequestContext('/app_dev.php', 'GET', $host, 'http', $httpPort);
 
-        $router = $this->getMockBuilder('Symfony\\Component\\Routing\\Router')
+        $router = $this->getMockBuilder(Router::class)
             ->disableOriginalConstructor()
             ->getMock();
         $router->expects($this->atLeastOnce())
@@ -115,7 +116,7 @@ class ExposedRoutesExtractorTest extends TestCase
     /**
      * @return array
      */
-    public function provideTestGetHostOverHttp()
+    public function provideTestGetHostOverHttp(): array
     {
         return [
             'HTTP Standard' => ['127.0.0.1', 80, '127.0.0.1'],
@@ -130,7 +131,7 @@ class ExposedRoutesExtractorTest extends TestCase
     {
         $requestContext = new RequestContext('/app_dev.php', 'GET', $host, 'https', 80, $httpsPort);
 
-        $router = $this->getMockBuilder('Symfony\\Component\\Routing\\Router')
+        $router = $this->getMockBuilder(Router::class)
             ->disableOriginalConstructor()
             ->getMock();
         $router->expects($this->atLeastOnce())
@@ -167,10 +168,7 @@ class ExposedRoutesExtractorTest extends TestCase
         }
     }
 
-    /**
-     * @return array
-     */
-    public function provideTestGetHostOverHttps()
+    public function provideTestGetHostOverHttps(): array
     {
         return [
             'HTTPS Standard' => ['127.0.0.1', 443, '127.0.0.1'],
@@ -180,12 +178,10 @@ class ExposedRoutesExtractorTest extends TestCase
 
     /**
      * Get a mock object which represents a Router.
-     *
-     * @return \Symfony\Component\Routing\Router
      */
-    private function getRouter(RouteCollection $routes)
+    private function getRouter(RouteCollection $routes): \Symfony\Component\Routing\Router
     {
-        $router = $this->getMockBuilder('Symfony\\Component\\Routing\\Router')
+        $router = $this->getMockBuilder(Router::class)
             ->disableOriginalConstructor()
             ->getMock();
         $router

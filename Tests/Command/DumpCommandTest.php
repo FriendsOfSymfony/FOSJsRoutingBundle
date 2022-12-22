@@ -16,6 +16,9 @@ namespace FOS\JsRoutingBundle\Tests\Command;
 use FOS\JsRoutingBundle\Command\DumpCommand;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Routing\Router;
+use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor;
 
 class DumpCommandTest extends TestCase
 {
@@ -25,15 +28,15 @@ class DumpCommandTest extends TestCase
 
     public function setUp(): void
     {
-        $this->extractor = $this->getMockBuilder('FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor')
+        $this->extractor = $this->getMockBuilder(ExposedRoutesExtractor::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->router = $this->getMockBuilder('Symfony\Component\Routing\Router')
+        $this->router = $this->getMockBuilder(Router::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->serializer = $this->getMockBuilder('Symfony\Component\Serializer\SerializerInterface')
+        $this->serializer = $this->getMockBuilder(SerializerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
     }

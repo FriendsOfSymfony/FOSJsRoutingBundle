@@ -16,13 +16,14 @@ namespace FOS\JsRoutingBundle\Tests\Serializer\Normalizer;
 use FOS\JsRoutingBundle\Serializer\Normalizer\RouteCollectionNormalizer;
 use FOS\JsRoutingBundle\Serializer\Normalizer\RoutesResponseNormalizer;
 use PHPUnit\Framework\TestCase;
+use FOS\JsRoutingBundle\Response\RoutesResponse;
 
 class RoutesResponseNormalizerTest extends TestCase
 {
     public function testSupportsNormalization(): void
     {
         $normalizer = new RoutesResponseNormalizer(new RouteCollectionNormalizer());
-        $response = $this->getMockBuilder('FOS\JsRoutingBundle\Response\RoutesResponse')
+        $response = $this->getMockBuilder(RoutesResponse::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -33,7 +34,7 @@ class RoutesResponseNormalizerTest extends TestCase
     public function testNormalize(): void
     {
         $normalizer = new RoutesResponseNormalizer(new RouteCollectionNormalizer());
-        $response = $this->getMockBuilder('FOS\JsRoutingBundle\Response\RoutesResponse')
+        $response = $this->getMockBuilder(RoutesResponse::class)
             ->disableOriginalConstructor()
             ->getMock();
 
