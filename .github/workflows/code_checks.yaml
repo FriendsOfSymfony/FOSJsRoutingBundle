@@ -72,7 +72,7 @@ jobs:
           composer config extra.symfony.require ${{ matrix.symfony }}
 
       - name: Update project dependencies
-        uses: ramsey/composer-install@v1
+        uses: ramsey/composer-install@v2
         with:
           dependency-versions: ${{ matrix.dependencies }}
 
