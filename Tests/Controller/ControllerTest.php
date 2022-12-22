@@ -24,10 +24,11 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
+use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
 
 class ControllerTest extends TestCase
 {
-    private $cachePath;
+    private string $cachePath;
 
     public function setUp(): void
     {
@@ -119,7 +120,7 @@ class ControllerTest extends TestCase
         );
     }
 
-    public static function dataProviderForTestGenerateWithCallback()
+    public static function dataProviderForTestGenerateWithCallback(): array
     {
         return [
             ['fos.Router.data'],
@@ -223,7 +224,7 @@ class ControllerTest extends TestCase
             $exposedRoutes = new RouteCollection();
         }
 
-        $extractor = $this->getMockBuilder('FOS\\JsRoutingBundle\\Extractor\\ExposedRoutesExtractorInterface')->getMock();
+        $extractor = $this->getMockBuilder(ExposedRoutesExtractorInterface::class)->getMock();
         $extractor
             ->expects($this->any())
             ->method('getRoutes')
@@ -258,9 +259,9 @@ class ControllerTest extends TestCase
         return $extractor;
     }
 
-    private function getSerializer()
+    private function getSerializer(): Serializer
     {
-        if (!class_exists('Symfony\\Component\\Serializer\\Serializer')) {
+        if (!class_exists(Serializer::class)) {
             $this->markTestSkipped('The Serializer component is not available.');
         }
 
@@ -273,7 +274,7 @@ class ControllerTest extends TestCase
         ]);
     }
 
-    private function getRequest($uri, $method = 'GET', $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
+    private function getRequest($uri, $method = 'GET', $parameters = [], $cookies = [], $files = [], $server = [], $content = null): Request
     {
         return Request::create($uri, $method, $parameters, $cookies, $files, $server, $content);
     }

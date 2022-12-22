@@ -18,6 +18,8 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Routing\Router;
+use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor;
 
 class RouterDebugExposedCommandTest extends TestCase
 {
@@ -26,11 +28,11 @@ class RouterDebugExposedCommandTest extends TestCase
 
     public function setUp(): void
     {
-        $this->extractor = $this->getMockBuilder('FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor')
+        $this->extractor = $this->getMockBuilder(ExposedRoutesExtractor::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->router = $this->getMockBuilder('Symfony\Component\Routing\Router')
+        $this->router = $this->getMockBuilder(Router::class)
             ->disableOriginalConstructor()
             ->getMock();
     }

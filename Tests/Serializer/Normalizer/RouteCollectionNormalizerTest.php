@@ -17,6 +17,7 @@ use FOS\JsRoutingBundle\Serializer\Normalizer\RouteCollectionNormalizer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Routing\RouteCompiler;
 
 /**
  * Class RouteCollectionNormalizerTest.
@@ -47,7 +48,7 @@ class RouteCollectionNormalizerTest extends TestCase
                 'defaults' => [],
                 'requirements' => [],
                 'options' => [
-                    'compiler_class' => 'Symfony\Component\Routing\RouteCompiler',
+                    'compiler_class' => RouteCompiler::class,
                 ],
                 'schemes' => [],
                 'methods' => [],
@@ -59,7 +60,7 @@ class RouteCollectionNormalizerTest extends TestCase
                 'defaults' => [],
                 'requirements' => [],
                 'options' => [
-                    'compiler_class' => 'Symfony\Component\Routing\RouteCompiler',
+                    'compiler_class' => RouteCompiler::class,
                 ],
                 'schemes' => [],
                 'methods' => [],
@@ -71,7 +72,7 @@ class RouteCollectionNormalizerTest extends TestCase
                 'defaults' => [],
                 'requirements' => [],
                 'options' => [
-                    'compiler_class' => 'Symfony\Component\Routing\RouteCompiler',
+                    'compiler_class' => RouteCompiler::class,
                 ],
                 'schemes' => [],
                 'methods' => [],

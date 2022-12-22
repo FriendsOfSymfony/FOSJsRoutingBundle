@@ -21,7 +21,7 @@ class FOSJsRoutingExtensionTest extends TestCase
 {
     public function setUp(): void
     {
-        if (!class_exists('Symfony\Component\DependencyInjection\ContainerBuilder')) {
+        if (!class_exists(ContainerBuilder::class)) {
             $this->markTestSkipped('The DependencyInjection component is not available.');
         }
     }
@@ -56,7 +56,7 @@ class FOSJsRoutingExtensionTest extends TestCase
         $this->assertEquals('{"foo":"bar"}', $serializer->serialize(['foo' => 'bar'], 'json'));
     }
 
-    private function load(array $configs)
+    private function load(array $configs): ContainerBuilder
     {
         $container = new ContainerBuilder();
 
