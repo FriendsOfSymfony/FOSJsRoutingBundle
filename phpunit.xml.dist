@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit colors="true" bootstrap="./vendor/autoload.php">
-    <testsuites>
-        <testsuite name="FOSJsRoutingBundle Test Suite">
-            <directory suffix="Test.php">./Tests</directory>
-        </testsuite>
-    </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory>./</directory>
-            <exclude>
-                <directory>./Resources/</directory>
-                <directory>./Tests/</directory>
-                <directory>./vendor/</directory>
-            </exclude>
-        </whitelist>
-    </filter>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         colors="true"
+         bootstrap="./vendor/autoload.php"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd">
+  <coverage>
+    <include>
+      <directory>./</directory>
+    </include>
+    <exclude>
+      <directory>./Resources/</directory>
+      <directory>./Tests/</directory>
+      <directory>./vendor/</directory>
+    </exclude>
+  </coverage>
+  <testsuites>
+    <testsuite name="FOSJsRoutingBundle Test Suite">
+      <directory suffix="Test.php">./Tests</directory>
+    </testsuite>
+  </testsuites>
 </phpunit>
