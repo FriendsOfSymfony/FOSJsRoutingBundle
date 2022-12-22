@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Routing\RouteCollection;
 
 /**
  * Controller class.
@@ -63,7 +64,7 @@ class Controller
             $serializedRoutes = file_get_contents($path);
             $exposedRoutes = $this->serializer->deserialize(
                 $serializedRoutes,
-                'Symfony\Component\Routing\RouteCollection',
+                RouteCollection::class,
                 'json'
             );
         }
@@ -83,7 +84,7 @@ class Controller
 
         if (null !== $callback = $request->query->get('callback')) {
             $validator = new \JsonpCallbackValidator();
-            if (!$validator->validate($callback)) {
+            if (!$validator::validate($callback)) {
                 throw new HttpException(400, 'Invalid JSONP callback value');
             }
 
