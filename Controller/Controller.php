@@ -20,7 +20,7 @@ use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Controller class.
@@ -82,9 +82,8 @@ class Controller
         $content = $this->serializer->serialize($routesResponse, 'json');
 
         if (null !== $callback = $request->query->get('callback')) {
-            $validator = new \JsonpCallbackValidator();
-            if (!$validator->validate($callback)) {
-                throw new HttpException(400, 'Invalid JSONP callback value');
+            if (!\JsonpCallbackValidator::validate($callback)) {
+                throw new BadRequestHttpException('Invalid JSONP callback value');
             }
 
             $content = '/**/'.$callback.'('.$content.');';
