@@ -65,4 +65,9 @@ class RouteCollectionDenormalizer implements DenormalizerInterface
 
         return true;
     }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return ['*' => false];
+    }
 }
