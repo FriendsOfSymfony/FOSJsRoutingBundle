@@ -44,4 +44,9 @@ class RoutesResponseNormalizer implements NormalizerInterface
     {
         return $data instanceof RoutesResponse;
     }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [RoutesResponse::class => true];
+    }
 }

@@ -51,4 +51,9 @@ class RouteCollectionNormalizer implements NormalizerInterface
     {
         return $data instanceof RouteCollection;
     }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [RouteCollection::class => true];
+    }
 }

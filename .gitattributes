@@ -1,0 +1,4 @@
+.* export-ignore
+Tests export-ignore
+phpunit export-ignore
+phpunit.xml.dist export-ignore

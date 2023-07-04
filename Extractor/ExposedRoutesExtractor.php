@@ -189,7 +189,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
 
         $matches = array_flip(array_intersect_key($matches, array_flip($this->availableDomains)));
 
-        return isset($matches[$name]) ? $matches[$name] : null;
+        return $matches[$name] ?? null;
     }
 
     protected function extractDomainPatterns($routesToExpose): array

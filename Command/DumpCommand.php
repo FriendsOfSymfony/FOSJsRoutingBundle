@@ -132,9 +132,7 @@ class DumpCommand extends Command
 
         $output->writeln('<info>[file+]</info> '.$targetPath);
 
-        $baseUrl = null !== $this->requestContextBaseUrl ?
-            $this->requestContextBaseUrl :
-            $this->extractor->getBaseUrl()
+        $baseUrl = $this->requestContextBaseUrl ?? $this->extractor->getBaseUrl()
         ;
 
         if ($input->getOption('pretty-print')) {
