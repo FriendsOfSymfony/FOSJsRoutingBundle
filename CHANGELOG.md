@@ -1,5 +1,13 @@
 # Changelog
 
+## v3.3.0 - 2023-07-04
+- add support for Windows when using the webpack plugin ([#444](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/444))
+- Add PHP 8.2 tests ([#449](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/449))
+- Phpunit config file migration ([#450](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/450)))
+- Deprecation fixes (PHP 8 ([#451](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/451)) and Symfony 6.3 ([#460](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/460)))
+- JSON Callback validator static call instead of new object ([#458](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/458))
+- Optimize package size by excluding tests ([#457](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/457))
+
 ## v3.2.1 - 2022-07-01
 - fix for webpack plugin: fosRoute.json dir created at root ([#443](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/443))
 
