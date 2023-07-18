@@ -34,6 +34,22 @@ If you are using webpack and Encore to package your assets you can use the webpa
 
 Then use it simply by importing ``import Routing from 'fos-router';`` in your js or ts code
 
+The plugin hooks into the webpack `build` and `watch` process and triggers the `fos:js-routing:dump` command automatically, 
+once routes have been changed.
+
+To avoid that, e.g. when building the frontend on a machine or docker image/layer, where no PHP is present, you can configure the 
+plugin to use a static dumped `routes.json` and suppress automatic recompilation of the file, by passing some options to the plugin:
+
+.. code-block:: js
+    
+    const FosRouting = require('fos-router/webpack/FosRouting');
+    //...
+    Encore
+        .addPlugin(new FosRouting(
+            { target: './assets/js/routes.json' }, // <- path to dumped routes.json 
+            false // <- set false to suppress automatic recompilation of the file
+            )
+        )
 
 Alternatively you can use the dump command
 and export your routes to json, this command will create a json file into the ``public/js`` folder:
