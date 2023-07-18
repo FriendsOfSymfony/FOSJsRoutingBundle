@@ -18,11 +18,10 @@ class FosRouting {
         locale: '',
         prettyPrint: false,
         domain: [],
-        php: 'php',
-        skipCompile: false
+        php: 'php'
     };
 
-    constructor(options = {}) {
+    constructor(options = {}, registerCompileHooks = true) {
         this.options = Object.assign({target: 'var/cache/fosRoutes.json'}, this.default, options, {format: 'json'});
         this.finalTarget = path.resolve(process.cwd(), this.options.target);
         this.options.target = path.resolve(process.cwd(), this.options.target.replace(/\.json$/, '.tmp.json'));
@@ -30,7 +29,7 @@ class FosRouting {
         if (this.options.target === this.finalTarget) {
             this.options.target += '.tmp';
         }
-        this.compile = false === this.options.skipCompile;
+        this.registerCompileHooks = registerCompileHooks;
     }
 
     // Values don't need to be escaped because node already does that
@@ -84,7 +83,7 @@ class FosRouting {
             callback();
         };
         
-        if (this.compile) {
+        if (this.registerCompileHooks === true) {
             compiler.hooks.beforeRun.tapAsync('RouteDump', compile);
             compiler.hooks.watchRun.tapAsync('RouteDump_Watch', (comp, callback) => {
                 if (!comp.modifiedFiles || !comp.modifiedFiles.has(this.finalTarget)) {
