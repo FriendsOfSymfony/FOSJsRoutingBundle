@@ -19,6 +19,7 @@ class FosRouting {
         prettyPrint: false,
         domain: [],
         php: 'php',
+        skipCompile: false
     };
 
     constructor(options = {}) {
@@ -29,6 +30,7 @@ class FosRouting {
         if (this.options.target === this.finalTarget) {
             this.options.target += '.tmp';
         }
+        this.compile = false === this.options.skipCompile;
     }
 
     // Values don't need to be escaped because node already does that
@@ -81,14 +83,17 @@ class FosRouting {
             }
             callback();
         };
-        compiler.hooks.beforeRun.tapAsync('RouteDump', compile);
-        compiler.hooks.watchRun.tapAsync('RouteDump_Watch', (comp, callback) => {
-            if (!comp.modifiedFiles || !comp.modifiedFiles.has(this.finalTarget)) {
-                compile(comp, callback);
-            } else {
-                callback();
-            }
-        });
+        
+        if (this.compile) {
+            compiler.hooks.beforeRun.tapAsync('RouteDump', compile);
+            compiler.hooks.watchRun.tapAsync('RouteDump_Watch', (comp, callback) => {
+                if (!comp.modifiedFiles || !comp.modifiedFiles.has(this.finalTarget)) {
+                    compile(comp, callback);
+                } else {
+                    callback();
+                }
+            });
+        }
 
         new InjectPlugin(() => {
             return 'import Routing from "fos-router";' +
