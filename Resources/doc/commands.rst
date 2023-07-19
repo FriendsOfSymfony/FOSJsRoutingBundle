@@ -38,7 +38,11 @@ Or inside assetic, do
 .. caution::
 
     You should follow the Symfony documentation about generating URLs
-    in the console: `Configuring The Request Context Globally`_.
+    in the console: `Forcing HTTPS on Generated URLs`_, as the console is unaware
+    of the host/port combination you use during a request. You can also set the
+    `HTTP_HOST` environment variable to hold your hostname including the port you
+    use (i.e. `localhost:8443`). You can also use the `setHost` and `setPort`
+    methods on the `Router` object to set it at runtime.
 
 .. tip::
 
@@ -58,4 +62,4 @@ This command lists all exposed routes:
     # Symfony 3
     $ php bin/console fos:js-routing:debug [name]
 
-.. _`Configuring The Request Context Globally`: http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally
+.. _`Forcing HTTPS on Generated URLs`: https://symfony.com/doc/current/routing.html#forcing-https-on-generated-urls
