@@ -34,8 +34,8 @@
     "google-closure-library": "^20220104.0.0",
     "gulp": "^4.0.2",
     "gulp-rename": "^2.0.0",
-    "gulp-uglify": "^3.0.2",
     "gulp-typescript": "^6.0.0-alpha.1",
+    "gulp-uglify": "^3.0.2",
     "gulp-wrap": "^0.15.0",
     "jasmine": "^4.0.2",
     "tsd": "^0.19.1",
@@ -47,8 +47,5 @@
     "test": "npm run build && npm run test:types && phantomjs js/run_jsunit.js js/router_test.html",
     "test:types": "tsd",
     "prepublish": "npm run build"
-  },
-  "dependencies": {
-    "webpack-inject-plugin": "^1.5.5"
   }
 }
