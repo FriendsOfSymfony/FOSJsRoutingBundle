@@ -45,9 +45,9 @@ class Controller
 
     public function indexAction(Request $request, $_format): Response
     {
-        $session = $request->hasSession() ? $request->getSession() : null;
-
-        if ($request->hasPreviousSession() && $session->getFlashBag() instanceof AutoExpireFlashBag) {
+        if (!$request->attributes->getBoolean('_stateless') && $request->hasSession()
+            && ($session = $request->getSession())->isStarted() && $session->getFlashBag() instanceof AutoExpireFlashBag
+        ) {
             // keep current flashes for one more request if using AutoExpireFlashBag
             $session->getFlashBag()->setAll($session->getFlashBag()->peekAll());
         }
