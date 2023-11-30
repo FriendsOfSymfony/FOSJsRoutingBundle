@@ -52,7 +52,7 @@ Execute the following command to publish the assets required by the bundle:
 
 .. code-block:: bash
 
-    $ php bin/console assets:install --symlink public
+    php bin/console assets:install --symlink public
 
 .. _`installation chapter`: https://getcomposer.org/doc/00-intro.md
 
@@ -60,4 +60,4 @@ Step 5: If you are using webpack, install the npm package locally
 -----------------------------------------------------------------
 .. code-block:: bash
 
-    $ yarn add -D ./vendor/friendsofsymfony/jsrouting-bundle/Resources/
+    yarn add -D ./vendor/friendsofsymfony/jsrouting-bundle/Resources/
