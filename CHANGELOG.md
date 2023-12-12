@@ -1,5 +1,11 @@
 # Changelog
 
+## v3.4.0 - 2023-12-12
+- Allow Symfony 7.0 ([#471](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/471))
+- fix: remove webpack-inject-plugin dependency ([#464](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/464))
+- Docs only: remove $ so gitclip works ([#472](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/472))
+- Docs only: Update console note ([#463](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/463))
+
 ## v3.3.0 - 2023-07-04
 - add support for Windows when using the webpack plugin ([#444](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/444))
 - Add PHP 8.2 tests ([#449](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/449))
