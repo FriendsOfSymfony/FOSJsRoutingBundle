@@ -17,24 +17,25 @@ use Symfony\Component\Routing\RouteCollection;
 
 class RoutesResponse
 {
-    private $routes;
+    protected $routes;
 
-    public function __construct(private string $baseUrl, RouteCollection $routes = null,
-                                private ?string $prefix = null, private ?string $host = null,
-                                private ?string $port = null, private ?string $scheme = null,
-                                private ?string $locale = null, private array $domains = [])
-    {
+    public function __construct(
+        protected ?string $baseUrl = null,
+        RouteCollection $routes = null,
+        protected ?string $prefix = null,
+        protected ?string $host = null,
+        protected ?string $port = null,
+        protected ?string $scheme = null,
+        protected ?string $locale = null,
+        protected array $domains = [],
+    ) {
         $this->routes = $routes ?: new RouteCollection();
-    }
-
-    public function getBaseUrl(): string
-    {
-        return $this->baseUrl;
     }
 
     public function getRoutes(): array
     {
         $exposedRoutes = [];
+
         foreach ($this->routes->all() as $name => $route) {
             if (!$route->hasOption('expose')) {
                 $domain = 'default';
@@ -74,9 +75,29 @@ class RoutesResponse
         return $exposedRoutes;
     }
 
+    public function setRoutes(RouteCollection $routes): void
+    {
+        $this->routes = $routes;
+    }
+
+    public function getBaseUrl(): string
+    {
+        return $this->baseUrl;
+    }
+
+    public function setBaseUrl(string $baseUrl): void
+    {
+        $this->baseUrl = $baseUrl;
+    }
+
     public function getPrefix(): ?string
     {
         return $this->prefix;
+    }
+
+    public function setPrefix(?string $prefix): void
+    {
+        $this->prefix = $prefix;
     }
 
     public function getHost(): ?string
@@ -84,9 +105,19 @@ class RoutesResponse
         return $this->host;
     }
 
+    public function setHost(?string $host): void
+    {
+        $this->host = $host;
+    }
+
     public function getPort(): ?string
     {
         return $this->port;
+    }
+
+    public function setPort(?string $port): void
+    {
+        $this->port = $port;
     }
 
     public function getScheme(): ?string
@@ -94,8 +125,28 @@ class RoutesResponse
         return $this->scheme;
     }
 
+    public function setScheme(?string $scheme): void
+    {
+        $this->scheme = $scheme;
+    }
+
     public function getLocale(): ?string
     {
         return $this->locale;
+    }
+
+    public function setLocale(?string $locale): void
+    {
+        $this->locale = $locale;
+    }
+
+    public function getDomains(): array
+    {
+        return $this->domains;
+    }
+
+    public function setDomains(array $domains): void
+    {
+        $this->domains = $domains;
     }
 }

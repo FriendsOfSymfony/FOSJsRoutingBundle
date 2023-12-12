@@ -5,6 +5,7 @@
 
     <parameters>
         <parameter key="fos_js_routing.extractor.class">FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor</parameter>
+        <parameter key="fos_js_routing.routes_response.class">FOS\JsRoutingBundle\Response\RoutesResponse</parameter>
     </parameters>
 
     <services>
@@ -14,8 +15,9 @@
             <argument>%kernel.cache_dir%</argument>
             <argument>%kernel.bundles%</argument>
         </service>
-
+        <service id="fos_js_routing.routes_response" class="%fos_js_routing.routes_response.class%" public="true" />
         <service id="fos_js_routing.dump_command" class="FOS\JsRoutingBundle\Command\DumpCommand">
+            <argument type="service" id="fos_js_routing.routes_response" />
             <argument type="service" id="fos_js_routing.extractor" />
             <argument type="service" id="fos_js_routing.serializer" />
             <argument>%kernel.project_dir%</argument>

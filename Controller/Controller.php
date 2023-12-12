@@ -38,8 +38,13 @@ class Controller
      * @param ExposedRoutesExtractorInterface $exposedRoutesExtractor the extractor service
      * @param bool                            $debug
      */
-    public function __construct(private mixed $serializer, private ExposedRoutesExtractorInterface $exposedRoutesExtractor, array $cacheControl = [], private bool $debug = false)
-    {
+    public function __construct(
+        private RoutesResponse $routesResponse,
+        private mixed $serializer,
+        private ExposedRoutesExtractorInterface $exposedRoutesExtractor,
+        array $cacheControl = [],
+        private bool $debug = false,
+    ) {
         $this->cacheControlConfig = new CacheControlConfig($cacheControl);
     }
 
@@ -68,18 +73,16 @@ class Controller
             );
         }
 
-        $routesResponse = new RoutesResponse(
-            $this->exposedRoutesExtractor->getBaseUrl(),
-            $exposedRoutes,
-            $this->exposedRoutesExtractor->getPrefix($request->getLocale()),
-            $this->exposedRoutesExtractor->getHost(),
-            $this->exposedRoutesExtractor->getPort(),
-            $this->exposedRoutesExtractor->getScheme(),
-            $request->getLocale(),
-            $request->query->has('domain') ? explode(',', $request->query->get('domain')) : []
-        );
+        $this->routesResponse->setBaseUrl($this->exposedRoutesExtractor->getBaseUrl());
+        $this->routesResponse->setRoutes($exposedRoutes);
+        $this->routesResponse->setPrefix($this->exposedRoutesExtractor->getPrefix($request->getLocale()));
+        $this->routesResponse->setHost($this->exposedRoutesExtractor->getHost());
+        $this->routesResponse->setPort($this->exposedRoutesExtractor->getPort());
+        $this->routesResponse->setScheme($this->exposedRoutesExtractor->getScheme());
+        $this->routesResponse->setLocale($request->getLocale());
+        $this->routesResponse->setDomains($request->query->has('domain') ? explode(',', $request->query->get('domain')) : []);
 
-        $content = $this->serializer->serialize($routesResponse, 'json');
+        $content = $this->serializer->serialize($this->routesResponse, 'json');
 
         if (null !== $callback = $request->query->get('callback')) {
             if (!\JsonpCallbackValidator::validate($callback)) {
