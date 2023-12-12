@@ -7,6 +7,7 @@
     </parameters>
     <services>
         <service id="fos_js_routing.controller" class="%fos_js_routing.controller.class%" public="true">
+            <argument type="service" id="fos_js_routing.routes_response" />
             <argument type="service" id="fos_js_routing.serializer" />
             <argument type="service" id="fos_js_routing.extractor" />
             <argument>%fos_js_routing.cache_control%</argument>

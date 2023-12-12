@@ -30,8 +30,13 @@ use Symfony\Component\Serializer\SerializerInterface;
 #[AsCommand('fos:js-routing:dump', 'Dumps exposed routes to the filesystem')]
 class DumpCommand extends Command
 {
-    public function __construct(private ExposedRoutesExtractorInterface $extractor, private SerializerInterface $serializer, private string $projectDir, private ?string $requestContextBaseUrl = null)
-    {
+    public function __construct(
+        private RoutesResponse $routesResponse,
+        private ExposedRoutesExtractorInterface $extractor,
+        private SerializerInterface $serializer,
+        private string $projectDir,
+        private ?string $requestContextBaseUrl = null,
+    ) {
         parent::__construct();
     }
 
@@ -141,20 +146,16 @@ class DumpCommand extends Command
             $params = [];
         }
 
-        $content = $serializer->serialize(
-            new RoutesResponse(
-                $baseUrl,
-                $extractor->getRoutes(),
-                $extractor->getPrefix($input->getOption('locale')),
-                $extractor->getHost(),
-                $extractor->getPort(),
-                $extractor->getScheme(),
-                $input->getOption('locale'),
-                $domain
-            ),
-            'json',
-            $params
-        );
+        $this->routesResponse->setBaseUrl($baseUrl);
+        $this->routesResponse->setRoutes($extractor->getRoutes());
+        $this->routesResponse->setPrefix($extractor->getPrefix($input->getOption('locale')));
+        $this->routesResponse->setHost($extractor->getHost());
+        $this->routesResponse->setPort($extractor->getPort());
+        $this->routesResponse->setScheme($extractor->getScheme());
+        $this->routesResponse->setLocale($input->getOption('locale'));
+        $this->routesResponse->setDomains($domain);
+
+        $content = $serializer->serialize($this->routesResponse, 'json', $params);
 
         if ('js' == $input->getOption('format')) {
             $content = sprintf('%s(%s);', $input->getOption('callback'), $content);
