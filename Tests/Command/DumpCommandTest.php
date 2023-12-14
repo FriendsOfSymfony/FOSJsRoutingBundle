@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace FOS\JsRoutingBundle\Tests\Command;
 
 use FOS\JsRoutingBundle\Command\DumpCommand;
+use FOS\JsRoutingBundle\Response\RoutesResponse;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -22,12 +23,17 @@ use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor;
 
 class DumpCommandTest extends TestCase
 {
+    protected RoutesResponse $routesResponse;
     protected $extractor;
     protected $router;
     private $serializer;
 
     public function setUp(): void
     {
+        $this->routesResponse = $this->getMockBuilder(RoutesResponse::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->extractor = $this->getMockBuilder(ExposedRoutesExtractor::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -47,7 +53,12 @@ class DumpCommandTest extends TestCase
             ->method('serialize')
             ->will($this->returnValue('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""}'));
 
-        $command = new DumpCommand($this->extractor, $this->serializer, '/root/dir');
+        $command = new DumpCommand(
+            $this->routesResponse,
+            $this->extractor,
+            $this->serializer,
+            '/root/dir',
+        );
 
         $tester = new CommandTester($command);
         $tester->execute(['--target' => '/tmp/dump-command-test']);
@@ -64,7 +75,12 @@ class DumpCommandTest extends TestCase
             ->method('serialize')
             ->will($this->returnValue('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""}'));
 
-        $command = new DumpCommand($this->extractor, $this->serializer, '/root/dir');
+        $command = new DumpCommand(
+            $this->routesResponse,
+            $this->extractor,
+            $this->serializer,
+            '/root/dir',
+        );
 
         $tester = new CommandTester($command);
         $tester->execute([
@@ -86,7 +102,12 @@ class DumpCommandTest extends TestCase
             ->method('serialize')
             ->will($this->returnValue($json));
 
-        $command = new DumpCommand($this->extractor, $this->serializer, '/root/dir');
+        $command = new DumpCommand(
+            $this->routesResponse,
+            $this->extractor,
+            $this->serializer,
+            '/root/dir',
+        );
 
         $tester = new CommandTester($command);
         $tester->execute([
@@ -104,7 +125,13 @@ class DumpCommandTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Unable to create directory /root/dir/public/js');
-        $command = new DumpCommand($this->extractor, $this->serializer, '/root/dir');
+
+        $command = new DumpCommand(
+            $this->routesResponse,
+            $this->extractor,
+            $this->serializer,
+            '/root/dir',
+        );
 
         $tester = new CommandTester($command);
         $tester->execute([]);
@@ -118,7 +145,12 @@ class DumpCommandTest extends TestCase
             ->method('serialize')
             ->will($this->returnValue('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""}'));
 
-        $command = new DumpCommand($this->extractor, $this->serializer, '/root/dir');
+        $command = new DumpCommand(
+            $this->routesResponse,
+            $this->extractor,
+            $this->serializer,
+            '/root/dir',
+        );
 
         $tester = new CommandTester($command);
         $tester->execute(['--target' => '/tmp']);

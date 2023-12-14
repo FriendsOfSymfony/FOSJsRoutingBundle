@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace FOS\JsRoutingBundle\Tests\Controller;
 
 use FOS\JsRoutingBundle\Controller\Controller;
+use FOS\JsRoutingBundle\Response\RoutesResponse;
 use FOS\JsRoutingBundle\Serializer\Denormalizer\RouteCollectionDenormalizer;
 use FOS\JsRoutingBundle\Serializer\Normalizer\RouteCollectionNormalizer;
 use FOS\JsRoutingBundle\Serializer\Normalizer\RoutesResponseNormalizer;
@@ -28,10 +29,12 @@ use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
 
 class ControllerTest extends TestCase
 {
+    protected RoutesResponse $routesResponse;
     private string $cachePath;
 
     public function setUp(): void
     {
+        $this->routesResponse = new RoutesResponse();
         $this->cachePath = sys_get_temp_dir().DIRECTORY_SEPARATOR.'fosJsRouting'.DIRECTORY_SEPARATOR.'data.json';
     }
 
@@ -47,8 +50,9 @@ class ControllerTest extends TestCase
         $routes->add('blog', new Route('/blog-post/{slug}', [], [], [], 'localhost'));
 
         $controller = new Controller(
+            $this->routesResponse,
             $this->getSerializer(),
-            $this->getExtractor($routes)
+            $this->getExtractor($routes),
         );
 
         $response = $controller->indexAction($this->getRequest('/'), 'json');
@@ -63,8 +67,9 @@ class ControllerTest extends TestCase
         $routes->add('blog', new Route('/blog-post/{!slug}', [], [], [], 'localhost'));
 
         $controller = new Controller(
+            $this->routesResponse,
             $this->getSerializer(),
-            $this->getExtractor($routes)
+            $this->getExtractor($routes),
         );
 
         $response = $controller->indexAction($this->getRequest('/'), 'json');
@@ -79,8 +84,9 @@ class ControllerTest extends TestCase
         $routes->add('blog', new Route('/blog-post/{slug}/{_locale}', [], [], [], 'localhost'));
 
         $controller = new Controller(
+            $this->routesResponse,
             $this->getSerializer(),
-            $this->getExtractor($routes)
+            $this->getExtractor($routes),
         );
 
         $response = $controller->indexAction($this->getRequest('/'), 'json');
@@ -94,8 +100,9 @@ class ControllerTest extends TestCase
         $routes->add('literal', new Route('/homepage'));
 
         $controller = new Controller(
+            $this->routesResponse,
             $this->getSerializer(),
-            $this->getExtractor($routes)
+            $this->getExtractor($routes),
         );
 
         $response = $controller->indexAction($this->getRequest('/'), 'json');
@@ -111,7 +118,11 @@ class ControllerTest extends TestCase
      */
     public function testGenerateWithCallback($callback): void
     {
-        $controller = new Controller($this->getSerializer(), $this->getExtractor());
+        $controller = new Controller(
+            $this->routesResponse,
+            $this->getSerializer(),
+            $this->getExtractor(),
+        );
         $response = $controller->indexAction($this->getRequest('/', 'GET', ['callback' => $callback]), 'json');
 
         $this->assertEquals(
@@ -131,13 +142,21 @@ class ControllerTest extends TestCase
     public function testGenerateWithInvalidCallback(): void
     {
         $this->expectException(HttpException::class);
-        $controller = new Controller($this->getSerializer(), $this->getExtractor());
+        $controller = new Controller(
+            $this->routesResponse,
+            $this->getSerializer(),
+            $this->getExtractor(),
+        );
         $controller->indexAction($this->getRequest('/', 'GET', ['callback' => '(function xss(x) {evil()})']), 'json');
     }
 
     public function testIndexActionWithoutRoutes(): void
     {
-        $controller = new Controller($this->getSerializer(), $this->getExtractor());
+        $controller = new Controller(
+            $this->routesResponse,
+            $this->getSerializer(),
+            $this->getExtractor(),
+        );
         $response = $controller->indexAction($this->getRequest('/'), 'json');
 
         $this->assertEquals('{"base_url":"","routes":[],"prefix":"","host":"","port":null,"scheme":"","locale":"en"}', $response->getContent());
@@ -161,7 +180,12 @@ class ControllerTest extends TestCase
             'vary' => [],
         ];
 
-        $controller = new Controller($this->getSerializer(), $this->getExtractor(), $cacheControlConfig);
+        $controller = new Controller(
+            $this->routesResponse,
+            $this->getSerializer(),
+            $this->getExtractor(),
+            $cacheControlConfig,
+        );
         $response = $controller->indexAction($this->getRequest('/'), 'json');
 
         $this->assertTrue($response->headers->hasCacheControlDirective('public'));
@@ -189,8 +213,9 @@ class ControllerTest extends TestCase
             ['expose' => 'blog'], 'localhost'));
 
         $controller = new Controller(
+            $this->routesResponse,
             $this->getSerializer(),
-            $this->getExtractor($routes)
+            $this->getExtractor($routes),
         );
 
         $response = $controller->indexAction($this->getRequest('/'), 'json');
