@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const util = require('util');
 
-const InjectPlugin = require('webpack-inject-plugin').default;
+const InjectPlugin = require('@bpnetguy/webpack-inject-plugin').default;
 
 const execFile = util.promisify(require('child_process').execFile);
 const readFile = util.promisify(fs.readFile);
