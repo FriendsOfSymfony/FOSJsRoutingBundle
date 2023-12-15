@@ -4,7 +4,8 @@
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
-const webpack = require("webpack");
+
+const InjectPlugin = require('webpack-inject-plugin').default;
 
 const execFile = util.promisify(require('child_process').execFile);
 const readFile = util.promisify(fs.readFile);
@@ -89,17 +90,11 @@ class FosRouting {
             }
         });
 
-        new webpack.BannerPlugin({
-            entryOnly: true,
-            include: this.finalTarget ? this.finalTarget + ".js" : /\.js$/,
-            raw: true,
-            banner:
-              'import Routing from "fos-router";' +
-              "import routes from " +
-              JSON.stringify(this.finalTarget) +
-              ";" +
-              "Routing.setRoutingData(routes);",
-          }).apply(compiler);
+        new InjectPlugin(() => {
+            return 'import Routing from "fos-router";' +
+                'import routes from '+JSON.stringify(this.finalTarget)+';' +
+                'Routing.setRoutingData(routes);';
+        }).apply(compiler);
     }
 }
 
