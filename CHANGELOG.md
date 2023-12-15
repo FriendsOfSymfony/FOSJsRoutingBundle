@@ -1,5 +1,8 @@
 # Changelog
 
+## v3.4.1 - 2023-12-15
+- fix: do not use BannerPlugin but newer webpack-inject-plugin instead to fix vulnerability
+
 ## v3.4.0 - 2023-12-12
 - Allow Symfony 7.0 ([#471](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/471))
 - fix: remove webpack-inject-plugin dependency ([#464](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/464))
