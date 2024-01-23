@@ -1,6 +1,6 @@
 import { expectType } from 'tsd';
 import type { RoutesMap } from '../js/router';
-import { Route, Router, type Routing } from './router';
+import { type Route, Router, Routing } from './router';
 import routes from './routes.json';
 
 expectType<Router>(Router.getInstance());
