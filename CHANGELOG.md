@@ -1,5 +1,11 @@
 # Changelog
 
+## v3.5.0 - 2024-01-23
+- Fix TypeScript error when verbatimModuleSyntax is enabled ([#476](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/476))
+- Define RoutesResponse as a Service ([#474](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/474))
+- Ignore session in stateless requests ([#468](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/468))
+- Add option to skip registering compile hooks ([#462](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/pull/462))
+
 ## v3.4.1 - 2023-12-15
 - fix: do not use BannerPlugin but newer webpack-inject-plugin instead to fix vulnerability
 
