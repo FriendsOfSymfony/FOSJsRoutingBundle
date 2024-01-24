@@ -54,6 +54,10 @@ plugin to use a static dumped `routes.json` and suppress automatic recompilation
 Alternatively you can use the dump command
 and export your routes to json, this command will create a json file into the ``public/js`` folder:
 
+.. note::
+
+    If you are using annotations for routing you have to expose your routes before running this command
+    
 .. code-block:: bash
 
     bin/console fos:js-routing:dump --format=json --target=assets/js/routes.json
