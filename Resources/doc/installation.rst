@@ -9,7 +9,7 @@ following command to download the latest stable version of this bundle:
 
 .. code-block:: bash
 
-    $ composer require friendsofsymfony/jsrouting-bundle
+    composer require friendsofsymfony/jsrouting-bundle
 
 This command requires you to have Composer installed globally, as explained
 in the `installation chapter`_ of the Composer documentation.
