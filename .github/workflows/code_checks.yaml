@@ -6,10 +6,10 @@ on: ["push", "pull_request"]
 jobs:
   js-tests:
     name: "JS Tests"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install JS dependencies
         run: |
@@ -20,7 +20,7 @@ jobs:
           cd Resources && npm run test
   phpunit:
     name: "PHP ${{ matrix.php }} + ${{ matrix.dependencies }} dependencies + Symfony ${{ matrix.symfony }}"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -61,7 +61,7 @@ jobs:
             symfony: '7.0.*'
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -81,7 +81,7 @@ jobs:
           dependency-versions: ${{ matrix.dependencies }}
 
       - name: Cache PHPUnit
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: vendor/bin/.phpunit
           key: ${{ runner.os }}-phpunit-${{ matrix.php }}
