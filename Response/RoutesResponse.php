@@ -21,7 +21,7 @@ class RoutesResponse
 
     public function __construct(
         protected ?string $baseUrl = null,
-        RouteCollection $routes = null,
+        ?RouteCollection $routes = null,
         protected ?string $prefix = null,
         protected ?string $host = null,
         protected ?string $port = null,

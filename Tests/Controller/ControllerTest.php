@@ -243,7 +243,7 @@ class ControllerTest extends TestCase
         $this->assertEquals('{"base_url":"","routes":{"homepage":{"tokens":[["text","\/"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"admin_index":{"tokens":[["text","\/admin"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"admin_pages":{"tokens":[["text","\/admin\/path"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"blog_index":{"tokens":[["text","\/blog"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]},"blog_post":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":"","locale":"en"}', $response->getContent());
     }
 
-    private function getExtractor(RouteCollection $exposedRoutes = null, $baseUrl = '')
+    private function getExtractor(?RouteCollection $exposedRoutes = null, $baseUrl = '')
     {
         if (null === $exposedRoutes) {
             $exposedRoutes = new RouteCollection();

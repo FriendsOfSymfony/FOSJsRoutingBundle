@@ -143,7 +143,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function getCachePath(string $locale = null): string
+    public function getCachePath(?string $locale = null): string
     {
         $cachePath = $this->cacheDir.DIRECTORY_SEPARATOR.'fosJsRouting';
         if (!file_exists($cachePath)) {
