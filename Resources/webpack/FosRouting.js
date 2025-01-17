@@ -20,6 +20,7 @@ class FosRouting {
         domain: [],
         php: 'php'
     };
+    nonArgumentOptions = ['php'];
 
     constructor(options = {}, registerCompileHooks = true) {
         this.options = Object.assign({target: 'var/cache/fosRoutes.json'}, this.default, options, {format: 'json'});
@@ -54,6 +55,10 @@ class FosRouting {
         }
         const compile = async (comp, callback) => {
             const args = Object.keys(this.options).reduce((pass, key) => {
+                if (this.nonArgumentOptions.includes(key)) {
+                    return pass;
+                }
+
                 const val = this.options[key];
                 if (val !== this.default[key]) {
                     if (Array.isArray(val)) {
@@ -82,7 +87,7 @@ class FosRouting {
             }
             callback();
         };
-        
+
         if (this.registerCompileHooks === true) {
             compiler.hooks.beforeRun.tapAsync('RouteDump', compile);
             compiler.hooks.watchRun.tapAsync('RouteDump_Watch', (comp, callback) => {
