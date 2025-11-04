@@ -53,9 +53,10 @@ class RouterDebugExposedCommandTest extends TestCase
         $tester = new CommandTester($command);
         $tester->execute([]);
 
-        $this->assertMatchesRegularExpression('/literal(.*ANY){3}.*\/literal/', $tester->getDisplay());
-        $this->assertMatchesRegularExpression('/blog_post(.*ANY){3}.*\/blog-post\/{slug}/', $tester->getDisplay());
-        $this->assertMatchesRegularExpression('/list(.*ANY){3}.*\/literal/', $tester->getDisplay());
+        // with Symfony 8 Scheme and Host columns are conditionally shown
+        $this->assertMatchesRegularExpression('/literal(.*ANY){1,3}.*\/literal/', $tester->getDisplay());
+        $this->assertMatchesRegularExpression('/blog_post(.*ANY){1,3}.*\/blog-post\/{slug}/', $tester->getDisplay());
+        $this->assertMatchesRegularExpression('/list(.*ANY){1,3}.*\/literal/', $tester->getDisplay());
     }
 
     public function testExecuteWithNameUnknown(): void
