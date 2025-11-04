@@ -43,7 +43,7 @@ Load the bundle's routing definition in the application:
 .. code-block:: yaml
 
     fos_js_routing:
-        resource: "@FOSJsRoutingBundle/Resources/config/routing/routing-sf4.xml"
+        resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.php"
 
 Step 4: Publish the Assets
 --------------------------
