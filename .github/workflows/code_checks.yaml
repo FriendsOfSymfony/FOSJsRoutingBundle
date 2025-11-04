@@ -6,25 +6,28 @@ on: ["push", "pull_request"]
 jobs:
   js-tests:
     name: "JS Tests"
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Install JS dependencies
         run: |
           cd Resources && npm install
 
+      - name: Install PHP dependencies (for PhantomJS)
+        uses: ramsey/composer-install@v3
+
       - name: Run JS tests
         run: |
-          cd Resources && npm run test
+          cd Resources && OPENSSL_CONF=/dev/null npm run test
   phpunit:
     name: "PHP ${{ matrix.php }} + ${{ matrix.dependencies }} dependencies + Symfony ${{ matrix.symfony }}"
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
-        php: ['8.0', '8.1', '8.2']
+        php: ['8.0', '8.1', '8.2', '8.3', '8.4']
         dependencies: [highest]
         symfony: ['*']
         include:
@@ -34,11 +37,11 @@ jobs:
             symfony: '*'
 
           # Minimum supported dependencies with the latest supported PHP version
-          - php: '8.2'
+          - php: '8.4'
             dependencies: lowest
             symfony: '*'
 
-          - php: '8.2'
+          - php: '8.4'
             dependencies: highest
             symfony: '*'
 
@@ -48,20 +51,16 @@ jobs:
             dependencies: highest
             symfony: '5.4.*'
 
-          - php: '8.0'
-            dependencies: highest
-            symfony: '6.0.*'
-
           - php: '8.1'
             dependencies: highest
-            symfony: '6.2.*'
+            symfony: '6.4.*'
 
           - php: '8.2'
             dependencies: highest
             symfony: '7.0.*'
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -76,12 +75,12 @@ jobs:
           composer config extra.symfony.require ${{ matrix.symfony }}
 
       - name: Update project dependencies
-        uses: ramsey/composer-install@v2
+        uses: ramsey/composer-install@v3
         with:
           dependency-versions: ${{ matrix.dependencies }}
 
       - name: Cache PHPUnit
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: vendor/bin/.phpunit
           key: ${{ runner.os }}-phpunit-${{ matrix.php }}
