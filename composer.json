@@ -17,17 +17,17 @@
     ],
     "require": {
         "php": "^8.0",
-        "symfony/console": "^5.4|^6.4|^7.0",
+        "symfony/console": "^5.4|^6.4|^7.3|^8.0",
         "symfony/deprecation-contracts": "^2.1|^3.0",
-        "symfony/framework-bundle": "^5.4|^6.4|^7.0",
-        "symfony/serializer": "^5.4|^6.4|^7.0",
+        "symfony/framework-bundle": "^5.4|^6.4|^7.3|^8.0",
+        "symfony/serializer": "^5.4|^6.4|^7.3|^8.0",
         "willdurand/jsonp-callback-validator": "~1.1|^2.0"
     },
     "require-dev": {
         "neronmoon/scriptsdev": "^0.1",
         "jakoch/phantomjs-installer": "^3",
-        "symfony/expression-language": "^5.4|^6.4|^7.0",
-        "symfony/phpunit-bridge": "^5.4|^6.4|^7.0"
+        "symfony/expression-language": "^5.4|^6.4|^7.3|^8.0",
+        "symfony/phpunit-bridge": "^7.3|^8.0"
     },
     "autoload": {
         "psr-4": { "FOS\\JsRoutingBundle\\": "" },

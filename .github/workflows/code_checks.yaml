@@ -57,7 +57,11 @@ jobs:
 
           - php: '8.2'
             dependencies: highest
-            symfony: '7.0.*'
+            symfony: '7.3.*'
+            
+          - php: '8.4'
+            dependencies: highest
+            symfony: '8.0.*'
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -66,6 +70,11 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
+
+      # until its released
+      - name: Use dev stability for Symfony 8
+        if: matrix.symfony == '8.0.*'
+        run: composer config minimum-stability dev
 
       - name: Require Symfony version
         if: matrix.symfony != '*'
