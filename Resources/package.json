@@ -44,7 +44,7 @@
   "scripts": {
     "build": "gulp && npm run build:types",
     "build:types": "tsc --declaration --emitDeclarationOnly",
-    "test": "npm run build && npm run test:types && phantomjs js/run_jsunit.js js/router_test.html",
+    "test": "npm run build && npm run test:types && ../vendor/bin/phantomjs js/run_jsunit.js js/router_test.html",
     "test:types": "tsd",
     "prepublish": "npm run build"
   },

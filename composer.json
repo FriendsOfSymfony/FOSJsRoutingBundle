@@ -17,15 +17,17 @@
     ],
     "require": {
         "php": "^8.0",
-        "symfony/console": "^5.4|^6.0|^7.0",
+        "symfony/console": "^5.4|^6.4|^7.0",
         "symfony/deprecation-contracts": "^2.1|^3.0",
-        "symfony/framework-bundle": "^5.4|^6.0|^7.0",
-        "symfony/serializer": "^5.4|^6.0.1|^7.0",
+        "symfony/framework-bundle": "^5.4|^6.4|^7.0",
+        "symfony/serializer": "^5.4|^6.4|^7.0",
         "willdurand/jsonp-callback-validator": "~1.1|^2.0"
     },
     "require-dev": {
-        "symfony/expression-language": "^5.4|^6.0|^7.0",
-        "symfony/phpunit-bridge": "^5.4|^6.0|^7.0"
+        "neronmoon/scriptsdev": "^0.1",
+        "jakoch/phantomjs-installer": "^3",
+        "symfony/expression-language": "^5.4|^6.4|^7.0",
+        "symfony/phpunit-bridge": "^5.4|^6.4|^7.0"
     },
     "autoload": {
         "psr-4": { "FOS\\JsRoutingBundle\\": "" },
@@ -33,9 +35,25 @@
             "/Tests/"
         ]
     },
+    "config": {
+        "allow-plugins": {
+            "neronmoon/scriptsdev": true
+        }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "3.x-dev"
+        },
+        "scripts-dev": {
+            "post-install-cmd": [
+                "PhantomInstaller\\Installer::installPhantomJS"
+            ],
+            "post-update-cmd": [
+                "PhantomInstaller\\Installer::installPhantomJS"
+            ]
+        },
+        "jakoch/phantomjs-installer": {
+            "cdnurl": "https://github.com/Medium/phantomjs/releases/download/v2.1.1/"
         }
     }
 }
