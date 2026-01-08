@@ -155,7 +155,7 @@ export class Router {
         }
       });
     } else if (typeof params === 'object') {
-      for (name in params) {
+      for (const name of Object.keys(params)) {
         this.buildQueryParams(prefix + '[' + name + ']', params[name], add);
       }
     } else {
@@ -172,9 +172,9 @@ export class Router {
     let prefixedSf41i18nName = this.context_.prefix + name + '.' + this.context_.locale;
     let variants = [prefixedName, sf41i18nName, prefixedSf41i18nName, name];
 
-    for (let i in variants) {
-      if (variants[i] in this.routes_) {
-        return this.routes_[variants[i]];
+    for (const variant of variants) {
+      if (variant in this.routes_) {
+        return this.routes_[variant];
       }
     }
 
@@ -296,10 +296,8 @@ export class Router {
         queryParams.push(Router.encodeQueryComponent(key) + '=' + Router.encodeQueryComponent(value));
       };
 
-      for (const prefix in unusedParams) {
-        if(unusedParams.hasOwnProperty(prefix)) {
-          this.buildQueryParams(prefix, unusedParams[prefix], add);
-        }
+      for (const prefix of Object.keys(unusedParams)) {
+        this.buildQueryParams(prefix, unusedParams[prefix], add);
       }
 
       url = url + '?' + queryParams.join('&');

@@ -109,8 +109,9 @@ var Router = /** @class */ (function () {
             });
         }
         else if (typeof params === 'object') {
-            for (name in params) {
-                this.buildQueryParams(prefix + '[' + name + ']', params[name], add);
+            for (var _i = 0, _a = Object.keys(params); _i < _a.length; _i++) {
+                var name_1 = _a[_i];
+                this.buildQueryParams(prefix + '[' + name_1 + ']', params[name_1], add);
             }
         }
         else {
@@ -125,9 +126,10 @@ var Router = /** @class */ (function () {
         var sf41i18nName = name + '.' + this.context_.locale;
         var prefixedSf41i18nName = this.context_.prefix + name + '.' + this.context_.locale;
         var variants = [prefixedName, sf41i18nName, prefixedSf41i18nName, name];
-        for (var i in variants) {
-            if (variants[i] in this.routes_) {
-                return this.routes_[variants[i]];
+        for (var _i = 0, variants_1 = variants; _i < variants_1.length; _i++) {
+            var variant = variants_1[_i];
+            if (variant in this.routes_) {
+                return this.routes_[variant];
             }
         }
         throw new Error('The route "' + name + '" does not exist.');
@@ -230,10 +232,9 @@ var Router = /** @class */ (function () {
                 value = (value === null) ? '' : value;
                 queryParams_1.push(Router.encodeQueryComponent(key) + '=' + Router.encodeQueryComponent(value));
             };
-            for (var prefix in unusedParams) {
-                if (unusedParams.hasOwnProperty(prefix)) {
-                    this.buildQueryParams(prefix, unusedParams[prefix], add);
-                }
+            for (var _i = 0, _a = Object.keys(unusedParams); _i < _a.length; _i++) {
+                var prefix = _a[_i];
+                this.buildQueryParams(prefix, unusedParams[prefix], add);
             }
             url = url + '?' + queryParams_1.join('&');
         }
@@ -280,4 +281,4 @@ exports["default"] = exports.Routing;
 
 
     return { Router: exports.Router, Routing: exports.Routing };
-}));
+}));
