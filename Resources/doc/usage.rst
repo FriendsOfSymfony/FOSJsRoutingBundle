@@ -179,6 +179,23 @@ You can use the ``generate()`` method that way:
     Routing.generate('my_route_to_expose_with_defaults', { id: 2, foo: "bar" });
     // will result in /blog/2?foo=bar
 
+Using Multiple Domains
+----------------------
+
+If your Symfony application handles multiple domains within the same application, the generated ``fos_js_routes.js`` file contains routes for only one host. To generate URLs for different domains, you can use the ``setBaseUrl()`` method to override the base URL dynamically.
+
+When rendering your main template, call ``Routing.setBaseUrl()`` to set the appropriate base URL for the current domain:
+
+.. code-block:: javascript
+
+    // Override the base URL for the current domain
+    Routing.setBaseUrl('https://example.com');
+
+    // Now generate URLs using the new base URL
+    Routing.generate('my_route', {}, true); // Generates absolute URL with the overridden base URL
+
+This allows you to use the same routing data for multiple domains by adjusting the base URL at runtime.
+
 Moreover, you can configure a list of routes to expose in ``app/config/config.yml``:
 
 .. code-block:: yaml
