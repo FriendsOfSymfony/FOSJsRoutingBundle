@@ -175,7 +175,25 @@ class ExposedRoutesExtractorTest extends TestCase
             'HTTPS Non-Standard' => ['127.0.0.1', 9876, '127.0.0.1:9876'],
         ];
     }
+    public function testGetRoutesWithNumericNames(): void
+    {
+        $expected = new RouteCollection();
+        $expected->add('404', new Route('/404'));
+        $expected->add('500', new Route('/500'));
+        $expected->add('literal', new Route('/literal'));
 
+        $router = $this->getRouter($expected);
+        $extractor = new ExposedRoutesExtractor($router, ['.*'], $this->cacheDir, []);
+
+        $routes = $extractor->getRoutes();
+        $this->assertCount(3, $routes);
+
+        // Verify that numeric route names are handled correctly
+        $this->assertTrue($extractor->isRouteExposed($routes->get('404'), '404'));
+        $this->assertTrue($extractor->isRouteExposed($routes->get('500'), '500'));
+        // Test with integer key as well, since PHP may convert string keys to int
+        $this->assertTrue($extractor->isRouteExposed($routes->get('404'), '404'));
+    }
     /**
      * Get a mock object which represents a Router.
      */

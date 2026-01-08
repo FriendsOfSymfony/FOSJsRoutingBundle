@@ -58,12 +58,12 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
                 $expose = $route->getOption('expose');
 
                 if (false !== $expose && 'false' !== $expose) {
-                    $routes->add($name, $route);
+                    $routes->add((string)$name, $route);
                 }
                 continue;
             }
 
-            preg_match('#^'.$this->pattern.'$#', $name, $matches);
+            preg_match('#^'.$this->pattern.'$#', (string)$name, $matches);
 
             if (0 === count($matches)) {
                 continue;
@@ -77,7 +77,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
 
             $route = clone $route;
             $route->setOption('expose', $domain);
-            $routes->add($name, $route);
+            $routes->add((string)$name, $route);
         }
 
         return $routes;
@@ -172,10 +172,10 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     /**
      * {@inheritDoc}
      */
-    public function isRouteExposed(Route $route, $name): bool
+    public function isRouteExposed(Route $route, string $name): bool
     {
         if (false === $route->hasOption('expose')) {
-            return '' !== $this->pattern && preg_match('#^'.$this->pattern.'$#', $name);
+            return '' !== $this->pattern && preg_match('#^'.$this->pattern.'$#', (string)$name);
         }
 
         $status = $route->getOption('expose');
