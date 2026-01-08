@@ -39,7 +39,7 @@
     "gulp-wrap": "^0.15.0",
     "jasmine": "^4.0.2",
     "tsd": "^0.19.1",
-    "typescript": "^4.5.5"
+    "@tsd/typescript": "^4.5.5"
   },
   "scripts": {
     "build": "gulp && npm run build:types",
