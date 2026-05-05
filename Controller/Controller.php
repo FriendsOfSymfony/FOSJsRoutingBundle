@@ -20,7 +20,7 @@ use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag;
-use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
+use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
@@ -28,7 +28,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class Controller implements WarmableInterface
+class Controller implements CacheWarmerInterface
 {
     protected CacheControlConfig $cacheControlConfig;
 
@@ -104,6 +104,11 @@ class Controller implements WarmableInterface
         $serializedRoutes = $this->serializer->serialize($exposedRoutes, 'json');
         $cache->write($serializedRoutes, $this->exposedRoutesExtractor->getResources());
 
-        return [];
+        return [$cache->getPath()];
+    }
+
+    public function isOptional(): bool
+    {
+        return true;
     }
 }

@@ -128,10 +128,12 @@ class ControllerTest extends TestCase
             unlink($this->cachePath);
         }
 
-        $controller->warmUp(dirname($this->cachePath));
+        $files = $controller->warmUp(dirname($this->cachePath));
 
         $this->assertFileExists($this->cachePath);
         $this->assertStringContainsString('homepage', file_get_contents($this->cachePath));
+        $this->assertCount(1, $files);
+        $this->assertEquals($this->cachePath, $files[0]);
     }
 
     /**
