@@ -22,6 +22,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
         ->set('fos_js_routing.controller', '%fos_js_routing.controller.class%')
             ->public()
+            ->tag('kernel.cache_warmer')
             ->args([
                 service('fos_js_routing.routes_response'),
                 service('fos_js_routing.serializer'),
