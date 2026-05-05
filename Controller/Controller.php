@@ -20,6 +20,7 @@ use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag;
+use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
@@ -27,7 +28,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class Controller
+class Controller implements WarmableInterface
 {
     protected CacheControlConfig $cacheControlConfig;
 
@@ -60,18 +61,16 @@ class Controller
         $cache = new ConfigCache($this->exposedRoutesExtractor->getCachePath($request->getLocale()), $this->debug);
 
         if (!$cache->isFresh() || $this->debug) {
-            $exposedRoutes = $this->exposedRoutesExtractor->getRoutes();
-            $serializedRoutes = $this->serializer->serialize($exposedRoutes, 'json');
-            $cache->write($serializedRoutes, $this->exposedRoutesExtractor->getResources());
-        } else {
-            $path = method_exists($cache, 'getPath') ? $cache->getPath() : (string) $cache;
-            $serializedRoutes = file_get_contents($path);
-            $exposedRoutes = $this->serializer->deserialize(
-                $serializedRoutes,
-                'Symfony\Component\Routing\RouteCollection',
-                'json'
-            );
+            $this->warmUp(dirname($cache->getPath()));
         }
+
+        $path = method_exists($cache, 'getPath') ? $cache->getPath() : (string) $cache;
+        $serializedRoutes = file_get_contents($path);
+        $exposedRoutes = $this->serializer->deserialize(
+            $serializedRoutes,
+            'Symfony\Component\Routing\RouteCollection',
+            'json'
+        );
 
         $this->routesResponse->setBaseUrl($this->exposedRoutesExtractor->getBaseUrl());
         $this->routesResponse->setRoutes($exposedRoutes);
@@ -96,5 +95,15 @@ class Controller
         $this->cacheControlConfig->apply($response);
 
         return $response;
+    }
+
+    public function warmUp(string $cacheDir, ?string $buildDir = null): array
+    {
+        $cache = new ConfigCache($this->exposedRoutesExtractor->getCachePath(null), $this->debug);
+        $exposedRoutes = $this->exposedRoutesExtractor->getRoutes();
+        $serializedRoutes = $this->serializer->serialize($exposedRoutes, 'json');
+        $cache->write($serializedRoutes, $this->exposedRoutesExtractor->getResources());
+
+        return [];
     }
 }

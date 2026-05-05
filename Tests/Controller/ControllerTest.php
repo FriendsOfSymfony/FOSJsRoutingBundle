@@ -113,6 +113,27 @@ class ControllerTest extends TestCase
         $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":"","locale":"en"}', $response->getContent());
     }
 
+    public function testWarmUp(): void
+    {
+        $routes = new RouteCollection();
+        $routes->add('literal', new Route('/homepage'));
+
+        $controller = new Controller(
+            $this->routesResponse,
+            $this->getSerializer(),
+            $this->getExtractor($routes),
+        );
+
+        if (file_exists($this->cachePath)) {
+            unlink($this->cachePath);
+        }
+
+        $controller->warmUp(dirname($this->cachePath));
+
+        $this->assertFileExists($this->cachePath);
+        $this->assertStringContainsString('homepage', file_get_contents($this->cachePath));
+    }
+
     /**
      * @dataProvider dataProviderForTestGenerateWithCallback
      */
